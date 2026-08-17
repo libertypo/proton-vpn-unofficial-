@@ -1,0 +1,650 @@
+"""
+Copyright (c) 2023 Proton AG
+
+This file is part of Proton VPN.
+
+Proton VPN is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+Proton VPN is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with ProtonVPN.  If not, see <https://www.gnu.org/licenses/>.
+"""
+
+from __future__ import annotations
+
+import subprocess  # nosec B404 # nosemgrep: gitlab.bandit.B404
+from collections.abc import Sequence
+from concurrent.futures import Future
+from importlib import metadata
+from pathlib import Path
+from threading import Event
+from types import TracebackType
+from typing import Callable, List, Optional, Tuple, Type, Union
+
+from gi.repository import GLib
+from proton.session.api import Fido2Assertion
+
+from proton.vpn import logging
+from proton.vpn.app.gtk.config import APP_CONFIG, AppConfig
+from proton.vpn.app.gtk.conflicts import Conflict, Conflicts
+from proton.vpn.app.gtk.services import VPNReconnector
+from proton.vpn.app.gtk.services.reconnector.network_monitor import NetworkMonitor
+from proton.vpn.app.gtk.services.reconnector.session_monitor import SessionMonitor
+from proton.vpn.app.gtk.services.reconnector.vpn_monitor import VPNMonitor
+from proton.vpn.app.gtk.settings_watchers import SettingsWatchers
+from proton.vpn.app.gtk.utils import glib
+from proton.vpn.app.gtk.utils.exception_handler import ExceptionHandler
+from proton.vpn.app.gtk.utils.executor import AsyncExecutor
+from proton.vpn.connection import VPNConnection, states
+from proton.vpn.connection.enum import KillSwitchSetting as KillSwitchSettingEnum
+from proton.vpn.core.api import ProtonVPNAPI, VPNAccount
+from proton.vpn.core.cache_handler import CacheHandler
+from proton.vpn.core.session_holder import ClientTypeMetadata
+from proton.vpn.core.settings import Settings
+from proton.vpn.core.vpnconnector import VPNConnector
+from proton.vpn.session import ServerList
+from proton.vpn.session.dataclasses import BugReportForm, NPSSurveyResponse
+from proton.vpn.session.servers import LogicalServer
+from proton.vpn.session.session import FeatureFlags
+from proton.vpn.session.session import Notifications as PullNotifications
+from proton.vpn.session.u2f_interaction import UserInteraction
+
+logger = logging.getLogger(__name__)
+
+DOT = "."  # pylint: disable=invalid-name
+PROTUN_ARTIFACT_PATHS = (
+    Path("/usr/libexec/nm-protun-service"),
+    Path("/usr/libexec/nm-protun-auth-dialog"),
+    Path("/usr/lib/NetworkManager/VPN/nm-protun.name"),
+    Path("/usr/share/dbus-1/system.d/nm-protun-service.conf"),
+)
+
+
+class Controller:  # pylint: disable=too-many-public-methods, too-many-instance-attributes
+    """The C in the MVC pattern."""
+
+    @staticmethod
+    def get(executor: AsyncExecutor, exception_handler: "ExceptionHandler") -> Controller:
+        """Preferred method to get an instance of Controller."""
+        controller = Controller(executor, exception_handler)
+        try:
+            executor.submit(controller.initialize_vpn_connector).result()
+        except Exception:  # pragma: no cover - defensive fallback
+            logger.exception("Unexpected failure while initializing VPN connector.")
+
+        preload_future = executor.submit(controller._preload_settings)
+        preload_future.add_done_callback(
+            lambda f: logger.warning("Settings preload failed: %r", f.exception()) if f.exception() else None
+        )
+        return controller
+
+    def __init__(
+        self,
+        executor: AsyncExecutor,
+        exception_handler: ExceptionHandler,
+        api: Optional[ProtonVPNAPI] = None,
+        vpn_connector: Optional[VPNConnector] = None,
+        vpn_reconnector: Optional[VPNReconnector] = None,
+        app_config: Optional[AppConfig] = None,
+        cache_handler: CacheHandler = None,
+    ):  # pylint: disable=too-many-arguments
+        self.executor = executor
+
+        self.exception_handler = exception_handler
+        self.exception_handler.controller = self
+
+        client_type_metadata = ClientTypeMetadata(type="gui")
+
+        self._api = api or ProtonVPNAPI(client_type_metadata)
+        self._connector = vpn_connector
+        self.reconnector = vpn_reconnector
+        self._connection_status_subscribers: set[object] = set()
+
+        self._app_config = app_config
+        self._cache_handler = cache_handler or CacheHandler(APP_CONFIG)
+        self._settings_watchers = SettingsWatchers()
+        self._settings_cache: Optional[Settings] = None
+
+    async def initialize_vpn_connector(self):
+        """
+        Runs the required initializations to be able to start new VPN connections.
+        """
+        self._connector = await self._api.get_vpn_connector()
+
+        self.reconnector = VPNReconnector(
+            vpn_data_refresher=self._api.refresher,
+            vpn_connector=self._connector,
+            vpn_monitor=VPNMonitor(vpn_connector=self._connector),
+            network_monitor=NetworkMonitor(pool=self.executor),
+            session_monitor=SessionMonitor(),
+            async_executor=self.executor,
+        )
+
+    def _preload_settings(self) -> None:
+        """Load settings once during startup so UI actions can use cached values."""
+        try:
+            self.get_settings()
+        except Exception:  # pragma: no cover - defensive fallback
+            logger.exception("Unexpected failure while preloading settings.")
+
+    def login(self, username: str, password: str) -> Future:
+        """
+        Logs the user in.
+        :param username:
+        :param password:
+        :return: A Future object wrapping the result of the login API call.
+        """
+        return self.executor.submit(self._api.login, username, password)
+
+    def submit_2fa_code(self, code: str) -> Future:
+        """
+        Submits a 2-factor authentication code for verification.
+        :param code: The 2FA code.
+        :return: A Future object wrapping the result of the 2FA verification.
+        """
+        return self.executor.submit(self._api.submit_2fa_code, code)
+
+    def generate_2fa_fido2_assertion(self, user_interaction: UserInteraction, cancel_assertion: Event) -> Future:
+        """
+        Scans for security keys and generates a FIDO2 assertion for U2F authentication.
+        :param user_interaction: object handling any required user interaction
+            while generating the assertion.
+        :param cancel_assertion: optional event that can be set to cancel the
+        fido 2 assertion process.
+        :return: A Future object wrapping the Fido2Assertion.
+        """
+        return self.executor.submit(self._api.generate_2fa_fido2_assertion, user_interaction, cancel_assertion)
+
+    def submit_2fa_fido2(self, fido2_assertion: Fido2Assertion) -> Future:
+        """
+        Submits a 2-factor authentication using U2F for verification.
+        :return: A Future object wrapping the result of the 2FA verification.
+        """
+        return self.executor.submit(self._api.submit_2fa_fido2, fido2_assertion)
+
+    def logout(self) -> Future:
+        """
+        Logs the user out.
+        :return: A future to be able to track the logout completion.
+        """
+        return self.executor.submit(self._api.logout)
+
+    @property
+    def user_logged_in(self) -> bool:
+        """
+        Returns whether the user is logged in or not.
+        :return: True if the user is logged in. Otherwise, False.
+        """
+        return self._api.is_user_logged_in()
+
+    @property
+    def user_tier(self):
+        """Returns user tier."""
+        return self._api.user_tier
+
+    @property
+    def settings_watchers(self):
+        """Returns a registry for settings changed callbacks."""
+        return self._settings_watchers
+
+    def run_startup_actions(self, _):
+        """Runs any startup actions that are necessary once the app has loaded."""
+        logger.info("Running startup actions", category="app", subcategory="startup", event="startup_actions")
+        if self.user_logged_in and self.get_app_configuration().connect_at_app_startup:
+            self.autoconnect()
+
+    def autoconnect(self) -> Future:
+        """Connects to a server from app configuration.
+        This method is intended to be called at app startup.
+        """
+        connect_at_app_startup = self.get_app_configuration().connect_at_app_startup
+
+        if connect_at_app_startup is None:
+            raise RuntimeError("No autoconnect target configured")
+
+        if connect_at_app_startup == "FASTEST":
+            return self.connect_to_fastest_server()
+
+        return self._connect_to(connect_at_app_startup)
+
+    def connect_from_tray(self, connect_to: str) -> Future:
+        """Connect to servers from tray."""
+        return self._connect_to(connect_to)
+
+    def _connect_to(self, connect_to: str) -> Future:
+        if "#" in connect_to:
+            return self.connect_to_server(connect_to)
+
+        return self.connect_to_country(connect_to)
+
+    def connect_to_country(self, country_code: str) -> Future:
+        """
+        Establishes a VPN connection to the specified country.
+        :param country_code: The ISO3166 code of the country to connect to.
+        :return: A Future object that resolves once the connection reaches the
+        "connected" state.
+        """
+        server = self._api.server_list.get_fastest_in_country(country_code)
+        return self._connect_to_vpn(server)
+
+    def connect_to_fastest_server(self) -> Future:
+        """
+        Establishes a VPN connection to the fastest server.
+        :return: A Future object that resolves once the connection reaches the
+        "connected" state.
+        """
+        server = self._api.server_list.get_fastest()
+        return self._connect_to_vpn(server)
+
+    def connect_to_server(self, server_name: Optional[str] = None) -> Future:
+        """
+        Establishes a VPN connection.
+        :param server_name: The name of the server to connect to.
+        :return: A Future object that resolves once the connection reaches the
+        "connected" state.
+        """
+        server = self._api.server_list.get_by_name(server_name)
+        return self._connect_to_vpn(server)
+
+    def _connect_to_vpn(self, server: LogicalServer) -> Future:
+        connector = self._connector
+        if connector is None:
+            raise RuntimeError("VPN connector not initialized")
+        credentials = connector.credentials
+        if credentials is None or credentials.pubkey_credentials is None:
+            raise RuntimeError("VPN credentials are unavailable. Log in again before connecting.")
+        vpn_server = connector.get_vpn_server(server, self._api.refresher.client_config)
+
+        return self.executor.submit(connector.connect, vpn_server, protocol=self.get_settings().protocol)
+
+    def disconnect(self) -> Future:
+        """
+        Terminates a VPN connection.
+        :return: A Future object that resolves once the connection reaches the
+        "disconnected" state.
+        """
+        connector = self._connector
+        if connector is None:
+            raise RuntimeError("VPN connector not initialized")
+        return self.executor.submit(connector.disconnect)
+
+    @property
+    def account_name(self) -> str:
+        """Returns account name."""
+        return self._api.account_name
+
+    @property
+    def account_data(self) -> VPNAccount:
+        """Returns account data."""
+        return self._api.account_data
+
+    @property
+    def current_connection(self) -> VPNConnection:
+        """Returns the current VPN connection, if it exists."""
+        connector = self._connector
+        if connector is None:
+            raise RuntimeError("VPN connector not initialized")
+        return connector.current_connection
+
+    @property
+    def current_connection_status(self) -> states.State:
+        """Returns the current VPN connection status. If there is not a
+        current VPN connection, then the Disconnected state is returned."""
+        connector = self._connector
+        if connector is None:
+            raise RuntimeError("VPN connector not initialized")
+        return connector.current_state
+
+    @property
+    def current_server_id(self) -> str:
+        """Returns the server id of the current connection."""
+        connector = self._connector
+        if connector is None:
+            raise RuntimeError("VPN connector not initialized")
+        return connector.current_server_id
+
+    @property
+    def is_connection_active(self) -> bool:
+        """
+        Returns whether the current connection is active or not.
+
+        A connection is considered active in the connecting, connected
+        and disconnecting states.
+        """
+        connector = self._connector
+        if connector is None:
+            raise RuntimeError("VPN connector not initialized")
+        return connector.is_connection_active  # noqa: E501 # pylint: disable=line-too-long # nosemgrep: python.lang.maintainability.is-function-without-parentheses.is-function-without-parentheses
+
+    @property
+    def connection_disconnected(self) -> bool:
+        """Returns whether the current connection is in disconnected state or not."""
+        connector = self._connector
+        if connector is None:
+            raise RuntimeError("VPN connector not initialized")
+        return isinstance(connector.current_state, states.Disconnected)
+
+    @property
+    def server_list(self) -> ServerList:
+        """Returns the current server list."""
+        return self._api.refresher.server_list
+
+    @property
+    def feature_flags(self) -> FeatureFlags:
+        """Returns object which specifies which features are to be enabled or not."""
+        return self._api.refresher.feature_flags
+
+    @property
+    def notifications(self) -> PullNotifications:
+        """Returns cached VPN pull notifications."""
+        return self._api.refresher.notifications
+
+    def set_notification_seen(self, notification_id: str):
+        """Marks a notification as seen and persists the change to disk."""
+        self._api.set_notification_seen(notification_id)
+
+    def submit_bug_report(self, bug_report: BugReportForm) -> Future:
+        """Submits an issue report.
+        :return: A Future object wrapping the result of the API."""
+        return self.executor.submit(self._api.submit_bug_report, bug_report)
+
+    def submit_nps_survey_response(self, nps_response: NPSSurveyResponse) -> Future:
+        """Submits an NPS survey response.
+        :return: A Future object wrapping the result of the API."""
+        return self.executor.submit(self._api.submit_nps_response, nps_response)
+
+    def register_connection_status_subscriber(self, subscriber):
+        """
+        Registers a new subscriber to connection status updates.
+        :param subscriber: The subscriber to be registered.
+        """
+        if subscriber in self._connection_status_subscribers:
+            return
+        self._connection_status_subscribers.add(subscriber)
+        self._connector.register(subscriber)
+
+    def unregister_connection_status_subscriber(self, subscriber):
+        """
+        Unregisters an existing subscriber from connection status updates.
+        :param subscriber: The subscriber to be unregistered.
+        """
+        if subscriber not in self._connection_status_subscribers:
+            return
+        self._connection_status_subscribers.remove(subscriber)
+        self._connector.unregister(subscriber)
+
+    @property
+    def vpn_connector(self) -> VPNConnector:
+        """Returns the VPN connector"""
+        return self._connector
+
+    def disable_killswitch(self) -> Future:
+        """Disables the kill switch and stores the change to file."""
+        settings = self.get_settings()
+        settings.killswitch = KillSwitchSettingEnum.OFF
+        return self.save_settings(settings)
+
+    def get_app_configuration(self) -> AppConfig:
+        """Return object with app specific configurations."""
+        if self._app_config is not None:
+            return self._app_config
+
+        app_config = self._cache_handler.load()
+
+        if app_config is None:
+            self._app_config = AppConfig.default()
+        else:
+            self._app_config = AppConfig.from_dict(app_config)
+
+        return self._app_config
+
+    def save_app_configuration(self, new_value: AppConfig):
+        """Save object with app specific configurations to disk."""
+        self._app_config = new_value
+        self._cache_handler.save(self._app_config.to_dict())
+
+    @property
+    def app_version(self) -> str:
+        """Returns the current app version."""
+        return metadata.version("protonvpn-app")
+
+    def get_settings(self) -> Settings:
+        """Returns general settings."""
+        if self._settings_cache is not None:
+            return self._settings_cache
+
+        self._settings_cache = self.executor.submit(self._api.load_settings).result()
+        return self._settings_cache
+
+    def get_cached_settings(self) -> Optional[Settings]:
+        """Return cached settings if already loaded, otherwise None."""
+        return self._settings_cache
+
+    def save_settings(self, settings: Settings, bubble_up_errors=True) -> Future:
+        """
+        Saves current settings to disk and updates the wireguard certificate
+        if necessary.
+        """
+
+        async def save(settings):
+            await self._api.save_settings(settings)
+
+        self._settings_cache = settings
+
+        future = self.executor.submit(save, settings)
+
+        future.add_done_callback(lambda f: GLib.idle_add(self._settings_watchers.notify, settings))
+
+        if bubble_up_errors:
+            glib.bubble_up_errors(future)
+
+        return future
+
+    def resolve_settings_type(self, setting_path_name: str) -> Tuple[str, str, Callable, Callable]:
+        """
+        Resolves the type of the setting based on the setting path name.
+        :param setting_path_name: The path name of the setting.
+        :return: A tuple containing the setting type, setting attributes,
+        and the methods to get and save the settings.
+        """
+        setting_type, setting_attrs = setting_path_name.split(DOT, maxsplit=1)
+        if setting_type == "settings":
+            return (setting_type, setting_attrs, self.get_settings, self.save_settings)
+        if setting_type == "app_configuration":
+            return (setting_type, setting_attrs, self.get_app_configuration, self.save_app_configuration)
+
+        raise ValueError(f"Unknown setting type: {setting_type}. Expected 'settings' or 'app_config'.")
+
+    def setting_attr_has_conflict(self, setting_path_name: str, new_value: object) -> Optional[Conflict]:
+        """
+        Checks if the setting can be changed without conflicts.
+        Returns a string with the conflicts if there are any, otherwise returns
+        an empty string.
+        """
+
+        setting_type, setting_attrs, get_settings, _ = self.resolve_settings_type(setting_path_name)
+
+        return Conflicts.detect(setting_type, setting_attrs, new_value, get_settings())
+
+    def get_setting_attr(self, setting_path_name: str) -> object:
+        """Helper method to get the settings.
+
+        In this case the setting_path_name can be a multi-layered setting, for example
+        the kill switch can be access via `settings.killswtich` while netshield can be accessed
+        via `settings.features.netshield`. Since this method tries to abstract the depth,
+        we'll be searching based on the hierarchy, example:
+
+        ```
+        setting_path_name = "settings.features.netshield"
+        setting_type = "settings"
+
+        # The below will become ["features", "netshield"]
+        setting_attrs_split = "features.netshield".split(".")
+        ```
+        So the for loop will loop for each attribute and attempt to get it from the original
+        settings object, thus solving the nesting situation.
+
+        Args:
+            setting_path_name (str):
+
+        Returns:
+            object:
+        """
+        _, setting_attrs, get_settings, _ = self.resolve_settings_type(setting_path_name)
+
+        settings = get_settings()
+        for attr in setting_attrs.split(DOT):
+            settings = getattr(settings, attr)
+
+        return settings
+
+    def save_setting_attr(self, setting_path_name: str, new_value: object):
+        """Helper method to save the settings."""
+
+        def set_setting(root, attr, value):
+            if attr.count(DOT) == 0:
+                setattr(root, attr, value)
+            else:
+                name, path = attr.split(DOT, maxsplit=1)
+                next_root = getattr(root, name)
+                set_setting(next_root, path, value)
+
+        setting_type, setting_attrs, get_settings, save_settings = self.resolve_settings_type(setting_path_name)
+
+        settings = get_settings()
+
+        set_setting(settings, setting_attrs, new_value)
+
+        save_settings(Conflicts.resolve(setting_type, setting_attrs, new_value, settings))
+
+    def get_available_protocols(self, protocol_group: str) -> List[type[VPNConnection]]:
+        """Returns a list of available protocols sorted by priority."""
+        connector = self._connector
+        if connector is None:
+            raise RuntimeError("VPN connector not initialized")
+        if protocol_group == "protun" and not all(path.is_file() for path in PROTUN_ARTIFACT_PATHS):
+            return []
+        return [protocol for protocol in connector.iter_available_protocols(protocol_group) if protocol.validate()]
+
+    def send_error_to_proton(
+        self,
+        error: Union[
+            BaseException, tuple[Optional[Type[BaseException]], Optional[BaseException], Optional[TracebackType]]
+        ],
+    ):
+        """Sends the error to Sentry."""
+        self._api.usage_reporting.report_error(error)
+
+    def run_subprocess(
+        self,
+        commands: Sequence[str] | str,
+        check: bool = False,
+        timeout: Optional[int] = None,
+    ) -> Future[subprocess.CompletedProcess[bytes]]:
+        """Run asynchronously subprocess command so it does not block UI."""
+        if isinstance(commands, str):
+            command_tokens = [commands]
+        else:
+            command_tokens = list(commands)
+
+        if not command_tokens:
+            raise ValueError("commands must be a non-empty list or tuple")
+        if not all(isinstance(token, str) and token for token in command_tokens):
+            raise ValueError("subprocess commands must be non-empty strings")
+        if any("\x00" in token for token in command_tokens):
+            raise ValueError("subprocess commands cannot contain null bytes")
+
+        return self.executor.submit(
+            subprocess.run,
+            command_tokens,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            check=check,
+            timeout=timeout,
+        )
+
+    @property
+    def _local_agent_available(self) -> bool:
+        try:
+            import proton.vpn.local_agent  # noqa: F401,E501 # pylint: disable=unused-import, import-outside-toplevel
+        except ModuleNotFoundError:
+            return False
+
+        return True
+
+    def enable_refresher(self, callback: Callable[[Future], None]):
+        """Enables the refresher and calls the callback when the server list is available."""
+
+        def error_callback(exception: Exception):
+            GLib.idle_add(self.exception_handler.handle_exception, type(exception), exception, exception.__traceback__)
+
+        async def enable():
+            self._api.refresher.set_error_callback(error_callback)
+            await self._api.refresher.enable()
+
+        future = self.executor.submit(enable)
+
+        def on_refresher_enabled(future):
+            GLib.idle_add(callback, future)
+
+        future.add_done_callback(on_refresher_enabled)
+
+    def disable_refresher(self):
+        """Disables the refresher."""
+
+        async def disable():
+            await self._api.refresher.disable()
+            self._api.refresher.unset_error_callback()
+
+        future = self.executor.submit(disable)
+        glib.bubble_up_errors(future)
+
+    def set_server_list_updated_callback(self, callback: Callable[[], None]):
+        """Sets the callback that is called when the server list is updated."""
+        future = self.executor.submit(
+            self._api.refresher.set_server_list_updated_callback, lambda: GLib.idle_add(callback)
+        )
+        glib.bubble_up_errors(future)
+
+    def unset_server_list_updated_callback(self):
+        """Unsets the callback that is called when the server list is updated."""
+        future = self.executor.submit(self._api.refresher.set_server_list_updated_callback, None)
+        glib.bubble_up_errors(future)
+
+    def set_server_loads_updated_callback(self, callback: Callable[[], None]):
+        """Sets the callback that is called when the server loads are updated."""
+        future = self.executor.submit(
+            self._api.refresher.set_server_loads_updated_callback, lambda: GLib.idle_add(callback)
+        )
+        glib.bubble_up_errors(future)
+
+    def unset_server_loads_updated_callback(self):
+        """Unsets the callback that is called when the server loads are updated."""
+        future = self.executor.submit(self._api.refresher.set_server_loads_updated_callback, None)
+        glib.bubble_up_errors(future)
+
+    @property
+    def split_tunneling_available(self) -> bool:
+        """Returns if split tunneling is available.
+
+        Returns:
+            bool: `True` if available, `False` otherwise
+        """
+        connector = self._connector
+        if connector is None:
+            raise RuntimeError("VPN connector not initialized")
+        return connector.is_split_tunneling_available
+
+    @property
+    def fido2_available(self) -> bool:
+        """
+        Returns if FIDO2 is available.
+        """
+        return self._api.supports_fido2

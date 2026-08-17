@@ -1,0 +1,90 @@
+/*
+ * Copyright (c) 2025 Proton AG
+ *
+ * This file is part of ProtonVPN.
+ *
+ * ProtonVPN is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * ProtonVPN is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with ProtonVPN.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
+package me.proton.vpn.core.sample_app.data
+
+import kotlinx.serialization.Serializable
+import me.proton.vpn.core.api.ConnectionMode
+import me.proton.vpn.core.api.InitialConfig
+import me.proton.vpn.core.api.InterfaceConfig
+import me.proton.vpn.core.api.LocalAgentSettings
+import me.proton.vpn.core.api.NetShieldLevel
+import me.proton.vpn.core.api.Peer
+import me.proton.vpn.core.api.VpnProtocol
+import java.net.InetAddress
+
+@Serializable
+data class VpnConfig(
+    val ip: String,
+    val udpPorts: List<Int> = emptyList(),
+    val tcpPorts: List<Int> = emptyList(),
+    val tlsPorts: List<Int> = emptyList(),
+    val peerPublicKey: String,
+    val exitLabel: String?,
+    val clientPrivateKey: String,
+    val localAgentMode: Boolean,
+    val username: String,
+    val password: String,
+) {
+    fun toInitialConfig(): InitialConfig {
+        val ports = mapOf(
+            VpnProtocol.WireGuardUdp to udpPorts,
+            VpnProtocol.WireGuardTcp to tcpPorts,
+            VpnProtocol.Stealth to tlsPorts
+        )
+        if (ports.values.all { it.isEmpty() })
+            throw IllegalArgumentException("At least one port must be specified")
+
+        val address = try {
+            InetAddress.getByName(ip)
+        } catch (e: Exception) {
+            throw IllegalArgumentException("Invalid peer address $ip:", e)
+        }
+
+        return InitialConfig(
+            interfaceConfig = InterfaceConfig(supportInTunnelIPv6 = false),
+            peers = listOf(
+                Peer(
+                    id = "0",
+                    address = address,
+                    publicKeyX25519Base64 = peerPublicKey,
+                    priority = 0,
+                    ports = ports,
+                    exitLabel = exitLabel,
+                )
+            ),
+            mode = if (localAgentMode) {
+                ConnectionMode.LocalAgent(
+                    userAgent = "ProtonVPN/5.17.62.8 (Android 14; google sdk_gphone64_x86_64)",
+                    appVersion = "android-vpn@5.17.62.0",
+                    settings = LocalAgentSettings(
+                        splitTcp = true,
+                        netshieldLevel = NetShieldLevel.AdsAndMalwareFilter,
+                        softJail = false,
+                        portForwarding = null,
+                        randomNat = null,
+                        circumventionRouting = null,
+                    )
+                )
+            } else {
+                ConnectionMode.NoLocalAgent(clientX25519PrivateKeyBase64 = clientPrivateKey)
+            },
+        )
+    }
+}

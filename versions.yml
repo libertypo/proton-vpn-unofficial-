@@ -1,0 +1,1394 @@
+version: 4.16.5
+time: 2026/05/25 07:50
+author: Elena Švilpė
+email: elena.svilpe@proton.ch
+description:
+- "fix: add error handling for certificate not yet valid (Elena Švilpė)"
+- "fix: Remove proton-core-internal dependency (Pep Llaneras)"
+---
+version: 4.16.4
+time: 2026/05/19 08:33
+author: Richard Paterson
+email: richard.paterson@proton.ch
+description:
+- "fix: Repair broken signals and port forwarding popover removal warning (Richard Paterson)"
+- "fix: Migrate to new signal connection system to mitigate leaks (Richard Paterson)"
+- "fix: Red fonts on connection error (Pep Llaneras)"
+---
+version: 4.16.3
+time: 2026/05/06 09:25
+author: Luke Titley
+email: luke.titley@proton.ch
+description:
+- "fix: red fonts on VPN error in Ubuntu 22 (Pep Llaneras)"
+- "feat: Packet capture UI (Luke Titley)"
+---
+version: 4.16.2
+time: 2026/04/29 09:32
+author: Richard Paterson
+email: richard.paterson@proton.ch
+urgency: low
+stability: unstable
+description:
+- "fix: order search results alphabetically (Pep Llaneras)"
+- "fix: update early access toggle (Elena Švilpė)"
+- "fix: release package replace for fedora (Elena Švilpė)"
+---
+version: 4.16.1
+time: 2026/04/21 10:07
+author: Elena Švilpė
+email: elena.svilpe@proton.ch
+urgency: low
+stability: unstable
+description:
+- "fix: improve CSS styling (Pep Llaneras)"
+---
+version: 4.16.0
+time: 2026/04/21 11:12
+author: Elena Švilpė
+email: elena.svilpe@proton.ch
+urgency: low
+stability: unstable
+description:
+- "feat: NPS Survey presentation driven by pull notifications (Richard Paterson)"
+- "fix: settings changes are not saved (Elena Švilpė)"
+- "feat: NPS survey response submission (Richard Paterson)"
+- "fix: UI cosmetics (Pep Llaneras)"
+---
+version: 4.15.3
+time: 2026/04/14 10:10
+author: Luke Titley
+email: luke.titley@proton.ch
+urgency: low
+stability: unstable
+description:
+- "feat!: Pcap groundwork (Luke Titley)"
+- "fix: Gracefully fail if without session bus (Richard Paterson) (thanks to https://github.com/kenvandine)"
+- "fix: keep tray menu state aligned with window visibility (Elena Švilpė) (thanks to https://github.com/dragonleopardpig)"
+- "feat: Show connected location (Pep Llaneras)"
+- "fix: Check StatusNotifierWatcher availability for tray detection (Elena Švilpė) (thanks to https://github.com/kenvandine)"
+- "fix: Use a snap friendly bus name to work with the generated apparmor profile (Elena Švilpė) (https://github.com/kenvandine)"
+---
+version: 4.15.2
+time: 2026/03/30 10:56
+author: Richard Paterson
+email: richard.paterson@proton.ch
+urgency: low
+stability: unstable
+description:
+- "feat: NPS survey popover"
+- "feat: Group the USA by states instead of cities (Pep Llaneras)"
+- "chore: add type hints (round 1) (Pep Llaneras)"
+---
+version: 4.15.1
+time: 2026/03/17 15:00
+author: Pep Llaneras
+email: josep.llaneras@proton.ch
+urgency: low
+stability: unstable
+description:
+- "fix: grow app width with content"
+- "feat: add feature icons tooltip"
+---
+version: 4.15.0
+time: 2026/03/05 09:00
+author: Pep Llaneras
+email: josep.llaneras@proton.ch
+urgency: low
+stability: unstable
+description:
+- "feat: add double flag icon to secure core rows"
+- "fix: customize button tooltips for secure core"
+- "fix: smoothen row collapse"
+- "fix: show paid servers first to paid users"
+- "fix: make menu button visible on KDE (thanks to https://github.com/ptr1337)"
+- "feat: show secure core servers group"
+- "fix: show upgrade link on hover"
+- "fix: preserve expanded rows on server list refresh"
+- "fix: change DE detection to use XDG_CURRENT_DESKTOP (thanks to https://github.com/SRugina and https://github.com/proletarius101)"
+- "feat: show connect button on hover only"
+- "fix: accessibility improvements"
+---
+version: 4.14.2
+time: 2026/02/17 10:48
+author: Elena Švilpė
+email: elena.svilpe@proton.ch
+urgency: low
+stability: unstable
+description:
+- "chore: feature flag cleanup (Elena Švilpė)"
+- "feat: add search by city (Pep Llaneras)"
+- "feat: add cities (Pep Llaneras)"
+---
+version: 4.14.1
+time: 2026/01/21 14:16
+author: Elena Svilpe
+email: elena.svilpe@proton.ch
+urgency: low
+stability: unstable
+description:
+- "fix: log failed sign in attempt (Pep Llaneras)"
+---
+version: 4.14.0
+time: 2026/01/13 13:58
+author: Elena Svilpe
+email: elena.svilpe@proton.ch
+urgency: low
+stability: unstable
+description:
+- "fix: fix memory leak (Alexandru Cheltuitor)"
+- "chore: Migrate to GTK4 (Alexandru Cheltuitor)"
+---
+version: 4.13.1
+time: 2025/11/07 10:36
+author: Pep Llaneras
+email: josep.llaneras@proton.ch
+urgency: low
+stability: unstable
+description:
+- "fix: Handle desktop file parsing errors"
+---
+version: 4.13.0
+time: 2025/11/03 08:00
+author: Josep Llaneras
+email: Josep Llaneras
+urgency: low
+stability: unstable
+description:
+- "fix: remove environment variable that limits security key authentication (Alexandru Cheltuitor)"
+- "fix: Hide security key form when no keys are registered (Luke Titley)"
+- "chore: Switch to new versioning strategy (Pep Llaneras)"
+- "chore: Remove outdated tests (Pep Llaneras)"
+- "fix: Show security key as default 2FA option if available (Pep Llaneras)"
+- "fix: Fix login stack GTK warnings (Pep Llaneras)"
+- "fix: Clear keyring on cancelled 2FA (Pep Llaneras)"
+---
+version: 4.12.0
+time: 2025/10/13 11:30
+author: Richard Paterson
+email: richard.paterson@proton.ch
+urgency: low
+stability: unstable
+description:
+- "feat: Support 2fa hard-jailing (Luke Titley)"
+- "fix: Update spec file (Alexandru Cheltuitor)"
+- "feat: Handle U2F PIN (Pep Llaneras)"
+---
+version: 4.11.0
+time: 2025/09/15 9:00
+author: Pep Llaneras
+email: josep.llaneras@proton.ch
+urgency: low
+stability: unstable
+description:
+- "feat: add 2fa security device verification (Alexandru Cheltuitor, Luke Titley, Pep Llaneras)"
+- "fix: change ST toaster for include mode (Pep Llaneras)"
+- "fix: fix add window title word duplication (Alexandru Cheltuitor)"
+- "fix: ensure label mode is updated when switching modes (Alexandru Cheltuitor)"
+- "feat: add include mode (Alexandru Cheltuitor, Luke Titley, Pep Llaneras)"
+- "fix: hide proton vpn app from st (Alexandru Cheltuitor)"
+---
+version: 4.10.0
+time: 2025/08/06 07:53
+author: Alexandru Cheltuitor
+email: alexandru.cheltuitor@proton.ch
+urgency: low
+stability: unstable
+description:
+- Implement app based split tunneling (Alexandru Cheltuitor, Josep Llaneras, Luke Titley)
+---
+version: 4.9.7
+time: 2025/06/06 14:30
+author: Richard Paterson
+email: richard.paterson@proton.ch
+urgency: low
+stability: unstable
+description:
+- Update early access stable and beta packages
+- Ensures beta toggling uses correct apt command for debian based distributions
+- Fixes beta toggle activating with incoherent distribution detection
+- Fixes server button not reflecting current connection state
+- Removes reconnect message for Netshield, port forwarding, vpn accelerator and Moderate NAT settings changes.
+---
+version: 4.9.6
+time: 2025/04/02 09:00
+author: Alexandru Cheltuitor
+email: alexandru.cheltuitor@proton.ch
+urgency: low
+stability: unstable
+description:
+- Replace direct binary usage for macro in .spec file.
+- Add missing dependency for libnotify.
+---
+version: 4.9.5
+time: 2025/03/06 10:57
+author: Pep Llaneras
+email: josep.llaneras@proton.ch
+urgency: low
+stability: unstable
+description:
+- Add local agent logging (Luke Titley)
+---
+version: 4.9.4
+time: 2025/03/03 10:14
+author: Pep Llaneras
+email: josep.llaneras@proton.ch
+urgency: low
+stability: unstable
+description:
+- Fix crash when quitting the app while connected and PF is enabled (Alexandru Cheltuitor).
+- Add linux referral to sign-up page URL (Alexandru Cheltuitor)
+---
+version: 4.9.3
+time: 2025/02/17 16:17
+author: Luke Titley
+email: luke.titley@proton.ch
+urgency: low
+stability: unstable
+description:
+- Minor changes to wording of port forwarding user interface (Luke Titley)
+- Update api-core dependency (Pep Llaneras)
+---
+version: 4.9.2
+time: 2025/02/14 14:49
+author: Luke Titley
+email: luke.titley@proton.ch
+urgency: low
+stability: unstable
+description:
+- Customize Port Forwarding notification
+---
+version: 4.9.1
+time: 2025/02/14 09:00
+author: Luke Titley
+email: luke.titley@proton.ch
+urgency: low
+stability: unstable
+description:
+- Fix to beta version suffix in beta release.
+---
+version: 4.9.0
+time: 2025/02/13 09:00
+author: Luke Titley
+email: luke.titley@proton.ch
+urgency: low
+stability: unstable
+description:
+- Switch DisplayPortForwarding env var to Feature Flag
+- Show port forwarding desktop notification (Josep Llaneras)
+- Fix cancel connection (Josep Llaneras).
+- Remove save_setting when building UI when a feature requires upgrade (Alexandru Cheltuitor)
+---
+version: 4.8.3
+time: 2025/01/20 10:00
+author: Luke Titley
+email: luke.titley@proton.ch
+urgency: low
+stability: unstable
+description:
+- Replace deprecated `set_state` for `set_state_flags`. (Alexandru Cheltuitor)
+- Add back tests and improve code readability. (Alexandru Cheltuitor)
+- Cleanup old feature flags. (Alexandru Cheltuitor)
+- Display server load in search results. (Luke Titley)
+---
+version: 4.8.2
+time: 2024/12/18 12:00
+author: Alexandru Cheltuitor
+email: alexandru.cheltuitor@proton.ch
+urgency: low
+stability: unstable
+description:
+- Display port forwarding UI if environment variable is set (Alexandru Cheltuitor).
+- Ensure app does not crash when attempting to logout after doing a search (Alexandru Cheltuitor).
+- Ensure UI is using latest feature flags after login, by recreating the VPN widget whenever it's displayed (Alexandru Cheltuitor).
+---
+version: 4.8.1
+time: 2024/12/05 10:00
+author: Josep Llaneras
+email: josep.llaneras@proton.ch
+urgency: low
+stability: unstable
+description:
+- Update release package version used for beta toggle
+---
+version: 4.8.0
+time: 2024/11/26 14:00
+author: Alexandru Cheltuitor
+email: alexandru.cheltuitor@proton.ch
+urgency: low
+stability: unstable
+description:
+- Add custom DNS to settings window (Alexandru Cheltuitor).
+- Added semgrep scanning to CI (Luke Titley).
+- Drop Ubuntu 20.04 support (Alexandru Cheltuitor).
+- Fix kill switch leak when quitting the app (Alexandru Cheltuitor, Josep Llaneras).
+---
+version: 4.7.4
+time: 2024/11/08 16:00
+author: Josep Llaneras
+email: josep.llaneras@proton.ch
+urgency: low
+stability: unstable
+description:
+  - Backport hotfix introduced in 4.7.3.
+---
+version: 4.7.3
+time: 2024/11/08 08:00
+author: Alexandru Cheltuitor
+email: alexandru.cheltuitor@proton.ch
+urgency: low
+stability: unstable
+description:
+  - Fix bug when opening settings window, if installed via unsupported methods the early access toggle would crash.
+---
+version: 4.7.2
+time: 2024/11/07 09:00
+author: Josep Llaneras
+email: josep.llaneras@proton.ch
+urgency: low
+stability: unstable
+description:
+- Fix for issue where app was not opening in minimized state (Alexandru Cheltuitor).
+- Re-wrote search widget for improved speed (Alexandru Cheltuitor and Luke Titley).
+- Rename missing "Logging in" message to "Signing in" (Josep Llaneras).
+- Handle no VPN connections assigned error (Josep Llaneras).
+- Do not report disk full errors to sentry (Josep Llaneras).
+---
+version: 4.7.1
+time: 2024/10/22 12:00
+author: Alexandru Cheltuitor
+email: alexandru.cheltuitor@proton.ch
+urgency: low
+stability: unstable
+description:
+- Fix bug when opening the settings window and advanced kill switch is enabled the settings would crash.
+---
+version: 4.7.0
+time: 2024/10/22 07:00
+author: Josep Llaneras
+email: josep.llaneras@proton.ch
+urgency: low
+stability: unstable
+description:
+- Update kill switch and protocol label, clarifying that they can be switched only when disconnected from vpn (Alexandru Cheltuitor).
+- Fix introduced regression as it was no longer deactivating the selection of protocol and kill switch while being connected to VPN (Alexandru Cheltuitor).
+- Add start-app-minimized to settings window (Alexandru Cheltuitor).
+---
+version: 4.6.0
+time: 2024/09/30 10:00
+author: Alexandru Cheltuitor
+email: alexandru.cheltuitor@proton.ch
+urgency: low
+stability: unstable
+description:
+- Remove killswitch dependencies in setup.py as packages have been deprecated (Alexandru Cheltuitor).
+- Merge community MR to allow the app to start minimized based on CLI arguments (thanks to https://github.com/hsiurebgjk).
+- MR https://github.com/ProtonVPN/proton-vpn-gtk-app/pull/58 (Alexandru Cheltuitor).
+- Drop secret service package (Alexandru Cheltuitor).
+- Drop logger package (Alexandru Cheltuitor).
+- Fix regression when moving refreshers (Josep Llaneras).
+- Move refreshers to core API (Josep Llaneras).
+---
+version: 4.5.0
+time: 2024/09/17 10:00
+author: Alexandru Cheltuitor
+email: alexandru.cheltuitor@proton.ch
+urgency: low
+stability: unstable
+description:
+- Add back scheduler after memory leak fix (Josep Llaneras).
+- When toggling IPv6 ensure that user is notified that a reconnection is necessary and prevent certificate refresh (Alexandru Cheltuitor).
+- Add IPv6 toggle to settings window (Alexandru Cheltuitor).
+---
+version: 4.4.5
+time: 2024/09/05 12:30
+author: Luke Titley
+email: luke.titley@proton.ch
+urgency: low
+stability: unstable
+description:
+- Switch back to old scheduler due to memory leak in new one (Josep Llaneras).
+- Show VPN accelerator setting disabled to free users (Josep Llaneras).
+- Don't display reconnect message when connected via WireGuard protocol and settings are switched (Alexandru Cheltuitor).
+- Changes due to api-core refactor (Luke titley and Josep Llaneras).
+---
+version: 4.4.4
+time: 2024/08/14 10:00
+author: Josep Llaneras
+email: josep.llaneras@proton.ch
+urgency: low
+stability: unstable
+description:
+- Request connection features via local agent if available. (Luke Titley and Josep Llaneras)
+- Added a MaximumSessionsReached event to the list of events that can be emitted. (Luke Titley and Alexandru Cheltuitor)
+- Update package URL used by early release settings toggle. (Josep Llaneras)
+---
+version: 4.4.3
+time: 2024/08/01 12:00
+author: Alexandru Cheltuitor
+email: alexandru.cheltuitor@proton.ch
+urgency: low
+stability: unstable
+description:
+- Refresh certificate whenever the app receives an expired certificate event. (Alexandru Cheltuitor)
+---
+version: 4.4.2
+time: 2024/07/25 11:00
+author: Luke Titley
+email: luke.titley@proton.ch
+urgency: low
+stability: unstable
+description:
+- Official beta release
+- Only display WireGuard protocol if already selected or if feature flag is enabled, otherwise hide it. (Alexandru Cheltuitor)
+- Fix wrong imports after core api refactor. (Josep Llaneras)
+- Implement and refresh feature flags. (Alexandru Cheltuitor)
+- When early access is toggled, ensure that repo package can be downloaded, otherwise display error message. (Alexandru Cheltuitor)
+- Add early access toggle to settings window. (Alexandru Cheltuitor)
+- Move the scripts for generating the changelogs into a separate repo. (Luke Titley)
+---
+version: 4.4.1
+time: 2024/06/11 10:00
+author: Alexandru Cheltuitor
+email: alexandru.cheltuitor@proton.ch
+urgency: low
+stability: unstable
+description:
+- Only allow kill switch settings modifications when disconnected from the VPN (Josep LLaneras).
+- Log the user out on session expired error while updating certificate (Josep LLaneras).
+- Implement exponential backoff when retrying to refresh certificate (Alexandru Cheltuitor).
+- Fix task scheduler after suspending/resuming the computer (Josep LLaneras).
+---
+version: 4.4.0
+time: 2024/05/29 12:00
+author: Josep Llaneras
+email: josep.llaneras@proton.ch
+urgency: low
+stability: unstable
+description:
+- Prepare wireguard release (Josep LLaneras).
+---
+version: 4.3.3
+time: 2024/05/24 11:00
+author: Luke Titley
+email: luke.titley@proton.ch
+urgency: low
+stability: unstable
+description:
+- Refactor settings to ensure the settings file isn't created when we retrieve it (Luke Titley).
+- Disable protocol selection if user is connected to vpn (Alexandru Cheltuitor).
+---
+version: 4.3.2
+time: 2024/05/07 14:00
+author: Luke Titley
+email: luke.titley@proton.ch
+urgency: low
+stability: unstable
+description:
+- We no longer call UsageReporting.init to initialize UsageReporting.
+- Only initialize sentry on first enable.
+- Forward SSL_CERT_FILE environment variable to sentry.
+---
+version: 4.3.1
+time: 2024/04/19 11:00
+author: Josep Llaneras
+email: josep.llaneras@proton.ch
+urgency: low
+stability: unstable
+description:
+- Ensure behavioral consistency when opening settings window across different distributions (Alexandru Cheltuitor)
+- Update label alignment on disable kill switch widget at login (Alexandru Cheltuitor)
+- Missed the minimum python3-proton-vpn-api-core version in build_packages.py (Luke Titley)
+- Switch to using sessions module that is now bundled with vpn-api-core (Luke Titley)
+- Update wireguard certificate request when settings are changed (Luke Titley)
+- Add connection features to the wireguard certificate request (Luke Titley)
+- Periodically refresh certificate (Alexandru Cheltuitor)
+---
+version: 4.3.0
+time: 2024/04/11 14:00
+author: Luke Titley
+email: luke.titley@proton.ch
+urgency: low
+stability: unstable
+description:
+- Provide the possibility to disable Kill Switch if user is logged out and Kill Switch is set to permanent (Alexandru Cheltuitor)
+- Ensure that protocol list in settings UI is properly capitalized and alphabetically ordered (Alexandru Cheltuitor)
+- Anonymous crash reports are now sent by default, this can be disabled in the settings (Luke Titley)
+- Change how we build debian and rpm packages. We now depend on a single versions.yml file to build everything (Luke Titley)
+- Increase minimum number of characters required for bug report description (Luke Titley)
+---
+version: 4.2.0
+time: 2024/02/21 15:00
+author: Alexandru Cheltuitor
+email: alexandru.cheltuitor@proton.ch
+urgency: medium
+stability: unstable
+description:
+- Add overlay when connecting to server (Alexandru Cheltuitor)
+- Upon logging out or quitting, inform the user about the kill switch status (Alexandru
+  Cheltuitor)
+- Apply kill switch settings immediately (Josep Llaneras)
+- Add permanent option to kill switch setting (Alexandru Cheltuitor)
+- Fix minor bug in country row initialization (Josep Llaneras)
+---
+version: 4.1.10
+time: 2024/01/26 09:59
+author: Josep Llaneras
+email: josep.llaneras@proton.ch
+urgency: medium
+stability: unstable
+description:
+- Recover from manual cache deletion
+---
+version: 4.1.9
+time: 2024/01/24 09:00
+author: Alexandru Cheltuitor
+email: alexandru.cheltuitor@proton.ch
+urgency: medium
+stability: unstable
+description:
+- Improve email regex when submitting bug reports
+---
+version: 4.1.8
+time: 2024/01/15 15:18
+author: Josep Llaneras
+email: josep.llaneras@proton.ch
+urgency: medium
+stability: unstable
+description:
+- Dispatch VPN monitor status updates from asyncio to GLib loop
+---
+version: 4.1.7
+time: 2024/01/11 10:30
+author: Alexandru Cheltuitor
+email: alexandru.cheltuitor@proton.ch
+urgency: medium
+stability: unstable
+description:
+- Log time of search queries
+---
+version: 4.1.6
+time: 2024/01/11 09:32
+author: Josep Llaneras
+email: josep.llaneras@proton.ch
+urgency: medium
+stability: unstable
+description:
+- Fix close button on account dialog
+- Fix name duplication in tests
+- Fix fedora package spec
+---
+version: 4.1.5
+time: 2024/01/09 13:37
+author: Josep Llaneras
+email: josep.llaneras@proton.ch
+urgency: medium
+stability: unstable
+description:
+- Disconnect from VPN when quitting app
+---
+version: 4.1.4
+time: 2023/12/13 11:35
+author: Josep Llaneras
+email: josep.llaneras@proton.ch
+urgency: medium
+stability: unstable
+description:
+- Fix app getting stuck in disconnecting state
+---
+version: 4.1.3
+time: 2023/11/27 09:00
+author: Alexandru Cheltuitor
+email: alexandru.cheltuitor@proton.ch
+urgency: medium
+stability: unstable
+description:
+- Add Secure core icon to servers that support the feature
+---
+version: 4.1.2
+time: 2023/11/08 08:59
+author: Josep Llaneras
+email: josep.llaneras@proton.ch
+urgency: medium
+stability: unstable
+description:
+- Switch to AsyncExecutor to avoid thread-safety issues in asyncio code
+---
+version: 4.1.1
+time: 2023/10/31 11:35
+author: Josep Llaneras
+email: josep.llaneras@proton.ch
+urgency: medium
+stability: unstable
+description:
+- Show authentication denied error message
+---
+version: 4.1.0
+time: 2023/10/25 09:00
+author: Alexandru Cheltuitor
+email: alexandru.cheltuitor@proton.ch
+urgency: medium
+stability: unstable
+description:
+- Display secure core servers in server list
+---
+version: 4.0.0
+time: 2023/10/10 11:00
+author: Alexandru Cheltuitor
+email: alexandru.cheltuitor@proton.ch
+urgency: medium
+stability: unstable
+description:
+- Stable release
+---
+version: 4.0.0b2
+time: 2023/09/15 11:00
+author: Alexandru Cheltuitor
+email: alexandru.cheltuitor@proton.ch
+urgency: medium
+stability: unstable
+description:
+- Add account data to settings window
+---
+version: 4.0.0b1
+time: 2023/09/11 09:00
+author: Alexandru Cheltuitor
+email: alexandru.cheltuitor@proton.ch
+urgency: medium
+stability: unstable
+description:
+- Fixed typos
+- Official beta release
+---
+version: 4.0.0a16
+time: 2023/09/05 15:00
+author: Alexandru Cheltuitor
+email: alexandru.cheltuitor@proton.ch
+urgency: medium
+stability: unstable
+description:
+- Add kill switch selection to settings window
+---
+version: 4.0.0a15
+time: 2023/07/21 15:00
+author: Alexandru Cheltuitor
+email: alexandru.cheltuitor@proton.ch
+urgency: medium
+stability: unstable
+description:
+- Add server pinning to settings window
+---
+version: 4.0.0a14
+time: 2023/07/19 12:00
+author: Alexandru Cheltuitor
+email: alexandru.cheltuitor@proton.ch
+urgency: medium
+stability: unstable
+description:
+- Add NAT type selection to settings window
+---
+version: 4.0.0a13
+time: 2023/07/17 12:00
+author: Alexandru Cheltuitor
+email: alexandru.cheltuitor@proton.ch
+urgency: medium
+stability: unstable
+description:
+- Add user-friendly release notes to app
+---
+version: 4.0.0a12
+time: 2023/07/12 17:00
+author: Alexandru Cheltuitor
+email: alexandru.cheltuitor@proton.ch
+urgency: medium
+stability: unstable
+description:
+- Add auto-connect at app startup to settings window
+---
+version: 4.0.0a11
+time: 2023/07/06 17:00
+author: Alexandru Cheltuitor
+email: alexandru.cheltuitor@proton.ch
+urgency: medium
+stability: unstable
+description:
+- Add port forwarding selection to settings window
+---
+version: 4.0.0a10
+time: 2023/07/06 15:00
+author: Alexandru Cheltuitor
+email: alexandru.cheltuitor@proton.ch
+urgency: medium
+stability: unstable
+description:
+- Add netshield selection to settings window
+---
+version: 4.0.0a9
+time: 2023/07/05 15:00
+author: Alexandru Cheltuitor
+email: alexandru.cheltuitor@proton.ch
+urgency: medium
+stability: unstable
+description:
+- Add protocol selection to settings window
+---
+version: 4.0.0a8
+time: 2023/07/03 15:00
+author: Alexandru Cheltuitor
+email: alexandru.cheltuitor@proton.ch
+urgency: medium
+stability: unstable
+description:
+- Implement settings window
+- Add vpn accelerator selection to setting window
+---
+version: 4.0.0a7
+time: 2023/06/19 10:07
+author: Josep Llaneras
+email: josep.llaneras@proton.ch
+urgency: medium
+stability: unstable
+description:
+- VPN data refresh fix
+---
+version: 4.0.0a6
+time: 2023/06/06 15:19
+author: Josep Llaneras
+email: josep.llaneras@proton.ch
+urgency: medium
+stability: unstable
+description:
+- Retrieve VPN account if it wasn't retrieved yet
+---
+version: 4.0.0a5
+time: 2023/05/29 11:00
+author: Alexandru Cheltuitor
+email: alexandru.cheltuitor@proton.ch
+urgency: medium
+stability: unstable
+description:
+- Ensure UI updates smoothly after starting with auto-connect
+---
+version: 4.0.0a4
+time: 2023/05/26 15:00
+author: Alexandru Cheltuitor
+email: alexandru.cheltuitor@proton.ch
+urgency: medium
+stability: unstable
+description:
+- Add auto-connect on app startup feature
+---
+version: 4.0.0a3
+time: 2023/05/25 09:23
+author: Josep Llaneras
+email: josep.llaneras@proton.ch
+urgency: medium
+stability: unstable
+description:
+- Add server feature icons
+---
+version: 4.0.0a2
+time: 2023/05/11 16:13
+author: Alexandru Cheltuitor
+email: alexandru.cheltuitor@proton.ch
+urgency: medium
+stability: unstable
+description:
+- Display loading widget during login/logout with a custom message
+---
+version: 4.0.0a1
+time: 2023/05/02 15:13
+author: Josep Llaneras
+email: josep.llaneras@proton.ch
+urgency: medium
+stability: unstable
+description:
+- Send app version to REST API
+---
+version: 0.20.8
+time: 2023/04/27 16:00
+author: Alexandru Cheltuitor
+email: alexandru.cheltuitor@proton.ch
+urgency: medium
+stability: unstable
+description:
+- Standardize how error messages are displayed
+---
+version: 0.20.7
+time: 2023/04/24 15:00
+author: Alexandru Cheltuitor
+email: alexandru.cheltuitor@proton.ch
+urgency: medium
+stability: unstable
+description:
+- Implement Network Manager logs
+---
+version: 0.20.6
+time: 2023/04/24 08:35
+author: Josep Llaneras
+email: josep.llaneras@proton.ch
+urgency: medium
+stability: unstable
+description:
+- Fix UI colors for light theme
+---
+version: 0.20.5
+time: 2023/04/21 15:05
+author: Josep Llaneras
+email: josep.llaneras@proton.ch
+urgency: medium
+stability: unstable
+description:
+- Allow cancelling connection/reconnection
+---
+version: 0.20.4
+time: 2023/04/21 15:00
+author: Alexandru Cheltuitor
+email: alexandru.cheltuitor@proton.ch
+urgency: medium
+stability: unstable
+description:
+- Update accent colours
+---
+version: 0.20.3
+time: 2023/04/19 15:00
+author: Alexandru Cheltuitor
+email: alexandru.cheltuitor@proton.ch
+urgency: medium
+stability: unstable
+description:
+- Update UI style on Login
+---
+version: 0.20.2
+time: 2023/04/14 15:00
+author: Josep Llaneras
+email: josep.llaneras@proton.ch
+urgency: medium
+stability: unstable
+description:
+- Remove IPv6 leak protection when quitting the app while in error state
+---
+version: 0.20.1
+time: 2023/04/14 07:51
+author: Josep Llaneras
+email: josep.llaneras@proton.ch
+urgency: medium
+stability: unstable
+description:
+- Fix reconnection after implementing IPv6 leak protection
+---
+version: 0.20.0
+time: 2023/04/04 15:00
+author: Josep Llaneras
+email: josep.llaneras@proton.ch
+urgency: medium
+stability: unstable
+description:
+- Use stock icon to show when a country row is expanded/collapsed
+---
+version: 0.19.3
+time: 2023/04/03 13:55
+author: Josep Llaneras
+email: josep.llaneras@proton.ch
+urgency: medium
+stability: unstable
+description:
+- Adapt to VPN connection refactoring
+---
+version: 0.19.2
+time: 2023/03/16 10:00
+author: Alexandru Cheltuitor
+email: alexandru.cheltuitor@proton.ch
+urgency: medium
+stability: unstable
+description:
+- Display last received error message via popup when multiple errors are to be displayed,
+  instead of stacking them
+---
+version: 0.19.1
+time: 2023/03/15 10:00
+author: Alexandru Cheltuitor
+email: alexandru.cheltuitor@proton.ch
+urgency: medium
+stability: unstable
+description:
+- Hide secure-core servers from server list
+---
+version: 0.19.0
+time: 2023/03/08 15:00
+author: Alexandru Cheltuitor
+email: alexandru.cheltuitor@proton.ch
+urgency: medium
+stability: unstable
+description:
+- Remove connection and keyring backend dependencies
+---
+version: 0.18.0
+time: 2023/03/06 15:00
+author: Alexandru Cheltuitor
+email: alexandru.cheltuitor@proton.ch
+urgency: medium
+stability: unstable
+description:
+- Add pinned servers to tray
+---
+version: 0.17.2
+time: 2023/03/03 08:59
+author: Josep Llaneras
+email: josep.llaneras@proton.ch
+urgency: medium
+stability: unstable
+description:
+- Close app window safely when the "Quit" menu entry is selected
+---
+version: 0.17.1
+time: 2023/02/28 09:00
+author: Alexandru Cheltuitor
+email: alexandru.cheltuitor@proton.ch
+urgency: medium
+stability: unstable
+description:
+- Implement new appversion format
+---
+version: 0.17.0
+time: 2023/02/24 13:00
+author: Alexandru Cheltuitor
+email: alexandru.cheltuitor@proton.ch
+urgency: medium
+stability: unstable
+description:
+- 'Feature: Connect or disconnect from tray'
+---
+version: 0.16.0
+time: 2023/02/23 11:00
+author: Alexandru Cheltuitor
+email: alexandru.cheltuitor@proton.ch
+urgency: medium
+stability: unstable
+description:
+- Update tray indicator icon based on vpn connection status
+---
+version: 0.15.1
+time: 2023/02/22 09:27
+author: Josep Llaneras
+email: josep.llaneras@proton.ch
+urgency: medium
+stability: unstable
+description:
+- Display show/hide menu entry on the tray indicator
+---
+version: 0.15.0
+time: 2023/02/20 15:27
+author: Josep Llaneras
+email: josep.llaneras@proton.ch
+urgency: medium
+stability: unstable
+description:
+- Use tray indicator if possible
+---
+version: 0.14.0
+time: 2023/02/15 15:00
+author: Alexandru Cheltuitor
+email: alexandru.cheltuitor@proton.ch
+urgency: medium
+stability: unstable
+description:
+- 'Feature: Add option to enter recovery code if 2fa is enabled'
+---
+version: 0.13.6
+time: 2023/02/15 11:26
+author: Josep Llaneras
+email: josep.llaneras@proton.ch
+urgency: medium
+stability: unstable
+description:
+- Fix focus issues on login widget
+- Wait that the bug report is sent before closing the window
+---
+version: 0.13.5
+time: 2023/02/14 11:00
+author: Alexandru Cheltuitor
+email: alexandru.cheltuitor@proton.ch
+urgency: medium
+stability: unstable
+description:
+- 'Fix: Logout from app if session is invalid when contacting the API'
+---
+version: 0.13.4
+time: 2023/02/10 16:49
+author: Josep Llaneras
+email: josep.llaneras@proton.ch
+urgency: medium
+stability: unstable
+description:
+- Refactor widget package structure
+---
+version: 0.13.3
+time: 2023/02/09 16:00
+author: Alexandru Cheltuitor
+email: alexandru.cheltuitor@proton.ch
+urgency: medium
+stability: unstable
+description:
+- Fix crash when connected server would go into maintenance
+---
+version: 0.13.2
+time: 2023/02/08 17:52
+author: Josep Llaneras
+email: josep.llaneras@proton.ch
+urgency: medium
+stability: unstable
+description:
+- Fix random reconnection issues
+---
+version: 0.13.1
+time: 2023/02/07 16:56
+author: Josep Llaneras
+email: josep.llaneras@proton.ch
+urgency: medium
+stability: unstable
+description:
+- Fix several search issues
+---
+version: 0.13.0
+time: 2023/02/07 11:00
+author: Alexandru Cheltuitor
+email: alexandru.cheltuitor@proton.ch
+urgency: medium
+stability: unstable
+description:
+- Move logout to menu and refactor code
+---
+version: 0.12.0
+time: 2023/02/06 16:00
+author: Josep Llaneras
+email: josep.llaneras@proton.ch
+urgency: medium
+stability: unstable
+description:
+- Add search bar
+---
+version: 0.11.2
+time: 2023/02/02 15:00
+author: Alexandru Cheltuitor
+email: alexandru.cheltuitor@proton.ch
+urgency: medium
+stability: unstable
+description:
+- Fix app icon for Wayland
+---
+version: 0.11.1
+time: 2023/01/30 15:00
+author: Alexandru Cheltuitor
+email: alexandru.cheltuitor@proton.ch
+urgency: medium
+stability: unstable
+description:
+- Fix bug report dialog as per customer support guidelines
+---
+version: 0.11.0
+time: 2023/01/30 15:00
+author: Alexandru Cheltuitor
+email: alexandru.cheltuitor@proton.ch
+urgency: medium
+stability: unstable
+description:
+- 'Feature: About dialog'
+---
+version: 0.10.4
+time: 2023/01/26 15:00
+author: Alexandru Cheltuitor
+email: alexandru.cheltuitor@proton.ch
+urgency: medium
+stability: unstable
+description:
+- Display pop-up when unable to reach API during logout
+---
+version: 0.10.3
+time: 2023/01/26 09:13
+author: Josep Llaneras
+email: josep.llaneras@proton.ch
+urgency: medium
+stability: unstable
+description:
+- Add window icon
+---
+version: 0.10.2
+time: 2023/01/23 11:07
+author: Josep Llaneras
+email: josep.llaneras@proton.ch
+urgency: medium
+stability: unstable
+description:
+- Submit bug report using proton-core
+---
+version: 0.10.1
+time: 2023/01/23 08:00
+author: Alexandru Cheltuitor
+email: alexandru.cheltuitor@proton.ch
+urgency: medium
+stability: unstable
+description:
+- 'Fix: Bug report feature'
+---
+version: 0.10.0
+time: 2023/01/17 11:00
+author: Alexandru Cheltuitor
+email: alexandru.cheltuitor@proton.ch
+urgency: medium
+stability: unstable
+description:
+- 'Feature: Add issue report submission dialog'
+---
+version: 0.9.5
+time: 2023/01/13 17:47
+author: Josep Llaneras
+email: josep.llaneras@proton.ch
+urgency: medium
+stability: unstable
+description:
+- Load VPN server details from persisted connection
+---
+version: 0.9.4
+time: 2023/01/11 18:00
+author: Josep Llaneras
+email: josep.llaneras@proton.ch
+urgency: medium
+stability: unstable
+description:
+- Fail silently when the server list or the client config could not be updated
+---
+version: 0.9.3
+time: 2023/01/06 17:30
+author: Josep Llaneras
+email: josep.llaneras@proton.ch
+urgency: medium
+stability: unstable
+description:
+- Fix quick connect widget glitch when opening the app twice
+---
+version: 0.9.2
+time: 2022/12/29 14:00
+author: Alexandru Cheltuitor
+email: alexandru.cheltuitor@proton.ch
+urgency: medium
+stability: unstable
+description:
+- Attempt to reconnect after user session has been unlocked from suspend
+---
+version: 0.9.1
+time: 2022/12/22 17:22
+author: Josep Llaneras
+email: josep.llaneras@proton.ch
+urgency: medium
+stability: unstable
+description:
+- Do not show popups on connection errors
+---
+version: 0.9.0
+time: 2022/12/20 14:00
+author: Alexandru Cheltuitor
+email: alexandru.cheltuitor@proton.ch
+urgency: medium
+stability: unstable
+description:
+- Add unit tests and improve API data handling
+---
+version: 0.8.0
+time: 2022/12/14 10:50
+author: Josep Llaneras
+email: josep.llaneras@proton.ch
+urgency: medium
+stability: unstable
+description:
+- Reconnect to VPN when network connectivity is detected
+---
+version: 0.7.2
+time: 2022/12/06 14:56
+author: Josep Llaneras
+email: josep.llaneras@proton.ch
+urgency: medium
+stability: unstable
+description:
+- Fix app crash after starting the app with a persisted connection
+---
+version: 0.7.1
+time: 2022/12/06 10:00
+author: Alexandru Cheltuitor
+email: alexandru.cheltuitor@proton.ch
+urgency: medium
+stability: unstable
+description:
+- Fix issue where current connection was not properly being detected
+---
+version: 0.7.0
+time: 2022/12/05 17:42
+author: Josep Llaneras
+email: josep.llaneras@proton.ch
+urgency: medium
+stability: unstable
+description:
+- Get server name/id from connection status update
+---
+version: 0.6.6
+time: 2022/12/02 15:00
+author: Alexandru Cheltuitor
+email: alexandru.cheltuitor@proton.ch
+urgency: medium
+stability: unstable
+description:
+- Ensure that UI is updated after logout/login
+---
+version: 0.6.5
+time: 2022/11/15 15:15
+author: Josep Llaneras
+email: josep.llaneras@proton.ch
+urgency: medium
+stability: unstable
+description:
+- Check if the current connection is active before disconnecting
+---
+version: 0.6.4
+time: 2022/11/15 15:00
+author: Alexandru Cheltuitor
+email: alexandru.cheltuitor@proton.ch
+urgency: medium
+stability: unstable
+description:
+- Display error dialog whenever a connection fails to be established
+---
+version: 0.6.3
+time: 2022/11/11 16:00
+author: Alexandru Cheltuitor
+email: alexandru.cheltuitor@proton.ch
+urgency: medium
+stability: unstable
+description:
+- Add Proton VPN logging library
+---
+version: 0.6.2
+time: 2022/11/07 15:00
+author: Alexandru Cheltuitor
+email: alexandru.cheltuitor@proton.ch
+urgency: medium
+stability: unstable
+description:
+- Ensure that vpn connection is stopped before logging out the user, if there is one
+---
+version: 0.6.1
+time: 2022/11/04 17:00
+author: Josep Llaneras
+email: josep.llaneras@proton.ch
+urgency: medium
+stability: unstable
+description:
+- Fix bug happening when connecting to a server without disconnecting first from the
+  previous one
+---
+version: 0.6.0
+time: 2022/10/31 12:00
+author: Josep Llaneras
+email: josep.llaneras@proton.ch
+urgency: medium
+stability: unstable
+description:
+- Show the login screen when the session expired
+---
+version: 0.5.1
+time: 2022/10/04 13:37
+author: Josep Llaneras
+email: josep.llaneras@proton.ch
+urgency: medium
+stability: unstable
+description:
+- Fix several bugs in the server list widget
+---
+version: 0.5.0
+time: 2022/09/28 11:17
+author: Josep Llaneras
+email: josep.llaneras@proton.ch
+urgency: medium
+stability: unstable
+description:
+- Add "Connect" button on country rows
+---
+version: 0.4.1
+time: 2022/09/26 15:53
+author: Josep Llaneras
+email: josep.llaneras@proton.ch
+urgency: medium
+stability: unstable
+description:
+- Cleanup server list after logout
+---
+version: 0.4.0
+time: 2022/09/23 12:00
+author: Alexandru Cheltuitor
+email: alexandru.cheltuitor@proton.ch
+urgency: medium
+stability: unstable
+description:
+- Properly implement Quick Connect
+---
+version: 0.3.1
+time: 2022/09/23 09:22
+author: Josep Llaneras
+email: josep.llaneras@proton.ch
+urgency: medium
+stability: unstable
+description:
+- Fix crash when connecting to free server
+---
+version: 0.3.0
+time: 2022/09/22 11:00
+author: Alexandru Cheltuitor
+email: alexandru.cheltuitor@proton.ch
+urgency: medium
+stability: unstable
+description:
+- Display upgrade button for servers that require a higher tier plan to connect to
+---
+version: 0.2.0
+time: 2022/09/21 16:00
+author: Josep Llaneras
+email: josep.llaneras@proton.ch
+urgency: medium
+stability: unstable
+description:
+- Group servers by country
+---
+version: 0.1.2
+time: 2022/09/20 12:00
+author: Alexandru Cheltuitor
+email: alexandru.cheltuitor@proton.ch
+urgency: medium
+stability: unstable
+description:
+- Add basic logging
+---
+version: 0.1.1
+time: 2022/09/19 08:30
+author: Josep Llaneras
+email: josep.llaneras@proton.ch
+urgency: medium
+stability: unstable
+description:
+- Fix app freeze when disconnecting from VPN
+---
+version: 0.1.0
+time: 2022/09/15 16:00
+author: Josep Llaneras
+email: josep.llaneras@proton.ch
+urgency: medium
+stability: unstable
+description:
+- Allow the user to connect to a concrete VPN server
+---
+version: 0.0.0
+time: 2022/06/22 14:00
+author: Josep Llaneras
+email: josep.llaneras@proton.ch
+urgency: medium
+stability: unstable
+description:
+- First release

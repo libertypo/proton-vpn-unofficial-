@@ -1,0 +1,8 @@
+#!/bin/sh
+set -e
+case "$1" in
+    remove|purge|upgrade)
+        pkill -x nm-protun-service || true
+        ;;
+esac
+

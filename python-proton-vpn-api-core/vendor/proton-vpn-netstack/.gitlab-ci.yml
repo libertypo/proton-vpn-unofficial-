@@ -1,0 +1,36 @@
+# pygitlabmaintainer-template: rust-company-wide-internal
+
+default:
+  tags:
+    - shared-small
+
+include:
+  - component: $CI_SERVER_FQDN/rust/shared/components/proton-internal-release@master
+  - component: $CI_SERVER_FQDN/rust/shared/components/codequality@master
+  - component: $CI_SERVER_FQDN/rust/shared/components/cargo-doc@master
+  - component: $CI_SERVER_FQDN/rust/shared/components/cargo-test-coverage@master
+    inputs:
+      rust-version: "bookworm"
+  - component: $CI_SERVER_FQDN/proton/devops/cicd-components/kits/devsecops/semgrep@0.0
+  - project: "rust/shared/rust-gitlab-ci"
+    file: "rust-gitlab-ci-template.yml"
+    ref: master
+  - project: "rust/shared/registry"
+    file: "upload-to-registry.yml"
+
+# run pipeline for commit on Master and MR
+workflow:
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+    # Do not create duplicate pipeline if there is a Merge Request
+    - if: '$CI_COMMIT_BRANCH && $CI_OPEN_MERGE_REQUESTS'
+      when: never
+    - if: '$CI_COMMIT_BRANCH'
+
+publish-to-registry:
+  extends: .deploy_to_protonvpn_registry
+  stage: deploy
+  variables:
+    PUBLISH_TO_PUBLIC_REGISTRY: true
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH

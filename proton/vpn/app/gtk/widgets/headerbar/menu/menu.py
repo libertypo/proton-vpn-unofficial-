@@ -1,0 +1,319 @@
+"""
+This module defines the menu that shown in the header bar.
+
+
+Copyright (c) 2023 Proton AG
+
+This file is part of Proton VPN.
+
+Proton VPN is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+Proton VPN is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with ProtonVPN.  If not, see <https://www.gnu.org/licenses/>.
+"""
+
+from concurrent.futures import Future
+from typing import TYPE_CHECKING
+
+from gi.repository import Gio, GLib, GObject
+from proton.session.exceptions import ProtonAPINotReachable
+from proton.vpn.connection.enum import KillSwitchSetting as KillSwitchSettingEnum
+from proton.vpn.connection.states import Disconnected, State
+
+from proton.vpn import logging
+from proton.vpn.app.gtk import Gtk
+from proton.vpn.app.gtk.controller import Controller
+from proton.vpn.app.gtk.utils.glib import bubble_up_errors
+from proton.vpn.app.gtk.utils.safe_signal_connect import safe_signal_connect
+from proton.vpn.app.gtk.widgets.headerbar.menu.about_dialog import AboutDialog
+from proton.vpn.app.gtk.widgets.headerbar.menu.bug_report_dialog import BugReportDialog
+from proton.vpn.app.gtk.widgets.headerbar.menu.release_notes_dialog import ReleaseNotesDialog
+from proton.vpn.app.gtk.widgets.headerbar.menu.settings import SettingsWindow
+from proton.vpn.app.gtk.widgets.main.confirmation_dialog import ConfirmationDialog
+from proton.vpn.app.gtk.widgets.main.loading_widget import DefaultLoadingWidget, OverlayWidget
+
+logger = logging.getLogger(__name__)
+
+if TYPE_CHECKING:
+    from proton.vpn.app.gtk.app import MainWindow
+
+
+class Menu(Gio.Menu):  # pylint: disable=too-many-instance-attributes
+    """App menu shown in the header bar."""
+
+    LOGOUT_LOADING_MESSAGE = "Signing out..."
+    UNABLE_TO_LOGOUT_MESSAGE = "Unable to sign out, please ensure you have internet access."
+    DISCONNECT_ON_LOGOUT_MESSAGE = "Signing out will cancel the current VPN connection.\n\nDo you want to continue?"
+    DISCONNECT_ON_LOGOUT_WITH_KILL_SWITCH_ENABLED_MESSAGE = (
+        "Signing out will cancel the current VPN connection and disable the kill switch.\n\nDo you want to continue?"
+    )
+    LOGOUT_AND_KILL_SWITCH_ENABLED_MESSAGE = (
+        "Signing out will "
+        "disable the kill switch, potentially exposing your internet traffic. "
+        "\n\nDo you want to continue?"
+    )
+    DISCONNECT_ON_QUIT_MESSAGE = (
+        "Quitting the application will cancel the current VPN connection.\n\nDo you want to continue?"
+    )
+    DISCONNECT_ON_QUIT_WITH_PERMANENT_KILL_SWITCH_ENABLED_MESSAGE = (
+        "Quitting the application "
+        "will keep the kill switch active, but your current VPN connection will be terminated."
+        "\n\nDo you want to continue?"
+    )
+    DISCONNECT_TITLE = "Active connection found"
+    KILLSWITCH_ENABLED_TITLE = "Kill Switch enabled"
+
+    def __init__(self, controller: Controller, main_window: "MainWindow", overlay_widget: OverlayWidget):
+        super().__init__()
+        self._main_window = main_window
+        self._controller = controller
+        self._overlay_widget = overlay_widget
+
+        self.bug_report_action = Gio.SimpleAction.new("report", None)
+        self.settings_action = Gio.SimpleAction.new("settings", None)
+        self.release_notes_action = Gio.SimpleAction.new("release_notes", None)
+        self.about_action = Gio.SimpleAction.new("about", None)
+        self.logout_action = Gio.SimpleAction.new("logout", None)
+        self.quit_action = Gio.SimpleAction.new("quit", None)
+
+        self.append_item(Gio.MenuItem.new("About", "win.about"))
+        self.append_item(Gio.MenuItem.new("Settings", "win.settings"))
+        self.append_item(Gio.MenuItem.new("Release notes", "win.release_notes"))
+        self.append_item(Gio.MenuItem.new("Report an issue", "win.report"))
+        self.append_item(Gio.MenuItem.new("Sign out", "win.logout"))
+        self.append_item(Gio.MenuItem.new("Quit", "win.quit"))
+
+        self._settings_window = None
+        self._bug_dialog = None
+        self._release_notes = None
+        self._dialog_callback = None
+
+        self._setup_actions()
+
+    def status_update(self, connection_status: State):
+        """
+        This method is set as a callback to monitor the VPN connection after
+        the user clicks on the quit menu option.
+        """
+        if isinstance(connection_status, Disconnected):
+            # Unregister first so no further updates are delivered after quit.
+            self._controller.unregister_connection_status_subscriber(self)
+            # status_update is called from the VPN state-machine thread, not
+            # the GTK main thread.  All GTK calls must be marshalled via
+            # GLib.idle_add to avoid data-race crashes.
+            GLib.idle_add(self._main_window.quit)
+
+    @property
+    def logout_enabled(self) -> bool:
+        """Returns if logout button is enabled or disabled."""
+        return self.logout_action.get_enabled()
+
+    @logout_enabled.setter
+    def logout_enabled(self, newvalue: bool):
+        """Set the logout button to either be enabled or disabled."""
+        self.logout_action.set_enabled(newvalue)
+
+    @property
+    def settings_enabled(self) -> bool:
+        """Returns if logout button is enabled or disabled."""
+        return self.settings_action.get_enabled()
+
+    @settings_enabled.setter
+    def settings_enabled(self, newvalue: bool):
+        """Set the settings button to either be enabled or disabled."""
+        self.settings_action.set_enabled(newvalue)
+
+    @GObject.Signal
+    def user_logged_out(self):
+        """Signal emitted after a successful logout."""
+
+    def close_settings_window(self):
+        """Closes the settings window if it's open."""
+        if self._settings_window:
+            self._settings_window.close()
+
+    def _setup_actions(self):
+        # Add actions to Gtk.ApplicationWindow
+        self._main_window.add_action(self.bug_report_action)
+        self._main_window.add_action(self.settings_action)
+        self._main_window.add_action(self.release_notes_action)
+        self._main_window.add_action(self.about_action)
+        self._main_window.add_action(self.logout_action)
+        self._main_window.add_action(self.quit_action)
+
+        # Connect actions to callbacks
+        safe_signal_connect(self.bug_report_action, "activate", self._on_report_an_issue_clicked)
+        safe_signal_connect(self.settings_action, "activate", self._on_settings_clicked)
+        safe_signal_connect(self.release_notes_action, "activate", self._on_release_notes_clicked)
+        safe_signal_connect(self.about_action, "activate", self._on_about_clicked)
+        safe_signal_connect(self.logout_action, "activate", self._on_logout_clicked)
+        safe_signal_connect(self.quit_action, "activate", self._on_quit_clicked)
+
+    def _on_report_an_issue_clicked(self, *_):
+        self._bug_dialog = BugReportDialog(self._controller, self._main_window)
+        self._bug_dialog.set_transient_for(self._main_window)
+        self._bug_dialog.set_modal(True)
+        safe_signal_connect(self._bug_dialog, "unrealize", self._on_bug_dialog_unrealize)
+        self._bug_dialog.present()
+
+    def _on_bug_dialog_unrealize(self, _):
+        self._bug_dialog = None
+
+    def _on_settings_clicked(self, *_):
+        self._settings_window = SettingsWindow(
+            self._controller, self._main_window.application.tray_indicator, app=self._main_window.application
+        )
+        self._settings_window.set_transient_for(self._main_window)
+        safe_signal_connect(self._settings_window, "unrealize", self._on_unrealize)
+        self._settings_window.present()
+
+    def _on_unrealize(self, _):
+        self._settings_window = None
+
+    def _on_release_notes_clicked(self, *_):
+        self._release_notes = ReleaseNotesDialog()
+        self._release_notes.set_transient_for(self._main_window)
+        safe_signal_connect(self._release_notes, "unrealize", self._on_release_notes_unrealize)
+        self._release_notes.present()
+
+    def _on_release_notes_unrealize(self, _):
+        self._release_notes = None
+
+    def _on_about_clicked(self, *_):
+        about_dialog = AboutDialog()
+        about_dialog.set_transient_for(self._main_window)
+        about_dialog.set_modal(True)
+        about_dialog.present()
+
+    def _on_logout_clicked(self, *_):
+        logger.info("Logout button clicked", category="ui", subcategory="logout", event="click")
+
+        self.logout_enabled = False
+        kill_switch_state = None
+        if hasattr(self._controller, "get_cached_settings"):
+            cached_settings = self._controller.get_cached_settings()
+            kill_switch_state = getattr(cached_settings, "killswitch", None)
+
+        if not isinstance(kill_switch_state, KillSwitchSettingEnum):
+            kill_switch_state = self._controller.get_settings().killswitch
+
+        def on_logout_confirmed(confirmed: bool):
+            if confirmed:
+                logger.info("Yes", category="ui", subcategory="dialog", event="logout")
+
+                self._overlay_widget.show(DefaultLoadingWidget(self.LOGOUT_LOADING_MESSAGE))
+
+                if kill_switch_state > KillSwitchSettingEnum.OFF:
+                    future = self._controller.disable_killswitch()
+                    future.add_done_callback(lambda f: GLib.idle_add(self._on_killswitch_disabled_logout, f))
+                    return
+                self._request_logout()
+
+        if not self._controller.connection_disconnected:
+            dialog = ConfirmationDialog(
+                self.DISCONNECT_ON_LOGOUT_MESSAGE
+                if kill_switch_state < KillSwitchSettingEnum.ON
+                else self.DISCONNECT_ON_LOGOUT_WITH_KILL_SWITCH_ENABLED_MESSAGE,
+                self.DISCONNECT_TITLE,
+            )
+            self._display_dialog(dialog, on_logout_confirmed)
+        elif kill_switch_state == KillSwitchSettingEnum.PERMANENT:
+            self._display_dialog(
+                ConfirmationDialog(self.LOGOUT_AND_KILL_SWITCH_ENABLED_MESSAGE, self.KILLSWITCH_ENABLED_TITLE),
+                on_logout_confirmed,
+            )
+        else:
+            on_logout_confirmed(True)
+
+    def _on_quit_clicked(self, *_):
+        kill_switch_state = None
+        if hasattr(self._controller, "get_cached_settings"):
+            cached_settings = self._controller.get_cached_settings()
+            kill_switch_state = getattr(cached_settings, "killswitch", None)
+
+        if not isinstance(kill_switch_state, KillSwitchSettingEnum):
+            kill_switch_state = self._controller.get_settings().killswitch
+
+        if self._controller.connection_disconnected:
+            self._main_window.quit()
+        else:
+
+            def on_quit_confirmed(confirmed: bool):
+                if confirmed:
+                    logger.info("Yes", category="ui", subcategory="dialog", event="quit")
+                    self._controller.register_connection_status_subscriber(self)
+                    future = self._controller.disconnect()
+                    bubble_up_errors(future)
+
+            dialog = ConfirmationDialog(
+                self.DISCONNECT_ON_QUIT_WITH_PERMANENT_KILL_SWITCH_ENABLED_MESSAGE
+                if kill_switch_state == KillSwitchSettingEnum.PERMANENT
+                else self.DISCONNECT_ON_QUIT_MESSAGE,
+                self.DISCONNECT_TITLE,
+            )
+            self._display_dialog(dialog, on_quit_confirmed)
+
+    def _on_killswitch_disabled_logout(self, future: Future):
+        future.result()
+        self._request_logout()
+
+    def _request_logout(self):
+        future = self._controller.logout()
+        future.add_done_callback(lambda future: GLib.idle_add(self._on_logout_result, future))
+
+    def _on_logout_result(self, future: Future):
+        """Callback when attempting to log out.
+        Mainly used to emit if a successful logout has happened, or if a
+            connection is found at logout, to display the dialog to the user.
+        """
+        try:
+            future.result()
+            logger.info("Successful logout", category="app", subcategory="logout", event="success")
+            self.emit("user-logged-out")
+        except ProtonAPINotReachable as e:  # pylint: disable=invalid-name
+            logger.info(getattr(e, "message", repr(e)), category="app", subcategory="logout", event="fail")
+            self._main_window.main_widget.notifications.show_error_message(self.UNABLE_TO_LOGOUT_MESSAGE)
+            self.logout_enabled = True
+        finally:
+            self._overlay_widget.hide()
+
+    def _display_dialog(self, dialog: ConfirmationDialog, callback):
+        dialog.set_transient_for(self._main_window)
+        dialog.set_modal(True)
+
+        self._dialog_callback = callback
+        safe_signal_connect(dialog, "response", self._on_dialog_response)
+        dialog.present()
+
+    def _on_dialog_response(self, dialog, response_id):
+        dialog.destroy()
+        self.logout_enabled = response_id in (Gtk.ResponseType.NO, Gtk.ResponseType.DELETE_EVENT)
+        result = response_id == Gtk.ResponseType.YES
+
+        if self._dialog_callback is not None:
+            self._dialog_callback(result)
+            self._dialog_callback = None
+
+    def bug_report_button_click(self):
+        """Clicks the bug report menu entry."""
+        self._on_report_an_issue_clicked(self.bug_report_action)
+
+    def about_button_click(self):
+        """Clicks the about menu entry."""
+        self._on_about_clicked(self.about_action)
+
+    def logout_button_click(self):
+        """Clicks the logout menu entry."""
+        self._on_logout_clicked(self.logout_action)
+
+    def quit_button_click(self):
+        """Clicks the quit menu entry."""
+        self._on_quit_clicked(self.quit_action)

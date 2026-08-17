@@ -1,0 +1,105 @@
+%define unmangled_name proton-vpn-api-core
+%define pep_625_name proton_vpn_api_core
+%define version {version}
+%define release 1
+%define debug_package %{{nil}}
+
+Prefix: %{{_prefix}}
+
+Name: python3-%{{unmangled_name}}
+Version: %{{version}}
+Release: %{{release}}%{{?dist}}
+Summary: %{{unmangled_name}} library
+
+Group: ProtonVPN
+License: GPLv3
+Vendor: Proton AG <opensource@proton.me>
+URL: https://github.com/ProtonVPN/%{{unmangled_name}}
+Source0: %{{pep_625_name}}-%{{version}}.tar.gz
+
+BuildRoot: %{{_tmppath}}/%{{pep_625_name}}-%{{version}}-%{{release}}-buildroot
+
+BuildRequires: python3-devel
+BuildRequires: python3-proton-core >= 0.5.0
+BuildRequires: python3-setuptools
+BuildRequires: python3-distro
+BuildRequires: python3-sentry-sdk
+BuildRequires: python3-pynacl
+BuildRequires: python3-fido2
+BuildRequires: python3-packaging
+
+# Network manager backend dependencies
+BuildRequires: python3-gobject
+BuildRequires: NetworkManager
+BuildRequires: NetworkManager-openvpn
+BuildRequires: NetworkManager-openvpn-gnome
+BuildRequires: gobject-introspection
+BuildRequires: python3-proton-vpn-local-agent >= 1.6.3
+BuildRequires: python3-jinja2
+
+Requires: python3-proton-core >= 0.5.0
+Requires: python3-distro
+Requires: python3-sentry-sdk
+Requires: python3-pynacl
+Requires: python3-fido2
+Requires: python3-packaging
+
+# Network manager backend dependencies
+Requires: python3-gobject
+Requires: NetworkManager
+Requires: NetworkManager-openvpn
+Requires: NetworkManager-openvpn-gnome
+Requires: gobject-introspection
+Requires: python3-proton-vpn-local-agent >= 1.6.3
+Requires: python3-jinja2
+
+Conflicts: proton-vpn-gtk-app < 4.17.1~rc10
+Conflicts: proton-vpn-cli < 1.0.1~rc1
+Conflicts: python3-proton-vpn-network-manager < 0.13.5
+
+Obsoletes: python3-proton-vpn-session
+Obsoletes: python3-proton-vpn-connection
+Obsoletes: python3-proton-vpn-killswitch
+Obsoletes: python3-proton-vpn-logger
+Obsoletes: python3-proton-vpn-network-manager
+Obsoletes: python3-proton-vpn-lib
+Obsoletes: proton-vpn-linux
+# 5.5.0 changed from noarch to arch-dependent; this forces removal of the old noarch build on upgrade.
+Obsoletes: python3-proton-vpn-api-core < 5.5.6
+
+%{{?python_disable_dependency_generator}}
+
+%description
+Package %{{unmangled_name}} library.
+
+%prep
+%setup -q -n %{{pep_625_name}}-%{{version}}
+
+%build
+%pyproject_wheel
+
+%install
+%pyproject_install
+%pyproject_save_files proton
+
+install -D -m 755 nm-protun-service $RPM_BUILD_ROOT/usr/libexec/nm-protun-service
+install -D -m 755 nm-protun-auth-dialog $RPM_BUILD_ROOT/usr/libexec/nm-protun-auth-dialog
+install -d $RPM_BUILD_ROOT/usr/lib/NetworkManager/VPN
+sed -e 's|program=.*|program=/usr/libexec/nm-protun-service|' \
+    -e 's|auth-dialog=.*|auth-dialog=/usr/libexec/nm-protun-auth-dialog|' \
+    nm-protun.name > $RPM_BUILD_ROOT/usr/lib/NetworkManager/VPN/nm-protun.name
+install -D -m 644 nm-protun-service.conf $RPM_BUILD_ROOT/usr/share/dbus-1/system.d/nm-protun-service.conf
+
+%files -f %{{pyproject_files}}
+%defattr(-,root,root)
+/usr/libexec/nm-protun-service
+/usr/libexec/nm-protun-auth-dialog
+/usr/lib/NetworkManager/VPN/nm-protun.name
+/usr/share/dbus-1/system.d/nm-protun-service.conf
+
+%postun
+# Runs after the old package is removed.
+# Restarts the protun service.
+pkill -x nm-protun-service || true
+
+%changelog

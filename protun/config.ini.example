@@ -1,0 +1,27 @@
+# Example ProTun real-connection test config
+# Copy this file to config.ini and replace placeholder values before running the
+# real connection tests.
+#
+# The test harness reads:
+#   - REAL_CONNECTION_CONFIG env var if set
+#   - otherwise ./config.ini in the current working directory
+
+[mode]
+with_local_agent=true
+user_agent=ProtonVPN/1.0
+app_version=1.0.0
+# Required only on Linux when a TUN device is used.
+tun_interface_name=protun0
+
+[peer.server1]
+server_ip=1.2.3.4
+server_public_key=REPLACE_WITH_BASE64_WG_PUBLIC_KEY==
+udp_ports=443
+tcp_ports=
+tls_ports=
+priority=0
+exit_label=1
+
+[fork]
+username=REPLACE_WITH_USERNAME
+password=REPLACE_WITH_PASSWORD

@@ -1,0 +1,540 @@
+"""
+Protun protocol implementation.
+
+
+Copyright (c) 2026 Proton AG
+
+This file is part of Proton VPN.
+
+Proton VPN is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+Proton VPN is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with ProtonVPN.  If not, see <https://www.gnu.org/licenses/>.
+"""
+# pylint: disable=R0801 # Duplicate code with wireguard.py and openvpn.py but that's expected for now.
+
+from __future__ import annotations
+
+import json
+import logging
+import socket
+import uuid
+from concurrent.futures import Future
+from datetime import datetime
+from getpass import getuser
+from ipaddress import IPv4Address, IPv6Address
+from pathlib import Path
+from typing import Dict, List, Optional, Union
+
+import gi
+
+gi.require_version("NM", "1.0")
+# pylint: disable=wrong-import-position
+from gi.repository import NM
+
+from proton.vpn.backend.networkmanager.core import LinuxNetworkManager, LocalAgentMixin
+from proton.vpn.connection import events, states
+from proton.vpn.connection.events import EventContext
+from proton.vpn.connection.exceptions import VPNConnectionError
+from proton.vpn.connection.interfaces import Settings
+from proton.vpn.core.settings.packet_capture import PacketCaptureMode
+
+try:
+    import proton.vpn.platform.protun as proton_vpn_platform_protun
+except ImportError:
+    # The protun plugin might not be available in the environment,
+    # so we handle the import error gracefully.
+    proton_vpn_platform_protun = None
+
+
+logger = logging.getLogger(__name__)
+
+SERVICE_TYPE = "org.freedesktop.NetworkManager.protun"
+STORE_PRIVATE_KEY_IN_KEYRING = "1"
+PRIVATE_KEY = "private-key"
+PRIVATE_KEY_FLAGS = "private-key-flags"
+
+# Internal network configuration — same WireGuard infrastructure as wireguard.py
+_INTERNAL_IPV4_ADDRESS = "10.2.0.2"
+_INTERNAL_IPV4_PREFIX = 32
+_INTERNAL_IPV4_DNS = "10.2.0.1"
+
+_INTERNAL_IPV6_ADDRESS = "2a07:b944::2:2"
+_INTERNAL_IPV6_PREFIX = 128
+_INTERNAL_IPV6_DNS = "2a07:b944::2:1"
+
+_DNS_SEARCH = "~"
+_DNS_PRIORITY = -1500
+
+
+def get_dns(ip_version: Union[type[IPv4Address], type[IPv6Address]]):
+    """
+    Get the correct dns server address depending on whether we are using
+    ipv6 or ipv4.
+    """
+    if ip_version == IPv4Address:
+        return _INTERNAL_IPV4_DNS
+    return _INTERNAL_IPV6_DNS
+
+
+def generate_capture_path(directory_path: str, now: Optional[datetime] = None) -> Path:
+    """
+    Generate a file path for a Proton VPN packet capture file.
+
+    Args:
+        directory_path (str or Path): The base directory path
+        now (datetime, optional): The datetime to use for the filename.
+                                  Defaults to datetime.now() if not provided.
+                                  Useful for unit testing.
+
+    Returns:
+        Path: Path object pointing to the capture file with timestamp and .pcap extension
+    """
+    base_dir = Path(directory_path)
+
+    if now is None:
+        now = datetime.now()
+
+    date_str = now.strftime(r"%Y_%m_%d")
+    time_str = now.strftime(r"%H_%M_%S")
+    filename = f"proton_vpn__{date_str}__{time_str}.pcap"
+    full_path = base_dir / filename
+
+    return full_path
+
+
+class Protun(LinuxNetworkManager, LocalAgentMixin):
+    """Creates a protun VPN plugin connection."""
+
+    SIGNAL_NAME: str = "vpn-state-changed"
+    VIRTUAL_DEVICE_NAME: str = "proton0"
+    PLUGIN_NAME: str = "protun"
+    connection: Optional[NM.SimpleConnection] = None
+    plugin_exists: Optional[bool] = None
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        LocalAgentMixin.__init__(self, self._user_tier)
+        self._connection_settings = None
+        self._protun_client = None
+        self._protun = kwargs.get("protun", proton_vpn_platform_protun)
+
+    def setup(self) -> Future:
+        """Creates and registers the NM VPN connection."""
+        self._generate_connection()
+        self._modify_connection()
+        return self.nm_client.add_connection_async(self.connection, save_to_disk=True)
+
+    def start_connection_async(self, connection: NM.Connection) -> Future:
+        """Activates the ProTun VPN plugin, explicitly passing the best physical
+        active connection as NM's specific_object. Without this, NM uses its
+        primary_connection as parent which may be the kill switch dummy device."""
+        return self.nm_client.start_connection_async(connection, infer_parent_connection=True)
+
+    def _generate_connection(self):
+        self._unique_id = str(uuid.uuid4())
+        self._connection_settings = NM.SettingConnection.new()
+        self.connection = NM.SimpleConnection.new()
+
+    def _modify_connection(self):
+        self._set_custom_connection_id()
+        self._set_uuid()
+        self._set_interface_name()
+        self._set_connection_type()
+        self._set_connection_user_owned()
+        self.connection.add_setting(self._connection_settings)
+
+        self._set_route()
+        self._set_dns()
+        self._set_vpn_settings()
+
+        self.connection.verify()
+
+    def _set_custom_connection_id(self):
+        self._connection_settings.set_property(NM.SETTING_CONNECTION_ID, self._get_servername())
+
+    def _set_uuid(self):
+        self._connection_settings.set_property(NM.SETTING_CONNECTION_UUID, self._unique_id)
+
+    def _set_interface_name(self):
+        self._connection_settings.set_property(NM.SETTING_CONNECTION_INTERFACE_NAME, self.VIRTUAL_DEVICE_NAME)
+
+    def _set_connection_type(self):
+        self._connection_settings.set_property(NM.SETTING_CONNECTION_TYPE, NM.SETTING_VPN_SETTING_NAME)
+
+    def _set_connection_user_owned(self):
+        self._connection_settings.add_permission(
+            NM.SETTING_USER_SETTING_NAME,
+            getuser(),
+            None
+        )
+
+    def _set_route(self):
+        self.connection.add_setting(self._set_route_ipv4(NM.SettingIP4Config.new()))
+        self.connection.add_setting(self._set_route_ipv6(NM.SettingIP6Config.new()))
+
+    def _set_route_ipv4(self, ipv4_config: NM.SettingIP4Config):
+        ipv4_config.set_property(NM.SETTING_IP_CONFIG_METHOD, NM.SETTING_IP4_CONFIG_METHOD_MANUAL)
+
+        ipv4_config.set_property(NM.SETTING_IP_CONFIG_AUTO_ROUTE_EXT_GW, NM.Ternary.FALSE)
+
+        ipv4_config.add_address(NM.IPAddress.new(socket.AF_INET, _INTERNAL_IPV4_ADDRESS, _INTERNAL_IPV4_PREFIX))
+
+        return ipv4_config
+
+    def _set_route_ipv6(self, ipv6_config: NM.SettingIP6Config):
+        if self.enable_ipv6_support:
+            ipv6_config.set_property(NM.SETTING_IP_CONFIG_METHOD, NM.SETTING_IP6_CONFIG_METHOD_MANUAL)
+            ipv6_config.set_property(NM.SETTING_IP_CONFIG_AUTO_ROUTE_EXT_GW, NM.Ternary.FALSE)
+            ipv6_config.add_address(NM.IPAddress.new(socket.AF_INET6, _INTERNAL_IPV6_ADDRESS, _INTERNAL_IPV6_PREFIX))
+        else:
+            ipv6_config.set_property(NM.SETTING_IP_CONFIG_METHOD, NM.SETTING_IP6_CONFIG_METHOD_DISABLED)
+
+        return ipv6_config
+
+    def _set_dns(self):
+        ipv4_config = self.connection.get_setting_ip4_config()
+        ipv6_config = self.connection.get_setting_ip6_config()
+
+        self._configure_dns(nm_setting=ipv4_config, ip_version=IPv4Address)
+        if self.enable_ipv6_support:
+            self._configure_dns(nm_setting=ipv6_config, ip_version=IPv6Address)
+
+        self.connection.add_setting(ipv4_config)
+        self.connection.add_setting(ipv6_config)
+
+    def _configure_dns(
+        self,
+        nm_setting: Union[NM.SettingIP4Config, NM.SettingIP6Config],
+        ip_version: Union[type[IPv4Address], type[IPv6Address]],
+        dns_priority: int = _DNS_PRIORITY,
+    ):
+        """Sets DNS, respecting custom DNS settings."""
+        if ip_version not in [IPv4Address, IPv6Address]:
+            raise ValueError(f"Unknown IP version: {ip_version}")
+
+        nm_setting.set_property(NM.SETTING_IP_CONFIG_DNS_PRIORITY, dns_priority)
+        nm_setting.set_property(NM.SETTING_IP_CONFIG_IGNORE_AUTO_DNS, True)
+
+        # pylint: disable=duplicate-code
+        custom_dns_ips = self._settings.custom_dns.get_enabled_dns_list_based_on_ip_version(ip_version)
+        ip_addresses = [dns.exploded for dns in custom_dns_ips]
+
+        # Protun does not auto-configure DNS, so we always set it explicitly.
+        if self._settings.custom_dns.enabled and ip_addresses:
+            nm_setting.set_property(NM.SETTING_IP_CONFIG_DNS, ip_addresses)
+        else:
+            nm_setting.add_dns(get_dns(ip_version))
+            nm_setting.add_dns_search(_DNS_SEARCH)
+
+    def _protun_ports(self) -> Dict[str, List[int]]:
+        """Returns the protun ports as a dict."""
+        raise NotImplementedError("This method should be implemented by ProtunUDP, ProtunTCP, etc. subclasses.")
+
+    def _set_vpn_settings(self):
+        if self._vpncredentials is None or self._vpncredentials.pubkey_credentials is None:
+            raise RuntimeError(
+                "ProTun connection cannot start because VPN credentials are unavailable. "
+                "Log in again before connecting."
+            )
+
+        vpn_settings = NM.SettingVpn.new()
+        vpn_settings.set_property(NM.SETTING_VPN_SERVICE_TYPE, SERVICE_TYPE)
+
+        # Build the peers array expected by the protun plugin (settings.rs)
+        peer = {
+            "id": self._vpnserver.server_name or self._vpnserver.server_ip,
+            "endpoint": f"{self._vpnserver.server_ip}",
+            "public-key": self._vpnserver.x25519pk,
+            "udp-ports": [],
+            "tcp-ports": [],
+            "tls-ports": [],
+            "priority": 0,
+        }
+        peer.update(self._protun_ports())
+
+        settings_str = json.dumps({"version": 1, "peers": [peer], "pcap-file": None}).replace(
+            ",", r"\,"
+        )  # Escape commas for NetworkManager
+
+        vpn_settings.add_data_item("settings", settings_str)
+
+        # The WireGuard private key is stored as a VPN secret.
+        # NM passes it to the protun auth-dialog which forwards it to the plugin.
+        vpn_settings.add_secret(PRIVATE_KEY, self._vpncredentials.pubkey_credentials.wg_private_key)
+
+        # Use the keyring to store the connection private key.
+        vpn_settings.add_data_item(PRIVATE_KEY_FLAGS, STORE_PRIVATE_KEY_IN_KEYRING)
+
+        self.connection.add_setting(vpn_settings)
+
+    # pylint: disable=arguments-renamed
+    def _on_state_changed(self, vpn_connection: NM.VpnConnection, state: int, reason: int):
+        """
+        Handle VPN plugin state changes emitted by NetworkManager.
+
+        NM emits vpn-state-changed with state and reason whenever the protun
+        plugin connection state changes. This translates NM states into
+        backend-agnostic state machine events.
+        """
+        try:
+            state = NM.VpnConnectionState(state)
+        except ValueError:
+            logger.warning("Unexpected VPN connection state: %s", state)
+            state = NM.VpnConnectionState.UNKNOWN
+
+        try:
+            reason = NM.VpnConnectionStateReason(reason)
+        except ValueError:
+            logger.warning("Unexpected VPN connection state reason: %s", reason)
+            reason = NM.VpnConnectionStateReason.UNKNOWN
+
+        logger.debug("Protun connection state changed: state=%s, reason=%s", state.value_name, reason.value_name)
+
+        if state is NM.VpnConnectionState.ACTIVATED:
+            logger.info("Starting local agent for domain: %s", self._vpnserver.domain)
+            self._async_start_local_agent_listener()
+            self._notify_subscribers_threadsafe(events.Connected(EventContext(connection=self)))
+        elif state is NM.VpnConnectionState.FAILED:
+            if reason in [
+                NM.VpnConnectionStateReason.CONNECT_TIMEOUT,
+                NM.VpnConnectionStateReason.SERVICE_START_TIMEOUT,
+            ]:
+                self._notify_subscribers_threadsafe(events.Timeout(EventContext(connection=self, reason=reason)))
+            elif reason in [
+                NM.VpnConnectionStateReason.NO_SECRETS,
+                NM.VpnConnectionStateReason.LOGIN_FAILED,
+            ]:
+                self._notify_subscribers_threadsafe(events.AuthDenied(EventContext(connection=self, reason=reason)))
+            else:
+                self._notify_subscribers_threadsafe(
+                    events.UnexpectedError(
+                        EventContext(
+                            connection=self,
+                            reason=reason,
+                            error=VPNConnectionError(
+                                f"ProTun failed: state={state.value_name}, reason={reason.value_name}"
+                            ),
+                        )
+                    )
+                )
+        elif state is NM.VpnConnectionState.DISCONNECTED:
+            if reason is NM.VpnConnectionStateReason.USER_DISCONNECTED:
+                self._async_stop_local_agent_listener()
+                self._notify_subscribers_threadsafe(events.Disconnected(EventContext(connection=self, reason=reason)))
+            elif reason is NM.VpnConnectionStateReason.DEVICE_DISCONNECTED:
+                self._async_stop_local_agent_listener()
+                self._notify_subscribers_threadsafe(
+                    events.DeviceDisconnected(EventContext(connection=self, reason=reason))
+                )
+            else:
+                self._notify_subscribers_threadsafe(
+                    events.UnexpectedError(
+                        EventContext(
+                            connection=self,
+                            reason=reason,
+                            error=VPNConnectionError(
+                                f"ProTun disconnected unexpectedly: state={state.value_name}, reason={reason.value_name}"
+                            ),
+                        )
+                    )
+                )
+        else:
+            logger.debug("Ignoring VPN state change: %s", state.value_name)
+
+    def _initialize_persisted_connection(self, connection_id: str) -> states.State:
+        """Initialize from a persisted connection, restarting the local agent if connected."""
+        state = super()._initialize_persisted_connection(connection_id)
+
+        if isinstance(state, states.Connected):
+            self._async_start_local_agent_listener()
+        return state
+
+    async def update_credentials(self, credentials):
+        """Notifies the VPN server that the certificate needs a refresh."""
+        await super().update_credentials(credentials)
+        await self._start_local_agent_listener()
+
+    @property
+    def are_feature_updates_applied_when_active(self) -> bool:
+        """
+        Returns whether connection feature updates are applied on the fly
+        while the connection is already active, without restarting it.
+        """
+        return True
+
+    async def update_settings(self, settings: Settings):
+        """Update features on the active agent connection."""
+        await super().update_settings(settings)
+        if self._agent_listener.is_running:
+            await self._request_connection_features(settings.features)
+
+    @classmethod
+    def validate(cls):
+        # Protun doesn't support distributions with older versions
+        # of the network manager
+        if not hasattr(NM, "SETTING_IP_CONFIG_AUTO_ROUTE_EXT_GW"):
+            return False
+        if cls.plugin_exists is None:
+            cls.plugin_exists = cls._plugin_exists(cls.PLUGIN_NAME)
+        return cls.plugin_exists
+
+    async def _get_protun_client(self):
+        """Returns the cached protun client, creating it on first call."""
+        if self._protun is None:
+            raise RuntimeError("Protun module is not available")
+        if self._protun_client is None:
+            self._protun_client = await self._protun.ConnectionManager.new()
+        return self._protun_client
+
+    @classmethod
+    def supports_packet_capture(cls, protun=proton_vpn_platform_protun):  # pylint: disable=W0613
+        """Returns False and should be overriden by Protun protocols that support packet capture"""
+        return False
+
+    async def start_packet_capture(self):
+        """Starts a packet capture session, writing to a timestamped .pcap file."""
+        # Translate the mode
+        if self.settings.packet_capture.mode == PacketCaptureMode.OVERWRITE:
+            mode = self._protun.FileWriteMode.Overwrite
+        else:
+            mode = self._protun.FileWriteMode.Append
+
+        file_path = generate_capture_path(self.settings.packet_capture.directory_path)
+
+        await (await self._get_protun_client()).run(
+            self._protun.Command.PcapStart(
+                self._protun.PcapStart(
+                    file_info=self._protun.PcapFileInfo.from_path(path=str(file_path), mode=mode),
+                    max_bytes=self.settings.packet_capture.max_bytes,
+                )
+            )
+        )
+
+    async def stop_packet_capture(self):
+        """Stops the active packet capture session."""
+        await (await self._get_protun_client()).run(self._protun.Command.PcapStop(self._protun.PcapStop()))
+
+
+class ProtunUDP(Protun):
+    """Protun UDP protocol implementation."""
+
+    protocol = "protun-udp"
+    ui_protocol = "Wireguard UDP"
+
+    @classmethod
+    def get_priority(cls):
+        """Returns the priority of the implementation. Lower values indicate higher priority."""
+        return 2
+
+    @classmethod
+    def get_key(cls):
+        """Returns the protocol name."""
+        return cls.protocol
+
+    @classmethod
+    def get_protocol_group(cls) -> str:
+        """Returns the protocol group."""
+        return "protun"
+
+    @classmethod
+    def supports_packet_capture(cls, protun=proton_vpn_platform_protun):
+        """Returns True if protun supports packet capture and is available."""
+        return protun is not None
+
+    def _protun_ports(self) -> Dict[str, List[int]]:
+        """Returns the protun ports as a dict."""
+        return {"udp-ports": self._vpnserver.wireguard_ports.udp}
+
+
+class ProtunTCP(Protun):
+    """Protun TCP protocol implementation."""
+
+    protocol = "protun-tcp"
+    ui_protocol = "Wireguard TCP"
+
+    @classmethod
+    def get_priority(cls):
+        """Returns the priority of the implementation. Lower values indicate higher priority."""
+        return 3
+
+    @classmethod
+    def get_key(cls):
+        """Returns the protocol name."""
+        return cls.protocol
+
+    @classmethod
+    def get_protocol_group(cls) -> str:
+        """Returns the protocol group."""
+        return "protun"
+
+    def _protun_ports(self) -> Dict[str, List[int]]:
+        """Returns the protun ports as a dict."""
+        return {"tcp-ports": self._vpnserver.wireguard_ports.tcp}
+
+
+class ProtunTLS(Protun):
+    """Protun TLS protocol implementation."""
+
+    protocol = "protun-tls"
+    ui_protocol = "Stealth"
+
+    @classmethod
+    def get_priority(cls):
+        """Returns the priority of the implementation. Lower values indicate higher priority."""
+        return 4
+
+    @classmethod
+    def get_key(cls):
+        """Returns the protocol name."""
+        return cls.protocol
+
+    @classmethod
+    def get_protocol_group(cls) -> str:
+        """Returns the protocol group."""
+        return "protun"
+
+    def _protun_ports(self) -> Dict[str, List[int]]:
+        """Returns the protun ports as a dict."""
+        return {"tls-ports": self._vpnserver.wireguard_ports.tls}
+
+
+class ProtunSmart(Protun):
+    """
+    Protun protocol implementation, automatically selecting the best
+    available transport protocol.
+    """
+
+    protocol = "protun-smart"
+    ui_protocol = "Smart"
+
+    @classmethod
+    def get_priority(cls):
+        """Returns the priority of the implementation. Lower values indicate higher priority."""
+        return 1
+
+    @classmethod
+    def get_key(cls):
+        """Returns the protocol name."""
+        return cls.protocol
+
+    @classmethod
+    def get_protocol_group(cls) -> str:
+        """Returns the protocol group."""
+        return "protun"
+
+    def _protun_ports(self) -> Dict[str, List[int]]:
+        """Returns the protun ports as a dict."""
+        return {
+            "udp-ports": self._vpnserver.wireguard_ports.udp,
+            "tcp-ports": self._vpnserver.wireguard_ports.tcp,
+            "tls-ports": self._vpnserver.wireguard_ports.tls,
+        }

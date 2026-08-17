@@ -1,0 +1,40 @@
+[build-system]
+requires = ["setuptools>=69", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.ruff]
+line-length = 120
+target-version = "py313"
+extend-exclude = [
+    ".venv",
+    "build",
+    "htmlcov",
+    "manjaro/pkg",
+    "manjaro/src",
+    "proton_vpn_gtk_app.egg-info",
+]
+
+[tool.ruff.lint]
+select = ["E4", "E7", "F", "W", "I"]
+ignore = ["E402", "E501", "F401", "F841"]
+
+[tool.ruff.format]
+quote-style = "double"
+
+[tool.pytest.ini_options]
+asyncio_default_fixture_loop_scope = "function"
+addopts = "-ra"
+testpaths = ["tests/unit"]
+
+[tool.mypy]
+python_version = "3.13"
+ignore_missing_imports = true
+explicit_package_bases = true
+files = ["proton", "tests"]
+exclude = ["^build/", "^htmlcov/", "^proton_vpn_gtk_app\\.egg-info/", "^proton/vpn/__init__\\.pyi$"]
+disallow_untyped_defs = false
+disallow_incomplete_defs = false
+check_untyped_defs = false
+warn_return_any = false
+warn_unused_ignores = false
+show_error_codes = true

@@ -1,0 +1,1994 @@
+#
+msgid ""
+msgstr ""
+"Language-Team: Greek\n"
+"Language: el_GR\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+msgctxt "button"
+msgid "Add"
+msgstr "Προσθήκη"
+
+msgctxt "button"
+msgid "Authenticate"
+msgstr "Ταυτοποίηση"
+
+msgctxt "button"
+msgid "Browse"
+msgstr "Περιήγηση"
+
+msgctxt "button"
+msgid "Cancel"
+msgstr "Ακύρωση"
+
+msgctxt "button"
+msgid "Cancel Connection"
+msgstr "Ακύρωση Σύνδεσης"
+
+msgctxt "button"
+msgid "Connect"
+msgstr "Σύνδεση"
+
+msgctxt "button"
+msgid "Create Account"
+msgstr "Δημιουργία Λογαριασμού"
+
+msgctxt "button"
+msgid "Disable"
+msgstr "Απενεργοποίηση"
+
+msgctxt "button"
+msgid "Disconnect"
+msgstr "Αποσύνδεση"
+
+msgctxt "button"
+msgid "Done"
+msgstr "Ολοκληρώθηκε"
+
+msgctxt "button"
+msgid "Learn more"
+msgstr "Μάθετε περισσότερα"
+
+msgctxt "button"
+msgid "Manage Account"
+msgstr "Διαχείριση Λογαριασμού"
+
+msgctxt "button"
+msgid "Need Help?"
+msgstr "Χρειάζεστε Βοήθεια;"
+
+msgctxt "button"
+msgid "Send error logs"
+msgstr "Αποστολή καταχωρήσεων σφαλμάτων"
+
+msgctxt "button"
+msgid "Sign in"
+msgstr "Σύνδεση"
+
+msgctxt "button"
+msgid "Start"
+msgstr "Έναρξη"
+
+msgctxt "button"
+msgid "Stop"
+msgstr "Διακοπή"
+
+msgctxt "button"
+msgid "Upgrade"
+msgstr "Αναβάθμιση"
+
+msgctxt "button"
+msgid "Use 6-digit authentication code"
+msgstr "Χρήση εξαψήφιου κωδικού ταυτοποίησης"
+
+msgctxt "button"
+msgid "Use recovery code"
+msgstr "Χρήση κωδικού ανάκτησης"
+
+msgctxt "button"
+msgid "_Cancel"
+msgstr "_Ακύρωση"
+
+msgctxt "button"
+msgid "_Close"
+msgstr "_Κλείσιμο"
+
+msgctxt "button"
+msgid "_Enable"
+msgstr "_Ενεργοποίηση"
+
+msgctxt "button"
+msgid "_Select"
+msgstr "_Επιλογή"
+
+msgctxt "button"
+msgid "_Submit"
+msgstr "_Υποβολή"
+
+msgctxt "button"
+msgid "_Yes"
+msgstr "_Ναι"
+
+msgctxt "country"
+msgid "Afghanistan"
+msgstr "Αφγανιστάν"
+
+msgctxt "country"
+msgid "Aland Islands"
+msgstr "Νησιά Άλαντ"
+
+msgctxt "country"
+msgid "Albania"
+msgstr "Αλβανία"
+
+msgctxt "country"
+msgid "Algeria"
+msgstr "Αλγερία"
+
+msgctxt "country"
+msgid "American Samoa"
+msgstr "Αμερικανική Σαμόα"
+
+msgctxt "country"
+msgid "Andorra"
+msgstr "Ανδόρα"
+
+msgctxt "country"
+msgid "Angola"
+msgstr "Αγκόλα"
+
+msgctxt "country"
+msgid "Anguilla"
+msgstr "Ανγκουίλα"
+
+msgctxt "country"
+msgid "Antarctica"
+msgstr "Ανταρκτική"
+
+msgctxt "country"
+msgid "Antigua and Barbuda"
+msgstr "Αντίγκουα και Μπαρμπούντα"
+
+msgctxt "country"
+msgid "Argentina"
+msgstr "Αργεντινή"
+
+msgctxt "country"
+msgid "Armenia"
+msgstr "Αρμενία"
+
+msgctxt "country"
+msgid "Aruba"
+msgstr "Αρούμπα"
+
+msgctxt "country"
+msgid "Australia"
+msgstr "Αυστραλία"
+
+msgctxt "country"
+msgid "Austria"
+msgstr "Αυστρία"
+
+msgctxt "country"
+msgid "Azerbaijan"
+msgstr "Αζερμπαϊτζάν"
+
+msgctxt "country"
+msgid "Bahamas"
+msgstr "Μπαχάμες"
+
+msgctxt "country"
+msgid "Bahrain"
+msgstr "Μπαχρέιν"
+
+msgctxt "country"
+msgid "Bangladesh"
+msgstr "Μπαγκλαντές"
+
+msgctxt "country"
+msgid "Barbados"
+msgstr "Μπαρμπάντος"
+
+msgctxt "country"
+msgid "Belarus"
+msgstr "Λευκορωσία"
+
+msgctxt "country"
+msgid "Belgium"
+msgstr "Βέλγιο"
+
+msgctxt "country"
+msgid "Belize"
+msgstr "Μπελίζ"
+
+msgctxt "country"
+msgid "Benin"
+msgstr "Μπενίν"
+
+msgctxt "country"
+msgid "Bermuda"
+msgstr "Βερμούδες"
+
+msgctxt "country"
+msgid "Bhutan"
+msgstr "Μπουτάν"
+
+msgctxt "country"
+msgid "Bolivia"
+msgstr "Βολιβία"
+
+msgctxt "country"
+msgid "Bonaire, Saint Eustatius and Saba "
+msgstr "Μπονέρ, Άγιος Ευστάθιος και Σάμπα "
+
+msgctxt "country"
+msgid "Bosnia and Herzegovina"
+msgstr "Βοσνία Ερζεγοβίνη"
+
+msgctxt "country"
+msgid "Botswana"
+msgstr "Μποτσουάνα"
+
+msgctxt "country"
+msgid "Bouvet Island"
+msgstr "Νήσος Μπουβέ"
+
+msgctxt "country"
+msgid "Brazil"
+msgstr "Βραζιλία"
+
+msgctxt "country"
+msgid "British Indian Ocean Territory"
+msgstr "Βρετανικό Έδαφος Ινδικού Ωκεανού"
+
+msgctxt "country"
+msgid "British Virgin Islands"
+msgstr "Βρετανικές Παρθένοι Νήσοι"
+
+msgctxt "country"
+msgid "Brunei"
+msgstr "Μπρουνέι"
+
+msgctxt "country"
+msgid "Bulgaria"
+msgstr "Βουλγαρία"
+
+msgctxt "country"
+msgid "Burkina Faso"
+msgstr "Μπουρκίνα Φάσο"
+
+msgctxt "country"
+msgid "Burundi"
+msgstr "Μπουρούντι"
+
+msgctxt "country"
+msgid "Cambodia"
+msgstr "Καμπότζη"
+
+msgctxt "country"
+msgid "Cameroon"
+msgstr "Καμερούν"
+
+msgctxt "country"
+msgid "Canada"
+msgstr "Καναδάς"
+
+msgctxt "country"
+msgid "Cape Verde"
+msgstr "Πράσινο Ακρωτήριo"
+
+msgctxt "country"
+msgid "Cayman Islands"
+msgstr "Νήσοι Κέιμαν"
+
+msgctxt "country"
+msgid "Central African Republic"
+msgstr "Κεντροαφρικανική Δημοκρατία"
+
+msgctxt "country"
+msgid "Chad"
+msgstr "Τσαντ"
+
+msgctxt "country"
+msgid "Chile"
+msgstr "Χιλή"
+
+msgctxt "country"
+msgid "China"
+msgstr "Κίνα"
+
+msgctxt "country"
+msgid "Christmas Island"
+msgstr "Νήσος Χριστουγέννων"
+
+msgctxt "country"
+msgid "Cocos Islands"
+msgstr "Νήσοι Κόκος"
+
+msgctxt "country"
+msgid "Colombia"
+msgstr "Κολομβία"
+
+msgctxt "country"
+msgid "Comoros"
+msgstr "Κομόρες"
+
+msgctxt "country"
+msgid "Cook Islands"
+msgstr "Νήσοι Κουκ"
+
+msgctxt "country"
+msgid "Costa Rica"
+msgstr "Κόστα Ρίκα"
+
+msgctxt "country"
+msgid "Croatia"
+msgstr "Κροατία"
+
+msgctxt "country"
+msgid "Cuba"
+msgstr "Κούβα"
+
+msgctxt "country"
+msgid "Curacao"
+msgstr "Κουρασάο"
+
+msgctxt "country"
+msgid "Cyprus"
+msgstr "Κύπρος"
+
+msgctxt "country"
+msgid "Czech Republic"
+msgstr "Τσεχία"
+
+msgctxt "country"
+msgid "Democratic Republic of the Congo"
+msgstr "Λαϊκή Δημοκρατία του Κονγκό"
+
+msgctxt "country"
+msgid "Denmark"
+msgstr "Δανία"
+
+msgctxt "country"
+msgid "Djibouti"
+msgstr "Τζιμπουτί"
+
+msgctxt "country"
+msgid "Dominica"
+msgstr "Δομινίκα"
+
+msgctxt "country"
+msgid "Dominican Republic"
+msgstr "Δομινικανή Δημοκρατία"
+
+msgctxt "country"
+msgid "East Timor"
+msgstr "Ανατολικό Τιμόρ"
+
+msgctxt "country"
+msgid "Ecuador"
+msgstr "Ισημερινός"
+
+msgctxt "country"
+msgid "Egypt"
+msgstr "Αίγυπτος"
+
+msgctxt "country"
+msgid "El Salvador"
+msgstr "Ελ Σαλβαδόρ"
+
+msgctxt "country"
+msgid "Equatorial Guinea"
+msgstr "Ισημερινή Γουινέα"
+
+msgctxt "country"
+msgid "Eritrea"
+msgstr "Ερυθραία"
+
+msgctxt "country"
+msgid "Estonia"
+msgstr "Εσθονία"
+
+msgctxt "country"
+msgid "Ethiopia"
+msgstr "Αιθιοπία"
+
+msgctxt "country"
+msgid "Falkland Islands"
+msgstr "Νήσοι Φόκλαντ"
+
+msgctxt "country"
+msgid "Faroe Islands"
+msgstr "Νήσοι Φερόες"
+
+msgctxt "country"
+msgid "Fiji"
+msgstr "Φίτζι"
+
+msgctxt "country"
+msgid "Finland"
+msgstr "Φινλανδία"
+
+msgctxt "country"
+msgid "France"
+msgstr "Γαλλία"
+
+msgctxt "country"
+msgid "French Guiana"
+msgstr "Γαλλική Γουιάνα"
+
+msgctxt "country"
+msgid "French Polynesia"
+msgstr "Γαλλική Πολυνησία"
+
+msgctxt "country"
+msgid "French Southern Territories"
+msgstr "Νότια Γαλλικά Εδάφη"
+
+msgctxt "country"
+msgid "Gabon"
+msgstr "Γκαμπόν"
+
+msgctxt "country"
+msgid "Gambia"
+msgstr "Γκάμπια"
+
+msgctxt "country"
+msgid "Georgia"
+msgstr "Γεωργία"
+
+msgctxt "country"
+msgid "Germany"
+msgstr "Γερμανία"
+
+msgctxt "country"
+msgid "Ghana"
+msgstr "Γκάνα"
+
+msgctxt "country"
+msgid "Gibraltar"
+msgstr "Γιβραλτάρ"
+
+msgctxt "country"
+msgid "Greece"
+msgstr "Ελλάδα"
+
+msgctxt "country"
+msgid "Greenland"
+msgstr "Γροιλανδία"
+
+msgctxt "country"
+msgid "Grenada"
+msgstr "Γρενάδα"
+
+msgctxt "country"
+msgid "Guadeloupe"
+msgstr "Γουαδελούπη"
+
+msgctxt "country"
+msgid "Guam"
+msgstr "Γκουάμ"
+
+msgctxt "country"
+msgid "Guatemala"
+msgstr "Γουατεμάλα"
+
+msgctxt "country"
+msgid "Guernsey"
+msgstr "Γκέρνζι"
+
+msgctxt "country"
+msgid "Guinea"
+msgstr "Γουινέα"
+
+msgctxt "country"
+msgid "Guinea-Bissau"
+msgstr "Γουινέα-Μπισάου"
+
+msgctxt "country"
+msgid "Guyana"
+msgstr "Γουιάνα"
+
+msgctxt "country"
+msgid "Haiti"
+msgstr "Αϊτή"
+
+msgctxt "country"
+msgid "Heard Island and McDonald Islands"
+msgstr "Νήσοι Χερντ και Μακντόναλντ"
+
+msgctxt "country"
+msgid "Honduras"
+msgstr "Ονδούρα"
+
+msgctxt "country"
+msgid "Hong Kong"
+msgstr "Χονγκ Κονγκ"
+
+msgctxt "country"
+msgid "Hungary"
+msgstr "Ουγγαρία"
+
+msgctxt "country"
+msgid "Iceland"
+msgstr "Ισλανδία"
+
+msgctxt "country"
+msgid "India"
+msgstr "Ινδία"
+
+msgctxt "country"
+msgid "Indonesia"
+msgstr "Ινδονησία"
+
+msgctxt "country"
+msgid "Iran"
+msgstr "Ιράν"
+
+msgctxt "country"
+msgid "Iraq"
+msgstr "Ιράκ"
+
+msgctxt "country"
+msgid "Ireland"
+msgstr "Ιρλανδία"
+
+msgctxt "country"
+msgid "Isle of Man"
+msgstr "Νήσος Μαν"
+
+msgctxt "country"
+msgid "Israel"
+msgstr "Ισραήλ"
+
+msgctxt "country"
+msgid "Italy"
+msgstr "Ιταλία"
+
+msgctxt "country"
+msgid "Ivory Coast"
+msgstr "Ακτή Ελεφαντοστού"
+
+msgctxt "country"
+msgid "Jamaica"
+msgstr "Τζαμάικα"
+
+msgctxt "country"
+msgid "Japan"
+msgstr "Ιαπωνία"
+
+msgctxt "country"
+msgid "Jersey"
+msgstr "Τζέρσεϊ"
+
+msgctxt "country"
+msgid "Jordan"
+msgstr "Ιορδανία"
+
+msgctxt "country"
+msgid "Kazakhstan"
+msgstr "Καζακστάν"
+
+msgctxt "country"
+msgid "Kenya"
+msgstr "Κένυα"
+
+msgctxt "country"
+msgid "Kiribati"
+msgstr "Κιριμπάτι"
+
+msgctxt "country"
+msgid "Kosovo"
+msgstr "Κόσοβο"
+
+msgctxt "country"
+msgid "Kuwait"
+msgstr "Κουβέιτ"
+
+msgctxt "country"
+msgid "Kyrgyzstan"
+msgstr "Κιργιστάν"
+
+msgctxt "country"
+msgid "Laos"
+msgstr "Λάος"
+
+msgctxt "country"
+msgid "Latvia"
+msgstr "Λετονία"
+
+msgctxt "country"
+msgid "Lebanon"
+msgstr "Λίβανος"
+
+msgctxt "country"
+msgid "Lesotho"
+msgstr "Λεσότο"
+
+msgctxt "country"
+msgid "Liberia"
+msgstr "Λιβερία"
+
+msgctxt "country"
+msgid "Libya"
+msgstr "Λιβύη"
+
+msgctxt "country"
+msgid "Liechtenstein"
+msgstr "Λιχτενστάιν"
+
+msgctxt "country"
+msgid "Lithuania"
+msgstr "Λιθουανία"
+
+msgctxt "country"
+msgid "Luxembourg"
+msgstr "Λουξεμβούργο"
+
+msgctxt "country"
+msgid "Macao"
+msgstr "Μακάο"
+
+msgctxt "country"
+msgid "Macedonia"
+msgstr "ΠΓΔ Μακεδονίας"
+
+msgctxt "country"
+msgid "Madagascar"
+msgstr "Μαδαγασκάρη"
+
+msgctxt "country"
+msgid "Malawi"
+msgstr "Μαλάουι"
+
+msgctxt "country"
+msgid "Malaysia"
+msgstr "Μαλαισία"
+
+msgctxt "country"
+msgid "Maldives"
+msgstr "Μαλδίβες"
+
+msgctxt "country"
+msgid "Mali"
+msgstr "Μάλι"
+
+msgctxt "country"
+msgid "Malta"
+msgstr "Μάλτα"
+
+msgctxt "country"
+msgid "Marshall Islands"
+msgstr "Νήσοι Μάρσαλ"
+
+msgctxt "country"
+msgid "Martinique"
+msgstr "Μαρτινίκα"
+
+msgctxt "country"
+msgid "Mauritania"
+msgstr "Μαυριτανία"
+
+msgctxt "country"
+msgid "Mauritius"
+msgstr "Μαυρίκιος"
+
+msgctxt "country"
+msgid "Mayotte"
+msgstr "Μαγιότ"
+
+msgctxt "country"
+msgid "Mexico"
+msgstr "Μεξικό"
+
+msgctxt "country"
+msgid "Micronesia"
+msgstr "Μικρονησία"
+
+msgctxt "country"
+msgid "Moldova"
+msgstr "Μολδαβία"
+
+msgctxt "country"
+msgid "Monaco"
+msgstr "Μονακό"
+
+msgctxt "country"
+msgid "Mongolia"
+msgstr "Μογγολία"
+
+msgctxt "country"
+msgid "Montenegro"
+msgstr "Μαυροβούνιο"
+
+msgctxt "country"
+msgid "Montserrat"
+msgstr "Μονσεράτ"
+
+msgctxt "country"
+msgid "Morocco"
+msgstr "Μαρόκο"
+
+msgctxt "country"
+msgid "Mozambique"
+msgstr "Μοζαμβίκη"
+
+msgctxt "country"
+msgid "Myanmar"
+msgstr "Μιανμάρ"
+
+msgctxt "country"
+msgid "Namibia"
+msgstr "Ναμίμπια"
+
+msgctxt "country"
+msgid "Nauru"
+msgstr "Ναούρου"
+
+msgctxt "country"
+msgid "Nepal"
+msgstr "Νεπάλ"
+
+msgctxt "country"
+msgid "Netherlands"
+msgstr "Ολλανδία"
+
+msgctxt "country"
+msgid "New Caledonia"
+msgstr "Νέα Καληδονία"
+
+msgctxt "country"
+msgid "New Zealand"
+msgstr "Νέα Ζηλανδία"
+
+msgctxt "country"
+msgid "Nicaragua"
+msgstr "Νικαράγουα"
+
+msgctxt "country"
+msgid "Niger"
+msgstr "Νίγηρας"
+
+msgctxt "country"
+msgid "Nigeria"
+msgstr "Νιγηρία"
+
+msgctxt "country"
+msgid "Niue"
+msgstr "Νιούε"
+
+msgctxt "country"
+msgid "Norfolk Island"
+msgstr "Νήσος Νόρφολκ"
+
+msgctxt "country"
+msgid "North Korea"
+msgstr "Βόρεια Κορέα"
+
+msgctxt "country"
+msgid "Northern Mariana Islands"
+msgstr "Βόρειες Μαριάνες Νήσοι"
+
+msgctxt "country"
+msgid "Norway"
+msgstr "Νορβηγία"
+
+msgctxt "country"
+msgid "Oman"
+msgstr "Ομάν"
+
+msgctxt "country"
+msgid "Pakistan"
+msgstr "Πακιστάν"
+
+msgctxt "country"
+msgid "Palau"
+msgstr "Παλάου"
+
+msgctxt "country"
+msgid "Palestinian Territory"
+msgstr "Παλαιστινιακά Εδάφη"
+
+msgctxt "country"
+msgid "Panama"
+msgstr "Παναμάς"
+
+msgctxt "country"
+msgid "Papua New Guinea"
+msgstr "Παπούα Νέα Γουινέα"
+
+msgctxt "country"
+msgid "Paraguay"
+msgstr "Παραγουάη"
+
+msgctxt "country"
+msgid "Peru"
+msgstr "Περού"
+
+msgctxt "country"
+msgid "Philippines"
+msgstr "Φιλιππίνες"
+
+msgctxt "country"
+msgid "Pitcairn"
+msgstr "Πίτκερν"
+
+msgctxt "country"
+msgid "Poland"
+msgstr "Πολωνία"
+
+msgctxt "country"
+msgid "Portugal"
+msgstr "Πορτογαλία"
+
+msgctxt "country"
+msgid "Puerto Rico"
+msgstr "Πουέρτο Ρίκο"
+
+msgctxt "country"
+msgid "Qatar"
+msgstr "Κατάρ"
+
+msgctxt "country"
+msgid "Republic of the Congo"
+msgstr "Δημοκρατία του Κονγκό"
+
+msgctxt "country"
+msgid "Reunion"
+msgstr "Ρεϋνιόν"
+
+msgctxt "country"
+msgid "Romania"
+msgstr "Ρουμανία"
+
+msgctxt "country"
+msgid "Russia"
+msgstr "Ρωσία"
+
+msgctxt "country"
+msgid "Rwanda"
+msgstr "Ρουάντα"
+
+msgctxt "country"
+msgid "Saint Barthelemy"
+msgstr "Άγιος Βαρθολομαίος"
+
+msgctxt "country"
+msgid "Saint Helena"
+msgstr "Αγία Ελένη"
+
+msgctxt "country"
+msgid "Saint Kitts and Nevis"
+msgstr "Άγιος Χριστόφορος και Νέβις"
+
+msgctxt "country"
+msgid "Saint Lucia"
+msgstr "Αγία Λουκία"
+
+msgctxt "country"
+msgid "Saint Martin"
+msgstr "Άγιος Μαρτίνος"
+
+msgctxt "country"
+msgid "Saint Pierre and Miquelon"
+msgstr "Νήσοι Αγίου Πέτρου και Μιχαήλ"
+
+msgctxt "country"
+msgid "Saint Vincent and the Grenadines"
+msgstr "Άγιος Βινσέντος και Γρεναδίνες"
+
+msgctxt "country"
+msgid "Samoa"
+msgstr "Σαμόα"
+
+msgctxt "country"
+msgid "San Marino"
+msgstr "Άγιος Μαρίνος"
+
+msgctxt "country"
+msgid "Sao Tome and Principe"
+msgstr "Sao Tome and Principe"
+
+msgctxt "country"
+msgid "Saudi Arabia"
+msgstr "Σαουδική Αραβία"
+
+msgctxt "country"
+msgid "Senegal"
+msgstr "Σενεγάλη"
+
+msgctxt "country"
+msgid "Serbia"
+msgstr "Σερβία"
+
+msgctxt "country"
+msgid "Seychelles"
+msgstr "Σεϊχέλες"
+
+msgctxt "country"
+msgid "Sierra Leone"
+msgstr "Σιέρα Λεόνε"
+
+msgctxt "country"
+msgid "Singapore"
+msgstr "Σιγκαπούρη"
+
+msgctxt "country"
+msgid "Sint Maarten"
+msgstr "Άγιος Μαρτίνος"
+
+msgctxt "country"
+msgid "Slovakia"
+msgstr "Σλοβακία"
+
+msgctxt "country"
+msgid "Slovenia"
+msgstr "Σλοβενία"
+
+msgctxt "country"
+msgid "Solomon Islands"
+msgstr "Νήσοι Σολομώντος"
+
+msgctxt "country"
+msgid "Somalia"
+msgstr "Σομαλία"
+
+msgctxt "country"
+msgid "South Africa"
+msgstr "Νότια Αφρική"
+
+msgctxt "country"
+msgid "South Georgia and the South Sandwich Islands"
+msgstr "Νήσοι Νότια Γεωργία και Νότιες Σάντουιτς"
+
+msgctxt "country"
+msgid "South Korea"
+msgstr "Νότια Κορέα"
+
+msgctxt "country"
+msgid "South Sudan"
+msgstr "Νότιο Σουδάν"
+
+msgctxt "country"
+msgid "Spain"
+msgstr "Ισπανία"
+
+msgctxt "country"
+msgid "Sri Lanka"
+msgstr "Σρι Λάνκα"
+
+msgctxt "country"
+msgid "Sudan"
+msgstr "Σουδάν"
+
+msgctxt "country"
+msgid "Suriname"
+msgstr "Σουρινάμ"
+
+msgctxt "country"
+msgid "Svalbard and Jan Mayen"
+msgstr "Σβάλμπαρντ και Γιαν Μάιεν"
+
+msgctxt "country"
+msgid "Swaziland"
+msgstr "Σουαζιλάνδη"
+
+msgctxt "country"
+msgid "Sweden"
+msgstr "Σουηδία"
+
+msgctxt "country"
+msgid "Switzerland"
+msgstr "Ελβετία"
+
+msgctxt "country"
+msgid "Syria"
+msgstr "Συρία"
+
+msgctxt "country"
+msgid "Taiwan"
+msgstr "Ταϊβάν"
+
+msgctxt "country"
+msgid "Tajikistan"
+msgstr "Τατζικιστάν"
+
+msgctxt "country"
+msgid "Tanzania"
+msgstr "Τανζανία"
+
+msgctxt "country"
+msgid "Thailand"
+msgstr "Ταϊλάνδη"
+
+msgctxt "country"
+msgid "Togo"
+msgstr "Τόγκο"
+
+msgctxt "country"
+msgid "Tokelau"
+msgstr "Τοκελάου"
+
+msgctxt "country"
+msgid "Tonga"
+msgstr "Τόνγκα"
+
+msgctxt "country"
+msgid "Trinidad and Tobago"
+msgstr "Τρινιντάντ και Τομπάγκο"
+
+msgctxt "country"
+msgid "Tunisia"
+msgstr "Τυνησία"
+
+msgctxt "country"
+msgid "Turkey"
+msgstr "Τουρκία"
+
+msgctxt "country"
+msgid "Turkmenistan"
+msgstr "Τουρκμενιστάν"
+
+msgctxt "country"
+msgid "Turks and Caicos Islands"
+msgstr "Νήσοι Τερκς και Κάικος"
+
+msgctxt "country"
+msgid "Tuvalu"
+msgstr "Τουβαλού"
+
+msgctxt "country"
+msgid "U.S. Virgin Islands"
+msgstr "Αμερικανικές Παρθένοι Νήσοι"
+
+msgctxt "country"
+msgid "Uganda"
+msgstr "Ουγκάντα"
+
+msgctxt "country"
+msgid "Ukraine"
+msgstr "Ουκρανία"
+
+msgctxt "country"
+msgid "United Arab Emirates"
+msgstr "Ηνωμένα Αραβικά Εμιράτα"
+
+msgctxt "country"
+msgid "United Kingdom"
+msgstr "Ηνωμένο Βασίλειο"
+
+msgctxt "country"
+msgid "United States"
+msgstr "Ηνωμένες Πολιτείες"
+
+msgctxt "country"
+msgid "United States Minor Outlying Islands"
+msgstr "Απομακρυσμένες Νησίδες των Ηνωμένων Πολιτειών"
+
+msgctxt "country"
+msgid "Uruguay"
+msgstr "Ουρουγουάη"
+
+msgctxt "country"
+msgid "Uzbekistan"
+msgstr "Ουζμπεκιστάν"
+
+msgctxt "country"
+msgid "Vanuatu"
+msgstr "Βανουάτου"
+
+msgctxt "country"
+msgid "Vatican"
+msgstr "Βατικάνο"
+
+msgctxt "country"
+msgid "Venezuela"
+msgstr "Βενεζουέλα"
+
+msgctxt "country"
+msgid "Vietnam"
+msgstr "Βιετνάμ"
+
+msgctxt "country"
+msgid "Wallis and Futuna"
+msgstr "Ουαλίς και Φουτουνά"
+
+msgctxt "country"
+msgid "Western Sahara"
+msgstr "Δυτική Σαχάρα"
+
+msgctxt "country"
+msgid "Yemen"
+msgstr "Υεμένη"
+
+msgctxt "country"
+msgid "Zambia"
+msgstr "Ζάμπια"
+
+msgctxt "country"
+msgid "Zimbabwe"
+msgstr "Ζιμπάμπουε"
+
+msgctxt "error"
+msgid "An unknown error occurred"
+msgstr "Παρουσιάστηκε ένα άγνωστο σφάλμα"
+
+msgctxt "error"
+msgid "Authentication denied"
+msgstr "Η ταυτοποίηση απορρίφθηκε"
+
+msgctxt "error"
+msgid "Device disconnected"
+msgstr "Συσκευή αποσυνδεδεμένη"
+
+msgctxt "error"
+msgid "Enter a valid IPv4 or IPv6 address"
+msgstr "Εισαγάγετε μια έγκυρη IPv4 ή IPv6 διεύθυνση"
+
+msgctxt "error"
+msgid "Incorrect 2FA code."
+msgstr "Λανθασμένος κωδικός 2FA."
+
+msgctxt "error"
+msgid "Incorrect credentials."
+msgstr "Λανθασμένα διαπιστευτήρια."
+
+msgctxt "error"
+msgid "Invalid username."
+msgstr "Μη έγκυρο όνομα χρήστη."
+
+msgctxt "error"
+msgid ""
+"Proton services could not be reached.\n"
+"Please try again."
+msgstr ""
+"Δεν ήταν δυνατή η επικοινωνία με τις υπηρεσίες της Proton.\n"
+"Παρακαλούμε δοκιμάστε ξανά."
+
+msgctxt "error"
+msgid "Session limit reached"
+msgstr "Συμπληρώθηκε το όριο περιόδου σύνδεσης"
+
+msgctxt "error"
+msgid "Something went wrong. Please try submitting your report at:\n"
+msgstr ""
+"Κάτι πήγε στραβά. Παρακαλούμε δοκιμάστε να υποβάλετε την αναφορά σας στο:\n"
+
+msgctxt "error"
+msgid "Timeout"
+msgstr "Λήξη χρονικού ορίου"
+
+msgctxt "error"
+msgid "Tunnel setup failed"
+msgstr "Η ρύθμιση της σήραγγας απέτυχε"
+
+msgctxt "error"
+msgid ""
+"Two-factor authentication failed. Security key 2FA is not enabled for your "
+"account."
+msgstr ""
+"Αποτυχία ταυτοποίησης δύο παραγόντων: Το κλειδί ασφαλείας 2FA δεν είναι "
+"ενεργοποιημένο για τον λογαριασμό σας."
+
+msgctxt "error"
+msgid "Two-factor authentication failed: Incorrect PIN"
+msgstr "Αποτυχία ταυτοποίησης δύο παραγόντων: Λανθασμένο PIN"
+
+msgctxt "error"
+msgid "Two-factor authentication failed: No security key detected"
+msgstr ""
+"Η ταυτοποίηση δύο παραγόντων απέτυχε: Δεν εντοπίστηκε κλειδί ασφαλείας"
+
+msgctxt "error"
+msgid ""
+"Two-factor authentication failed: The security key you used is not linked to"
+" your Proton Account."
+msgstr ""
+"Αποτυχία ταυτοποίησης δύο παραγόντων: Το κλειδί ασφαλείας που "
+"χρησιμοποιήσατε δεν είναι συνδεδεμένο με τον λογαριασμό σας Proton."
+
+msgctxt "error"
+msgid "Two-factor authentication failed: Your security key has no PIN set"
+msgstr ""
+"Η ταυτοποίηση δύο παραγόντων απέτυχε: Δεν έχει οριστεί PIN στο κλειδί "
+"ασφαλείας σας"
+
+msgctxt "error"
+msgid "Unable to sign out, please ensure you have internet access."
+msgstr ""
+"Δεν είναι δυνατή η αποσύνδεση, παρακαλούμε βεβαιωθείτε ότι έχετε πρόσβαση "
+"στο διαδίκτυο."
+
+msgctxt "error"
+msgid ""
+"You've reached your maximum device limit. To reconnect to VPN, please "
+"disconnect from another device."
+msgstr ""
+"Έχετε συμπληρώσει το μέγιστο όριο συσκευών. Για να συνδεθείτε ξανά στο VPN, "
+"παρακαλούμε αποσυνδεθείτε από την άλλη συσκευή."
+
+msgctxt "label"
+msgid "6-digit authentication code"
+msgstr "Εξαψήφιος κωδικός ταυτοποίησης"
+
+msgctxt "label"
+msgid "Active port:"
+msgstr "Ενεργή θύρα:"
+
+msgctxt "label"
+msgid "Add new server"
+msgstr "Προσθήκη νέου διακομιστή"
+
+msgctxt "label"
+msgid "All countries ({count})"
+msgstr "Όλες οι χώρες ({count})"
+
+msgctxt "label"
+msgid "Auto-selected from free locations"
+msgstr "Επιλέχθηκε αυτόματα από δωρεάν τοποθεσίες"
+
+msgctxt "label"
+msgid "BETA"
+msgstr "BETA"
+
+msgctxt "label"
+msgid "Block Malware"
+msgstr "Αποκλεισμός Κακόβουλου λογισμικού"
+
+msgctxt "label"
+msgid "Block ads, trackers and malware"
+msgstr "Αποκλείστε διαφημίσεις, ιχνηλάτες και κακόβουλο λογισμικό"
+
+msgctxt "label"
+msgid "Description (minimum {count} characters)"
+msgstr "Περιγραφή (ελάχιστος αριθμός χαρακτήρων {count})"
+
+msgctxt "label"
+msgid "Email"
+msgstr "Email"
+
+msgctxt "label"
+msgid "Excluded apps "
+msgstr "Εξαιρούμενες εφαρμογές "
+
+msgctxt "label"
+msgid "Free"
+msgstr "Free"
+
+msgctxt "label"
+msgid "Included apps "
+msgstr "Συμπεριλαμβανόμενες εφαρμογές "
+
+msgctxt "label"
+msgid "Off"
+msgstr "Ανενεργό"
+
+msgctxt "label"
+msgid "PIN code"
+msgstr "Κωδικός PIN"
+
+msgctxt "label"
+msgid "Proton VPN Linux Client"
+msgstr "Πελάτης Proton VPN Linux"
+
+msgctxt "label"
+msgid "Recovery code"
+msgstr "Κωδικός ανάκτησης"
+
+msgctxt "label"
+msgid "Server load"
+msgstr "Φορτίο διακομιστή"
+
+msgctxt "label"
+msgid "Use Proton protocols"
+msgstr "Χρησιμοποιήστε πρωτόκολλα Proton"
+
+msgctxt "label"
+msgid "Username"
+msgstr "Όνομα Χρήστη"
+
+msgctxt "label"
+msgid "VPN Plus"
+msgstr "VPN Plus"
+
+msgctxt "label"
+msgid "VPN plan: {plan}"
+msgstr "Πλάνο VPN: {plan}"
+
+msgctxt "label"
+msgid "Via Secure Core"
+msgstr "Μέσω Secure Core"
+
+msgctxt "label"
+msgid "Via {country}"
+msgstr "Μέσω {country}"
+
+msgctxt "link"
+msgid "Learn more"
+msgstr "Μάθετε περισσότερα"
+
+msgctxt "menu"
+msgid "About"
+msgstr "Σχετικά"
+
+msgctxt "menu"
+msgid "Quit"
+msgstr "Έξοδος"
+
+msgctxt "menu"
+msgid "Release notes"
+msgstr "Σημειώσεις έκδοσης"
+
+msgctxt "menu"
+msgid "Report an issue"
+msgstr "Αναφορά προβλήματος"
+
+msgctxt "menu"
+msgid "Settings"
+msgstr "Ρυθμίσεις"
+
+msgctxt "menu"
+msgid "Sign out"
+msgstr "Αποσύνδεση"
+
+msgctxt "message"
+msgid ""
+"Access preferred connections from system tray. Enter country or server "
+"codes, separated by commas, to quickly connect (e.g.: NL#42, JP, US, IT#01)."
+msgstr ""
+"Αποκτήστε πρόσβαση στις προτιμώμενες συνδέσεις από την περιοχή ειδοποιήσεων."
+" Εισαγάγετε κωδικούς χώρας ή διακομιστή, διαχωρισμένους με κόμματα, για "
+"γρήγορη σύνδεση (π.χ.: NL#42, JP, US, IT#01)."
+
+msgctxt "message"
+msgid "Active port is {new_port}"
+msgstr "Η ενεργή θύρα είναι {new_port}"
+
+msgctxt "message"
+msgid "Allow selected apps to connect without VPN protection."
+msgstr "Επιτρέψτε σε επιλεγμένες εφαρμογές να συνδέονται χωρίς προστασία VPN."
+
+msgctxt "message"
+msgid ""
+"Beta access has been disabled.\n"
+"Please restart the app for changes to take effect."
+msgstr ""
+"Η πρόσβαση στην έκδοση Beta έχει απενεργοποιηθεί.\n"
+"Παρακαλούμε επανεκκινήστε την εφαρμογή για να ισχύσουν οι αλλαγές."
+
+msgctxt "message"
+msgid ""
+"Beta access has been enabled.\n"
+"Please restart the app for changes to take effect."
+msgstr ""
+"Η πρόσβαση στην έκδοση Beta έχει ενεργοποιηθεί.\n"
+"Παρακαλούμε επανεκκινήστε την εφαρμογή για να ισχύσουν οι αλλαγές."
+
+msgctxt "message"
+msgid ""
+"Bypass firewalls to connect to P2P servers and devices on your local "
+"network. "
+msgstr ""
+"Παρακάμψτε τα τείχη προστασίας για να συνδεθείτε σε διακομιστές και συσκευές"
+" P2P στο τοπικό σας δίκτυο. "
+
+msgctxt "message"
+msgid ""
+"Captures a specific issue you're facing when using Proton VPN to get help from our customer support team.\n"
+"\n"
+"Warning: This file is a recording of all your internet activity during the capture session."
+msgstr ""
+"Καταγράφει ένα συγκεκριμένο πρόβλημα που αντιμετωπίζετε όταν χρησιμοποιείτε το Proton VPN για να λάβετε βοήθεια από την ομάδα υποστήριξης πελατών μας.\n"
+"\n"
+"Προειδοποίηση: Αυτό το αρχείο καταγράφει όλη τη δραστηριότητά σας στο διαδίκτυο κατά τη διάρκεια της συνεδρίας καταγραφής."
+
+msgctxt "message"
+msgid "Connect to Proton VPN using your own domain name servers (DNS)."
+msgstr ""
+"Συνδεθείτε στο Proton VPN χρησιμοποιώντας τους δικούς σας διακομιστές "
+"ονομάτων τομέα (DNS)."
+
+msgctxt "message"
+msgid ""
+"Connect to a Tor server to access hidden services and onion sites using any "
+"browser."
+msgstr ""
+"Συνδεθείτε σε έναν διακομιστή Tor για να αποκτήσετε πρόσβαση σε κρυφές "
+"υπηρεσίες και ιστότοπους onion χρησιμοποιώντας οποιοδήποτε πρόγραμμα "
+"περιήγησης."
+
+msgctxt "message"
+msgid ""
+"Connect to your destination server through a second, maximum security VPN "
+"server. Slower, but more private."
+msgstr ""
+"Συνδεθείτε στον διακομιστή προορισμού σας μέσω ενός δεύτερου, ύψιστης "
+"ασφάλειας διακομιστή VPN. Πιο αργός, αλλά πιο ιδιωτικός."
+
+msgctxt "message"
+msgid "Copied!"
+msgstr "Αντιγράφηκε!"
+
+msgctxt "message"
+msgid ""
+"Crash reports help us fix bugs, detect firewalls, and avoid VPN blocks.\n"
+"\n"
+"These statistics do not contain your IP address, and they cannot be used to identify you. We'll never share them with third parties."
+msgstr ""
+"Οι αναφορές σφαλμάτων μας βοηθούν να διορθώνουμε σφάλματα, να εντοπίζουμε τείχη προστασίας και να αποφεύγουμε τους αποκλεισμούς VPN.\n"
+"\n"
+"Αυτά τα στατιστικά στοιχεία δεν περιέχουν τη διεύθυνση IP σας και δεν μπορούν να χρησιμοποιηθούν για την αναγνώρισή σας. Δε θα τα κοινοποιήσουμε ποτέ σε τρίτους."
+
+msgctxt "message"
+msgid "Customize your connection by deciding which apps are protected by VPN."
+msgstr ""
+"Προσαρμόστε τη σύνδεσή σας αποφασίζοντας ποιες εφαρμογές προστατεύονται από "
+"VPN."
+
+msgctxt "message"
+msgid ""
+"Disables randomization of the local addresses mapping. This can slightly "
+"reduce connection security, but should allow direct connections for online "
+"gaming and similar purposes."
+msgstr ""
+"Απενεργοποιεί την τυχαιοποίηση της αντιστοίχισης τοπικών διευθύνσεων. Αυτό "
+"μπορεί να μειώσει ελαφρώς την ασφάλεια σύνδεσης, αλλά θα πρέπει να επιτρέπει"
+" άμεσες συνδέσεις για διαδικτυακά παιχνίδια και παρόμοιους σκοπούς."
+
+msgctxt "message"
+msgid "Disabling Beta access..."
+msgstr "Απενεργοποίηση πρόσβασης Beta..."
+
+msgctxt "message"
+msgid "Each code can only be used once"
+msgstr "Κάθε κωδικός μπορεί να χρησιμοποιηθεί μόνο μια φορά"
+
+msgctxt "message"
+msgid "Enabling Beta access..."
+msgstr "Ενεργοποίηση πρόσβασης Beta..."
+
+msgctxt "message"
+msgid "Get early access and help us test new versions of Proton VPN."
+msgstr ""
+"Αποκτήστε πρώιμη πρόσβαση και βοηθήστε μας να δοκιμάσουμε νέες εκδόσεις του "
+"Proton VPN."
+
+msgctxt "message"
+msgid "If your security key has a button or a gold disc, tap it now."
+msgstr ""
+"Εάν το κλειδί ασφαλείας σας διαθέτει κουμπί ή χρυσό δίσκο, πατήστε το τώρα."
+
+msgctxt "message"
+msgid ""
+"Increase your connection speed by up to 400% with performance enhancing "
+"technologies."
+msgstr ""
+"Αυξήστε την ταχύτητα σύνδεσής σας έως και 400% με τεχνολογίες βελτίωσης της "
+"απόδοσης."
+
+msgctxt "message"
+msgid "Insert the U2F or FIDO key linked to your Proton Account. "
+msgstr ""
+"Εισάγετε το κλειδί U2F ή FIDO που είναι συνδεδεμένο με τον λογαριασμό σας "
+"Proton. "
+
+msgctxt "message"
+msgid "It was not possible to disable Beta access.\n"
+msgstr "Δεν ήταν δυνατή η απενεργοποίηση της πρόσβασης σε έκδοση Beta.\n"
+
+msgctxt "message"
+msgid "It was not possible to enable Beta access.\n"
+msgstr "Δεν ήταν δυνατή η ενεργοποίηση της πρόσβασης σε έκδοση Beta.\n"
+
+msgctxt "message"
+msgid "Kill switch is blocking any outgoing connections."
+msgstr "Η λειτουργία kill switch αποκλείει τυχόν εξερχόμενες συνδέσεις."
+
+msgctxt "message"
+msgid ""
+"Kill switch selection is disabled while VPN is active. Disconnect to make "
+"changes."
+msgstr ""
+"Η επιλογή kill switch είναι απενεργοποιημένη όσο το VPN είναι ενεργό. "
+"Αποσυνδεθείτε για να κάνετε αλλαγές."
+
+msgctxt "message"
+msgid "Multiple security keys were found. Tap one to select it."
+msgstr "Βρέθηκαν πολλά κλειδιά ασφαλείας. Πατήστε ένα για να το επιλέξετε."
+
+msgctxt "message"
+msgid ""
+"Only selected apps connect with VPN protection. All other traffic is "
+"unprotected."
+msgstr ""
+"Μόνο επιλεγμένες εφαρμογές συνδέονται μέσω VPN, όλη η άλλη κίνηση είναι "
+"απροστάτευτη."
+
+msgctxt "message"
+msgid ""
+"Permanent Kill Switch is blocking any outgoing connections and preventing your IP to be exposed.\n"
+"\n"
+"Do you want to disable Kill Switch?"
+msgstr ""
+"Το μόνιμο Kill Switch μπλοκάρει τυχόν εξερχόμενες συνδέσεις και εμποδίζει την έκθεση της IP σας.\n"
+"\n"
+"Θέλετε να απενεργοποιήσετε το Kill Switch;"
+
+msgctxt "message"
+msgid "Please establish a new VPN connection for changes to take effect."
+msgstr ""
+"Παρακαλούμε δημιουργήστε μια νέα σύνδεση VPN για να ισχύσουν οι αλλαγές."
+
+msgctxt "message"
+msgid "Protect yourself from ads, malware, and trackers on websites and apps."
+msgstr ""
+"Προστατευτείτε από διαφημίσεις, κακόβουλο λογισμικό και ιχνηλάτες σε "
+"ιστότοπους και εφαρμογές."
+
+msgctxt "message"
+msgid "Protocol can only be changed when VPN is disconnected."
+msgstr ""
+"Το πρωτόκολλο μπορεί να αλλάξει μόνο όταν το VPN είναι αποσυνδεδεμένο."
+
+msgctxt "message"
+msgid ""
+"Protocol selection is disabled while VPN is active. Disconnect to make "
+"changes."
+msgstr ""
+"Η επιλογή πρωτοκόλλου είναι απενεργοποιημένη όσο το VPN είναι ενεργό. "
+"Αποσυνδεθείτε για να κάνετε αλλαγές."
+
+msgctxt "message"
+msgid ""
+"Quitting the application will cancel the current VPN connection.\n"
+"\n"
+"Do you want to continue?"
+msgstr ""
+"Η έξοδος από την εφαρμογή θα ακυρώσει την τρέχουσα σύνδεση VPN.\n"
+"\n"
+"Θέλετε να συνεχίσετε;"
+
+msgctxt "message"
+msgid ""
+"Quitting the application will keep the kill switch active, but your current VPN connection will be terminated.\n"
+"\n"
+"Do you want to continue?"
+msgstr ""
+"Η έξοδος από την εφαρμογή θα διατηρήσει ενεργό το kill switch, αλλά η τρέχουσα σύνδεση VPN σας θα τερματιστεί.\n"
+"\n"
+"Θέλετε να συνεχίσετε;"
+
+msgctxt "message"
+msgid "Reporting your issue..."
+msgstr "Αναφορά του προβλήματός σας..."
+
+msgctxt "message"
+msgid "Signing in..."
+msgstr "Σύνδεση ..."
+
+msgctxt "message"
+msgid ""
+"Signing out will cancel the current VPN connection and disable the kill switch.\n"
+"\n"
+"Do you want to continue?"
+msgstr ""
+"Η αποσύνδεση θα ακυρώσει την τρέχουσα σύνδεση VPN και θα απενεργοποιήσει το kill switch.\n"
+"\n"
+"Θέλετε να συνεχίσετε;"
+
+msgctxt "message"
+msgid ""
+"Signing out will cancel the current VPN connection.\n"
+"\n"
+"Do you want to continue?"
+msgstr ""
+"Η αποσύνδεση θα ακυρώσει την τρέχουσα σύνδεση VPN.\n"
+"\n"
+"Θέλετε να συνεχίσετε;"
+
+msgctxt "message"
+msgid ""
+"Signing out will disable the kill switch, potentially exposing your internet traffic. \n"
+"\n"
+"Do you want to continue?"
+msgstr ""
+"Η αποσύνδεση θα απενεργοποιήσει το kill switch, εκθέτοντας ενδεχομένως την κίνηση στο διαδίκτυο.\n"
+"\n"
+"Θέλετε να συνεχίσετε;"
+
+msgctxt "message"
+msgid "Signing out..."
+msgstr "Αποσύνδεση..."
+
+msgctxt "message"
+msgid "Split tunneling enabled. Remember to restart affected apps."
+msgstr ""
+"Ενεργοποιήθηκε η λειτουργία split tunneling. Μην ξεχάσετε να επανεκκινήσετε "
+"τις εφαρμογές που επηρεάζονται."
+
+msgctxt "message"
+msgid ""
+"These servers give the best performance for BitTorrent and file sharing."
+msgstr ""
+"Αυτοί οι διακομιστές παρέχουν καλύτερες επιδόσεις στο διαμοιρασμό αρχείων "
+"και για το BitTorrent."
+
+msgctxt "message"
+msgid ""
+"This technology allows Proton VPN to provide higher speed and security in "
+"difficult-to-reach countries."
+msgstr ""
+"Αυτή η τεχνολογία επιτρέπει στο Proton VPN να παρέχει υψηλότερη ταχύτητα και"
+" ασφάλεια σε χώρες με δύσκολη πρόσβαση."
+
+msgctxt "message"
+msgid "This will disable NetShield."
+msgstr "Αυτό θα απενεργοποιήσει το NetShield."
+
+msgctxt "message"
+msgid "This will disable custom DNS."
+msgstr "Αυτό θα απενεργοποιήσει το προσαρμοσμένο DNS."
+
+msgctxt "message"
+msgid ""
+"Tunnels IPv6 traffic through the VPN. Can enhance compatibility with IPv6 "
+"networks."
+msgstr ""
+"Προωθεί την IPv6 κίνηση μέσω του VPN. Μπορεί να βελτιώσει τη συμβατότητα με "
+"δίκτυα IPv6."
+
+msgctxt "message"
+msgid "When enabled, the app starts minimized to the tray."
+msgstr ""
+"Όταν είναι ενεργοποιημένη, η εφαρμογή ξεκινά ελαχιστοποιημένη στην περιοχή "
+"ειδοποιήσεων."
+
+msgctxt "message"
+msgid ""
+"You will be connected to a server as soon as Proton VPN app starts. Replace "
+"it with a country ISO code (e.g.: US for United States), a server (e.g.: "
+"NL#42) or Fastest for quick connection. Default value: Off."
+msgstr ""
+"Θα συνδεθείτε σε έναν διακομιστή μόλις ξεκινήσει η εφαρμογή Proton VPN. "
+"Αντικαταστήστε τον με έναν κωδικό ISO χώρας (π.χ.: US για Ηνωμένες "
+"Πολιτείες), έναν διακομιστή (π.χ.: NL#42) ή τον Ταχύτερο για γρήγορη "
+"σύνδεση. Προεπιλεγμένη τιμή: Απενεργοποίηση."
+
+msgctxt "message"
+msgid "Your issue has been reported"
+msgstr "Το πρόβλημά σας έχει αναφερθεί"
+
+msgctxt "placeholder"
+msgid "Password"
+msgstr "Κωδικός πρόσβασης"
+
+msgctxt "placeholder"
+msgid "Press Ctrl+F to search"
+msgstr "Πατήστε Ctrl+F για αναζήτηση"
+
+msgctxt "placeholder"
+msgid "Username"
+msgstr "Όνομα χρήστη"
+
+msgctxt "status"
+msgid "Connecting..."
+msgstr "Συνδέεται..."
+
+msgctxt "status"
+msgid "Connection error"
+msgstr "Σφάλμα σύνδεσης"
+
+msgctxt "status"
+msgid "Disconnecting..."
+msgstr "Γίνεται Αποσύνδεση..."
+
+msgctxt "status"
+msgid "Protected"
+msgstr "Προστατευμένο"
+
+msgctxt "status"
+msgid "Unprotected"
+msgstr "Χωρίς προστασία"
+
+msgctxt "title"
+msgid "About"
+msgstr "Σχετικά"
+
+msgctxt "title"
+msgid "Account"
+msgstr "Λογαριασμός"
+
+msgctxt "title"
+msgid "Active connection found"
+msgstr "Βρέθηκε ενεργή σύνδεση"
+
+msgctxt "title"
+msgid "Add excluded apps"
+msgstr "Προσθήκη εξαιρούμενων εφαρμογών"
+
+msgctxt "title"
+msgid "Add included apps"
+msgstr "Προσθήκη περιλαμβανόμενων εφαρμογών"
+
+msgctxt "title"
+msgid "Authenticator app"
+msgstr "Εφαρμογή ταυτοποίησης"
+
+msgctxt "title"
+msgid "Auto connect"
+msgstr "Αυτόματη σύνδεση"
+
+msgctxt "title"
+msgid "Beta Access"
+msgstr "Πρόσβαση Beta"
+
+msgctxt "title"
+msgid "Beta access"
+msgstr "Πρόσβαση Beta"
+
+msgctxt "title"
+msgid "Connection"
+msgstr "Σύνδεση"
+
+msgctxt "title"
+msgid "Connection error: session limit reached"
+msgstr "Σφάλμα σύνδεσης: συμπληρώθηκε το όριο περιόδου σύνδεσης"
+
+msgctxt "title"
+msgid "Countries"
+msgstr "Χώρες"
+
+msgctxt "title"
+msgid "Create a troubleshooting file"
+msgstr "Δημιουργήστε ένα αρχείο αντιμετώπισης προβλημάτων"
+
+msgctxt "title"
+msgid "Custom DNS servers"
+msgstr "Προσαρμοσμένοι διακομιστές DNS"
+
+msgctxt "title"
+msgid "Enable Custom DNS"
+msgstr "Ενεργοποίηση Προσαρμοσμένου DNS"
+
+msgctxt "title"
+msgid "Enable Custom DNS?"
+msgstr "Ενεργοποίηση Προσαρμοσμένου DNS;"
+
+msgctxt "title"
+msgid "Enable Netshield"
+msgstr "Ενεργοποίηση Netshield"
+
+msgctxt "title"
+msgid "Enable Netshield ?"
+msgstr "Ενεργοποίηση Netshield;"
+
+msgctxt "title"
+msgid "Exclude mode"
+msgstr "Λειτουργία εξαίρεσης"
+
+msgctxt "title"
+msgid "Fastest country"
+msgstr "Ταχύτερη χώρα"
+
+msgctxt "title"
+msgid "Fastest free server"
+msgstr "Ο ταχύτερος δωρεάν διακομιστής"
+
+msgctxt "title"
+msgid "Features"
+msgstr "Χαρακτηριστικά"
+
+msgctxt "title"
+msgid "General"
+msgstr "Γενικά"
+
+msgctxt "title"
+msgid "Include mode"
+msgstr "Λειτουργία συμπερίληψης"
+
+msgctxt "title"
+msgid "Kill Switch Enabled"
+msgstr "Ενεργοποιημένο Kill Switch"
+
+msgctxt "title"
+msgid "Kill Switch enabled"
+msgstr "Ενεργοποιημένο Kill Switch"
+
+msgctxt "title"
+msgid "Locations"
+msgstr "Τοποθεσίες"
+
+msgctxt "title"
+msgid "Moderate NAT"
+msgstr "Παραμετροποιήστε το NAT"
+
+msgctxt "title"
+msgid "NetShield"
+msgstr "NetShield"
+
+msgctxt "title"
+msgid "P2P/BitTorrent"
+msgstr "P2P/BitTorrent"
+
+msgctxt "title"
+msgid "Pinned tray connections"
+msgstr "Καρφιτσωμένες συνδέσεις στην περιοχή ειδοποιήσεων"
+
+msgctxt "title"
+msgid "Port forwarding"
+msgstr "Άνοιγμα θυρών"
+
+msgctxt "title"
+msgid "Protocol"
+msgstr "Πρωτόκολλο"
+
+msgctxt "title"
+msgid "Release notes"
+msgstr "Σημειώσεις έκδοσης"
+
+msgctxt "title"
+msgid "Report an Issue"
+msgstr "Αναφορά προβλήματος"
+
+msgctxt "title"
+msgid "Secure Core"
+msgstr "Secure Core"
+
+msgctxt "title"
+msgid "Security key"
+msgstr "Κλειδί ασφαλείας"
+
+msgctxt "title"
+msgid "Select packet capture directory"
+msgstr "Επιλογή καταλόγου καταγραφής πακέτων"
+
+msgctxt "title"
+msgid "Servers"
+msgstr "Διακομιστές"
+
+msgctxt "title"
+msgid "Settings"
+msgstr "Ρυθμίσεις"
+
+msgctxt "title"
+msgid "Share anonymous crash reports"
+msgstr "Κοινοποιήστε ανώνυμες αναφορές σφαλμάτων"
+
+msgctxt "title"
+msgid "Smart routing"
+msgstr "Smart routing"
+
+msgctxt "title"
+msgid "Split tunneling"
+msgstr "Διαίρεση σήραγγας"
+
+msgctxt "title"
+msgid "Start app minimized"
+msgstr "Έναρξη εφαρμογής ελαχιστοποιημένη"
+
+msgctxt "title"
+msgid "Tor"
+msgstr "Tor"
+
+msgctxt "title"
+msgid "Two-factor authentication"
+msgstr "Ταυτοποίηση δύο παραγόντων (2FA)"
+
+msgctxt "title"
+msgid "VPN Accelerator"
+msgstr "VPN Accelerator"
+
+msgctxt "tooltip"
+msgid "Close"
+msgstr "Κλείσιμο"
+
+msgctxt "tooltip"
+msgid "Connect to {country_name}"
+msgstr "Σύνδεση με {country_name}"
+
+msgctxt "tooltip"
+msgid "Connect to {country} via Secure Core"
+msgstr "Σύνδεση με {country} μέσω Secure Core"
+
+msgctxt "tooltip"
+msgid "Connect to {exit_country} via {entry_country}"
+msgstr "Σύνδεση σε {exit_country} μέσω {entry_country}"
+
+msgctxt "tooltip"
+msgid "Connect to {name}"
+msgstr "Σύνδεση με {name}"
+
+msgctxt "tooltip"
+msgid "Copy port number"
+msgstr "Αντιγραφή αριθμού θύρας"
+
+msgctxt "tooltip"
+msgid ""
+"Hide all Secure Core servers\n"
+"to connect to {country}"
+msgstr ""
+"Απόκρυψη όλων των διακομιστών Secure Core\n"
+"για σύνδεση στη {country}"
+
+msgctxt "tooltip"
+msgid "Hide all locations from {country_name}"
+msgstr "Απόκρυψη όλων των τοποθεσιών από {country_name}"
+
+msgctxt "tooltip"
+msgid "Hide all servers from {name}"
+msgstr "Απόκρυψη όλων των διακομιστών από το {name}"
+
+msgctxt "tooltip"
+msgid "P2P/BitTorrent supported"
+msgstr "Υποστηρίζεται P2P/BitTorrent"
+
+msgctxt "tooltip"
+msgid ""
+"Secure Core server that connects to {exit_country} through {entry_country}."
+msgstr ""
+"Secure Core διακομιστής που συνδέεται με το {exit_country} μέσω του "
+"{entry_country}."
+
+msgctxt "tooltip"
+msgid "Secure Core supported"
+msgstr "Υποστηρίζεται Secure Core"
+
+msgctxt "tooltip"
+msgid "Server load is at {load}%"
+msgstr "Το φορτίο του διακομιστή είναι στο {load}%"
+
+msgctxt "tooltip"
+msgid ""
+"Show all Secure Core servers\n"
+"to connect to {country}"
+msgstr ""
+"Προβολή όλων των διακομιστών Secure Core\n"
+"για σύνδεση στη {country}"
+
+msgctxt "tooltip"
+msgid "Show all locations from {country_name}"
+msgstr "Εμφάνιση όλων των τοποθεσιών από {country_name}"
+
+msgctxt "tooltip"
+msgid "Show all servers from {name}"
+msgstr "Εμφάνιση όλων των διακομιστών από {name}"
+
+msgctxt "tooltip"
+msgid "Smart routing is used"
+msgstr "Χρησιμοποιείται έξυπνη δρομολόγηση"
+
+msgctxt "tooltip"
+msgid "Streaming supported"
+msgstr "Υποστηρίζονται Ροές"
+
+msgctxt "tooltip"
+msgid "To change split tunneling settings, please disconnect the VPN first."
+msgstr ""
+"Για να αλλάξετε τις ρυθμίσεις διαίρεσης σήραγγας, παρακαλούμε αποσυνδέστε "
+"πρώτα το VPN."
+
+msgctxt "tooltip"
+msgid "Tor supported"
+msgstr "Υποστηρίζεται Tor"
+
+msgctxt "tooltip"
+msgid "Upgrade to connect to {country_name}"
+msgstr "Αναβαθμίστε για να συνδεθείτε με {country_name}"
+
+msgctxt "tooltip"
+msgid "Upgrade to connect to {country} via Secure Core"
+msgstr "Αναβαθμίστε για να συνδεθείτε στο {country} μέσω Secure Core"
+
+msgctxt "tooltip"
+msgid "Upgrade to connect to {exit_country} via {entry_country}"
+msgstr "Αναβαθμίστε για να συνδεθείτε στο {exit_country} μέσω {entry_country}"
+
+msgctxt "tooltip"
+msgid "Upgrade to connect to {name}"
+msgstr "Αναβαθμίστε για να συνδεθείτε με {name}"
+
+msgctxt "tooltip"
+msgid "{name} is under maintenance"
+msgstr "{name} είναι υπό συντήρηση"

@@ -1,0 +1,1983 @@
+#
+msgid ""
+msgstr ""
+"Language-Team: Belarusian\n"
+"Language: be_BY\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+
+msgctxt "button"
+msgid "Add"
+msgstr "Дадаць"
+
+msgctxt "button"
+msgid "Authenticate"
+msgstr "Аўтэнтыфікаваць"
+
+msgctxt "button"
+msgid "Browse"
+msgstr "Агляд"
+
+msgctxt "button"
+msgid "Cancel"
+msgstr "Скасаваць"
+
+msgctxt "button"
+msgid "Cancel Connection"
+msgstr "Скасаваць падключэнне"
+
+msgctxt "button"
+msgid "Connect"
+msgstr "Падключыць"
+
+msgctxt "button"
+msgid "Create Account"
+msgstr "Стварыць уліковы запіс"
+
+msgctxt "button"
+msgid "Disable"
+msgstr "Адключыць"
+
+msgctxt "button"
+msgid "Disconnect"
+msgstr "Адключыцца"
+
+msgctxt "button"
+msgid "Done"
+msgstr "Гатова"
+
+msgctxt "button"
+msgid "Learn more"
+msgstr "Даведацца больш"
+
+msgctxt "button"
+msgid "Manage Account"
+msgstr "Кіраванне ўліковым запісам"
+
+msgctxt "button"
+msgid "Need Help?"
+msgstr "Неабходна дапамога?"
+
+msgctxt "button"
+msgid "Send error logs"
+msgstr "Адправіць журналы з памылкамі"
+
+msgctxt "button"
+msgid "Sign in"
+msgstr "Увайсці"
+
+msgctxt "button"
+msgid "Start"
+msgstr "Пачаць"
+
+msgctxt "button"
+msgid "Stop"
+msgstr "Спыніць"
+
+msgctxt "button"
+msgid "Upgrade"
+msgstr "Палепшыць"
+
+msgctxt "button"
+msgid "Use 6-digit authentication code"
+msgstr "Выкарыстаць 6-значны код аўтэнтыфікацыі"
+
+msgctxt "button"
+msgid "Use recovery code"
+msgstr "Скарыстацца кодам аднаўлення"
+
+msgctxt "button"
+msgid "_Cancel"
+msgstr "_Скасаваць"
+
+msgctxt "button"
+msgid "_Close"
+msgstr "_Закрыць"
+
+msgctxt "button"
+msgid "_Enable"
+msgstr "_Уключыць"
+
+msgctxt "button"
+msgid "_Select"
+msgstr "_Выбраць"
+
+msgctxt "button"
+msgid "_Submit"
+msgstr "_Адправіць"
+
+msgctxt "button"
+msgid "_Yes"
+msgstr "_Так"
+
+msgctxt "country"
+msgid "Afghanistan"
+msgstr "Афганістан"
+
+msgctxt "country"
+msgid "Aland Islands"
+msgstr "Аландскія астравы"
+
+msgctxt "country"
+msgid "Albania"
+msgstr "Албанія"
+
+msgctxt "country"
+msgid "Algeria"
+msgstr "Алжыр"
+
+msgctxt "country"
+msgid "American Samoa"
+msgstr "Амерыканскае Самоа"
+
+msgctxt "country"
+msgid "Andorra"
+msgstr "Андора"
+
+msgctxt "country"
+msgid "Angola"
+msgstr "Ангола"
+
+msgctxt "country"
+msgid "Anguilla"
+msgstr "Ангілья"
+
+msgctxt "country"
+msgid "Antarctica"
+msgstr "Антарктыда"
+
+msgctxt "country"
+msgid "Antigua and Barbuda"
+msgstr "Антыгуа і Барбуда"
+
+msgctxt "country"
+msgid "Argentina"
+msgstr "Аргенціна"
+
+msgctxt "country"
+msgid "Armenia"
+msgstr "Арменія"
+
+msgctxt "country"
+msgid "Aruba"
+msgstr "Аруба"
+
+msgctxt "country"
+msgid "Australia"
+msgstr "Аўстралія"
+
+msgctxt "country"
+msgid "Austria"
+msgstr "Аўстрыя"
+
+msgctxt "country"
+msgid "Azerbaijan"
+msgstr "Азербайджан"
+
+msgctxt "country"
+msgid "Bahamas"
+msgstr "Багамскія астравы"
+
+msgctxt "country"
+msgid "Bahrain"
+msgstr "Бахрэйн"
+
+msgctxt "country"
+msgid "Bangladesh"
+msgstr "Бангладэш"
+
+msgctxt "country"
+msgid "Barbados"
+msgstr "Барбадас"
+
+msgctxt "country"
+msgid "Belarus"
+msgstr "Беларусь"
+
+msgctxt "country"
+msgid "Belgium"
+msgstr "Бельгія"
+
+msgctxt "country"
+msgid "Belize"
+msgstr "Беліз"
+
+msgctxt "country"
+msgid "Benin"
+msgstr "Бенін"
+
+msgctxt "country"
+msgid "Bermuda"
+msgstr "Бермудскія астравы"
+
+msgctxt "country"
+msgid "Bhutan"
+msgstr "Бутан"
+
+msgctxt "country"
+msgid "Bolivia"
+msgstr "Балівія"
+
+msgctxt "country"
+msgid "Bonaire, Saint Eustatius and Saba "
+msgstr "Банайрэ, Сінт-Эстатыус і Саба "
+
+msgctxt "country"
+msgid "Bosnia and Herzegovina"
+msgstr "Боснія і Герцагавіна"
+
+msgctxt "country"
+msgid "Botswana"
+msgstr "Батсвана"
+
+msgctxt "country"
+msgid "Bouvet Island"
+msgstr "Востраў Буве"
+
+msgctxt "country"
+msgid "Brazil"
+msgstr "Бразілія"
+
+msgctxt "country"
+msgid "British Indian Ocean Territory"
+msgstr "Брытанская тэрыторыя ў Індыйскім акіяне"
+
+msgctxt "country"
+msgid "British Virgin Islands"
+msgstr "Брытанскія Віргінскія астравы"
+
+msgctxt "country"
+msgid "Brunei"
+msgstr "Бруней"
+
+msgctxt "country"
+msgid "Bulgaria"
+msgstr "Балгарыя"
+
+msgctxt "country"
+msgid "Burkina Faso"
+msgstr "Буркіна-Фасо"
+
+msgctxt "country"
+msgid "Burundi"
+msgstr "Бурундзі"
+
+msgctxt "country"
+msgid "Cambodia"
+msgstr "Камбоджа"
+
+msgctxt "country"
+msgid "Cameroon"
+msgstr "Камерун"
+
+msgctxt "country"
+msgid "Canada"
+msgstr "Канада"
+
+msgctxt "country"
+msgid "Cape Verde"
+msgstr "Каба-Вердэ"
+
+msgctxt "country"
+msgid "Cayman Islands"
+msgstr "Кайманавы астравы"
+
+msgctxt "country"
+msgid "Central African Republic"
+msgstr "Цэнтральна-Афрыканская Рэспубліка"
+
+msgctxt "country"
+msgid "Chad"
+msgstr "Чад"
+
+msgctxt "country"
+msgid "Chile"
+msgstr "Чылі"
+
+msgctxt "country"
+msgid "China"
+msgstr "Кітай"
+
+msgctxt "country"
+msgid "Christmas Island"
+msgstr "Востраў Каляд"
+
+msgctxt "country"
+msgid "Cocos Islands"
+msgstr "Какосавыя (Кілінг) астравы"
+
+msgctxt "country"
+msgid "Colombia"
+msgstr "Калумбія"
+
+msgctxt "country"
+msgid "Comoros"
+msgstr "Каморскія астравы"
+
+msgctxt "country"
+msgid "Cook Islands"
+msgstr "Астравы Кука"
+
+msgctxt "country"
+msgid "Costa Rica"
+msgstr "Коста-Рыка"
+
+msgctxt "country"
+msgid "Croatia"
+msgstr "Харватыя"
+
+msgctxt "country"
+msgid "Cuba"
+msgstr "Куба"
+
+msgctxt "country"
+msgid "Curacao"
+msgstr "Кюрасаа"
+
+msgctxt "country"
+msgid "Cyprus"
+msgstr "Кіпр"
+
+msgctxt "country"
+msgid "Czech Republic"
+msgstr "Рэспубліка Чэхія"
+
+msgctxt "country"
+msgid "Democratic Republic of the Congo"
+msgstr "Дэмакратычная Рэспубліка Конга"
+
+msgctxt "country"
+msgid "Denmark"
+msgstr "Данія"
+
+msgctxt "country"
+msgid "Djibouti"
+msgstr "Джыбуці"
+
+msgctxt "country"
+msgid "Dominica"
+msgstr "Дамініка"
+
+msgctxt "country"
+msgid "Dominican Republic"
+msgstr "Дамініканская Рэспубліка"
+
+msgctxt "country"
+msgid "East Timor"
+msgstr "Усходні Тымор"
+
+msgctxt "country"
+msgid "Ecuador"
+msgstr "Эквадор"
+
+msgctxt "country"
+msgid "Egypt"
+msgstr "Егіпет"
+
+msgctxt "country"
+msgid "El Salvador"
+msgstr "Сальвадор"
+
+msgctxt "country"
+msgid "Equatorial Guinea"
+msgstr "Экватарыяльная Гвінея"
+
+msgctxt "country"
+msgid "Eritrea"
+msgstr "Эрытрэя"
+
+msgctxt "country"
+msgid "Estonia"
+msgstr "Эстонія"
+
+msgctxt "country"
+msgid "Ethiopia"
+msgstr "Эфіопія"
+
+msgctxt "country"
+msgid "Falkland Islands"
+msgstr "Фалклендскія астравы"
+
+msgctxt "country"
+msgid "Faroe Islands"
+msgstr "Фарэрскія астравы"
+
+msgctxt "country"
+msgid "Fiji"
+msgstr "Фіджы"
+
+msgctxt "country"
+msgid "Finland"
+msgstr "Фінляндыя"
+
+msgctxt "country"
+msgid "France"
+msgstr "Францыя"
+
+msgctxt "country"
+msgid "French Guiana"
+msgstr "Французская Гвіяна"
+
+msgctxt "country"
+msgid "French Polynesia"
+msgstr "Французская Палінезія"
+
+msgctxt "country"
+msgid "French Southern Territories"
+msgstr "Французскія Паўднёвыя тэрыторыі"
+
+msgctxt "country"
+msgid "Gabon"
+msgstr "Габон"
+
+msgctxt "country"
+msgid "Gambia"
+msgstr "Гамбія"
+
+msgctxt "country"
+msgid "Georgia"
+msgstr "Грузія"
+
+msgctxt "country"
+msgid "Germany"
+msgstr "Германія"
+
+msgctxt "country"
+msgid "Ghana"
+msgstr "Гана"
+
+msgctxt "country"
+msgid "Gibraltar"
+msgstr "Гібралтар"
+
+msgctxt "country"
+msgid "Greece"
+msgstr "Грэцыя"
+
+msgctxt "country"
+msgid "Greenland"
+msgstr "Грэнландыя"
+
+msgctxt "country"
+msgid "Grenada"
+msgstr "Грэнада"
+
+msgctxt "country"
+msgid "Guadeloupe"
+msgstr "Гвадэлупа"
+
+msgctxt "country"
+msgid "Guam"
+msgstr "Гуам"
+
+msgctxt "country"
+msgid "Guatemala"
+msgstr "Гватэмала"
+
+msgctxt "country"
+msgid "Guernsey"
+msgstr "Гернсі"
+
+msgctxt "country"
+msgid "Guinea"
+msgstr "Гвінея"
+
+msgctxt "country"
+msgid "Guinea-Bissau"
+msgstr "Гвінея-Бісау"
+
+msgctxt "country"
+msgid "Guyana"
+msgstr "Гаяна"
+
+msgctxt "country"
+msgid "Haiti"
+msgstr "Гаіці"
+
+msgctxt "country"
+msgid "Heard Island and McDonald Islands"
+msgstr "Востраў Херд і Астравы Мак-Доналд"
+
+msgctxt "country"
+msgid "Honduras"
+msgstr "Гандурас"
+
+msgctxt "country"
+msgid "Hong Kong"
+msgstr "Ганконг"
+
+msgctxt "country"
+msgid "Hungary"
+msgstr "Венгрыя"
+
+msgctxt "country"
+msgid "Iceland"
+msgstr "Ісландыя"
+
+msgctxt "country"
+msgid "India"
+msgstr "Індыя"
+
+msgctxt "country"
+msgid "Indonesia"
+msgstr "Інданезія"
+
+msgctxt "country"
+msgid "Iran"
+msgstr "Іран"
+
+msgctxt "country"
+msgid "Iraq"
+msgstr "Ірак"
+
+msgctxt "country"
+msgid "Ireland"
+msgstr "Ірландыя"
+
+msgctxt "country"
+msgid "Isle of Man"
+msgstr "Востраў Мэн"
+
+msgctxt "country"
+msgid "Israel"
+msgstr "Ізраіль"
+
+msgctxt "country"
+msgid "Italy"
+msgstr "Італія"
+
+msgctxt "country"
+msgid "Ivory Coast"
+msgstr "Бераг Слановай Косці"
+
+msgctxt "country"
+msgid "Jamaica"
+msgstr "Ямайка"
+
+msgctxt "country"
+msgid "Japan"
+msgstr "Японія"
+
+msgctxt "country"
+msgid "Jersey"
+msgstr "Джэрсі"
+
+msgctxt "country"
+msgid "Jordan"
+msgstr "Іарданія"
+
+msgctxt "country"
+msgid "Kazakhstan"
+msgstr "Казахстан"
+
+msgctxt "country"
+msgid "Kenya"
+msgstr "Кенія"
+
+msgctxt "country"
+msgid "Kiribati"
+msgstr "Кірыбаці"
+
+msgctxt "country"
+msgid "Kosovo"
+msgstr "Косава"
+
+msgctxt "country"
+msgid "Kuwait"
+msgstr "Кувейт"
+
+msgctxt "country"
+msgid "Kyrgyzstan"
+msgstr "Кыргызстан"
+
+msgctxt "country"
+msgid "Laos"
+msgstr "Лаос"
+
+msgctxt "country"
+msgid "Latvia"
+msgstr "Латвія"
+
+msgctxt "country"
+msgid "Lebanon"
+msgstr "Ліван"
+
+msgctxt "country"
+msgid "Lesotho"
+msgstr "Лесота"
+
+msgctxt "country"
+msgid "Liberia"
+msgstr "Ліберыя"
+
+msgctxt "country"
+msgid "Libya"
+msgstr "Лівія"
+
+msgctxt "country"
+msgid "Liechtenstein"
+msgstr "Ліхтэнштэйн"
+
+msgctxt "country"
+msgid "Lithuania"
+msgstr "Літва"
+
+msgctxt "country"
+msgid "Luxembourg"
+msgstr "Люксембург"
+
+msgctxt "country"
+msgid "Macao"
+msgstr "Макаа"
+
+msgctxt "country"
+msgid "Macedonia"
+msgstr "Македонія"
+
+msgctxt "country"
+msgid "Madagascar"
+msgstr "Мадагаскар"
+
+msgctxt "country"
+msgid "Malawi"
+msgstr "Малаві"
+
+msgctxt "country"
+msgid "Malaysia"
+msgstr "Малайзія"
+
+msgctxt "country"
+msgid "Maldives"
+msgstr "Мальдывы"
+
+msgctxt "country"
+msgid "Mali"
+msgstr "Малі"
+
+msgctxt "country"
+msgid "Malta"
+msgstr "Мальта"
+
+msgctxt "country"
+msgid "Marshall Islands"
+msgstr "Маршалавы астравы"
+
+msgctxt "country"
+msgid "Martinique"
+msgstr "Марцініка"
+
+msgctxt "country"
+msgid "Mauritania"
+msgstr "Маўрытанія"
+
+msgctxt "country"
+msgid "Mauritius"
+msgstr "Маўрыкій"
+
+msgctxt "country"
+msgid "Mayotte"
+msgstr "Маёта"
+
+msgctxt "country"
+msgid "Mexico"
+msgstr "Мексіка"
+
+msgctxt "country"
+msgid "Micronesia"
+msgstr "Мікранезія"
+
+msgctxt "country"
+msgid "Moldova"
+msgstr "Малдова"
+
+msgctxt "country"
+msgid "Monaco"
+msgstr "Манака"
+
+msgctxt "country"
+msgid "Mongolia"
+msgstr "Манголія"
+
+msgctxt "country"
+msgid "Montenegro"
+msgstr "Чарнагорыя"
+
+msgctxt "country"
+msgid "Montserrat"
+msgstr "Мантсерат"
+
+msgctxt "country"
+msgid "Morocco"
+msgstr "Марока"
+
+msgctxt "country"
+msgid "Mozambique"
+msgstr "Мазамбік"
+
+msgctxt "country"
+msgid "Myanmar"
+msgstr "М’янма"
+
+msgctxt "country"
+msgid "Namibia"
+msgstr "Намібія"
+
+msgctxt "country"
+msgid "Nauru"
+msgstr "Науру"
+
+msgctxt "country"
+msgid "Nepal"
+msgstr "Непал"
+
+msgctxt "country"
+msgid "Netherlands"
+msgstr "Нідэрланды"
+
+msgctxt "country"
+msgid "New Caledonia"
+msgstr "Новая Каледонія"
+
+msgctxt "country"
+msgid "New Zealand"
+msgstr "Новая Зеландыя"
+
+msgctxt "country"
+msgid "Nicaragua"
+msgstr "Нікарагуа"
+
+msgctxt "country"
+msgid "Niger"
+msgstr "Нігер"
+
+msgctxt "country"
+msgid "Nigeria"
+msgstr "Нігерыя"
+
+msgctxt "country"
+msgid "Niue"
+msgstr "Ніуэ"
+
+msgctxt "country"
+msgid "Norfolk Island"
+msgstr "Востраў Норфалк"
+
+msgctxt "country"
+msgid "North Korea"
+msgstr "Паўночная Карэя"
+
+msgctxt "country"
+msgid "Northern Mariana Islands"
+msgstr "Паўночныя Марыянскія астравы"
+
+msgctxt "country"
+msgid "Norway"
+msgstr "Нарвегія"
+
+msgctxt "country"
+msgid "Oman"
+msgstr "Аман"
+
+msgctxt "country"
+msgid "Pakistan"
+msgstr "Пакістан"
+
+msgctxt "country"
+msgid "Palau"
+msgstr "Палау"
+
+msgctxt "country"
+msgid "Palestinian Territory"
+msgstr "Дзяржава Палесціна"
+
+msgctxt "country"
+msgid "Panama"
+msgstr "Панама"
+
+msgctxt "country"
+msgid "Papua New Guinea"
+msgstr "Папуа-Новая Гвінея"
+
+msgctxt "country"
+msgid "Paraguay"
+msgstr "Парагвай"
+
+msgctxt "country"
+msgid "Peru"
+msgstr "Перу"
+
+msgctxt "country"
+msgid "Philippines"
+msgstr "Філіпіны"
+
+msgctxt "country"
+msgid "Pitcairn"
+msgstr "Астравы Піткэрн"
+
+msgctxt "country"
+msgid "Poland"
+msgstr "Польшча"
+
+msgctxt "country"
+msgid "Portugal"
+msgstr "Партугалія"
+
+msgctxt "country"
+msgid "Puerto Rico"
+msgstr "Пуэрта-Рыка"
+
+msgctxt "country"
+msgid "Qatar"
+msgstr "Катар"
+
+msgctxt "country"
+msgid "Republic of the Congo"
+msgstr "Рэспубліка Конга"
+
+msgctxt "country"
+msgid "Reunion"
+msgstr "Рэюньён"
+
+msgctxt "country"
+msgid "Romania"
+msgstr "Румынія"
+
+msgctxt "country"
+msgid "Russia"
+msgstr "Расія"
+
+msgctxt "country"
+msgid "Rwanda"
+msgstr "Руанда"
+
+msgctxt "country"
+msgid "Saint Barthelemy"
+msgstr "Сен-Бартэльмі"
+
+msgctxt "country"
+msgid "Saint Helena"
+msgstr "Востраў Святой Алены"
+
+msgctxt "country"
+msgid "Saint Kitts and Nevis"
+msgstr "Сэнт-Кітс і Нэвіс"
+
+msgctxt "country"
+msgid "Saint Lucia"
+msgstr "Сент-Люсія"
+
+msgctxt "country"
+msgid "Saint Martin"
+msgstr "Сен-Мартэн"
+
+msgctxt "country"
+msgid "Saint Pierre and Miquelon"
+msgstr "Сен-П’ер і Мікелон"
+
+msgctxt "country"
+msgid "Saint Vincent and the Grenadines"
+msgstr "Сент-Вінсент і Грэнадзіны"
+
+msgctxt "country"
+msgid "Samoa"
+msgstr "Самоа"
+
+msgctxt "country"
+msgid "San Marino"
+msgstr "Сан-Марына"
+
+msgctxt "country"
+msgid "Sao Tome and Principe"
+msgstr "Сан-Тамэ і Прынсіпі"
+
+msgctxt "country"
+msgid "Saudi Arabia"
+msgstr "Саудаўская Аравія"
+
+msgctxt "country"
+msgid "Senegal"
+msgstr "Сенегал"
+
+msgctxt "country"
+msgid "Serbia"
+msgstr "Сербія"
+
+msgctxt "country"
+msgid "Seychelles"
+msgstr "Сейшэльскія астравы"
+
+msgctxt "country"
+msgid "Sierra Leone"
+msgstr "Сьера-Леонэ"
+
+msgctxt "country"
+msgid "Singapore"
+msgstr "Сінгапур"
+
+msgctxt "country"
+msgid "Sint Maarten"
+msgstr "Сінт-Мартэн"
+
+msgctxt "country"
+msgid "Slovakia"
+msgstr "Славакія"
+
+msgctxt "country"
+msgid "Slovenia"
+msgstr "Славенія"
+
+msgctxt "country"
+msgid "Solomon Islands"
+msgstr "Саламонавы астравы"
+
+msgctxt "country"
+msgid "Somalia"
+msgstr "Самалі"
+
+msgctxt "country"
+msgid "South Africa"
+msgstr "Паўднёва-Афрыканская Рэспубліка"
+
+msgctxt "country"
+msgid "South Georgia and the South Sandwich Islands"
+msgstr "Паўднёвая Джорджыя і Паўднёвыя Сандвічавы астравы"
+
+msgctxt "country"
+msgid "South Korea"
+msgstr "Паўднёвая Карэя"
+
+msgctxt "country"
+msgid "South Sudan"
+msgstr "Паўднёвы Судан"
+
+msgctxt "country"
+msgid "Spain"
+msgstr "Іспанія"
+
+msgctxt "country"
+msgid "Sri Lanka"
+msgstr "Шры-Ланка"
+
+msgctxt "country"
+msgid "Sudan"
+msgstr "Судан"
+
+msgctxt "country"
+msgid "Suriname"
+msgstr "Сурынам"
+
+msgctxt "country"
+msgid "Svalbard and Jan Mayen"
+msgstr "Шпіцберген і Ян-Маен"
+
+msgctxt "country"
+msgid "Swaziland"
+msgstr "Свазіленд"
+
+msgctxt "country"
+msgid "Sweden"
+msgstr "Швецыя"
+
+msgctxt "country"
+msgid "Switzerland"
+msgstr "Швейцарыя"
+
+msgctxt "country"
+msgid "Syria"
+msgstr "Сірыя"
+
+msgctxt "country"
+msgid "Taiwan"
+msgstr "Тайвань"
+
+msgctxt "country"
+msgid "Tajikistan"
+msgstr "Таджыкістан"
+
+msgctxt "country"
+msgid "Tanzania"
+msgstr "Танзанія"
+
+msgctxt "country"
+msgid "Thailand"
+msgstr "Тайланд"
+
+msgctxt "country"
+msgid "Togo"
+msgstr "Тога"
+
+msgctxt "country"
+msgid "Tokelau"
+msgstr "Такелау"
+
+msgctxt "country"
+msgid "Tonga"
+msgstr "Тонга"
+
+msgctxt "country"
+msgid "Trinidad and Tobago"
+msgstr "Трынідад і Табага"
+
+msgctxt "country"
+msgid "Tunisia"
+msgstr "Туніс"
+
+msgctxt "country"
+msgid "Turkey"
+msgstr "Турцыя"
+
+msgctxt "country"
+msgid "Turkmenistan"
+msgstr "Туркменістан"
+
+msgctxt "country"
+msgid "Turks and Caicos Islands"
+msgstr "Астравы Цёркс і Кайкас"
+
+msgctxt "country"
+msgid "Tuvalu"
+msgstr "Тувалу"
+
+msgctxt "country"
+msgid "U.S. Virgin Islands"
+msgstr "Віргінскія астравы (ЗША)"
+
+msgctxt "country"
+msgid "Uganda"
+msgstr "Уганда"
+
+msgctxt "country"
+msgid "Ukraine"
+msgstr "Украіна"
+
+msgctxt "country"
+msgid "United Arab Emirates"
+msgstr "Аб’яднаныя Арабскія Эміраты"
+
+msgctxt "country"
+msgid "United Kingdom"
+msgstr "Вялікабрытанія"
+
+msgctxt "country"
+msgid "United States"
+msgstr "ЗША"
+
+msgctxt "country"
+msgid "United States Minor Outlying Islands"
+msgstr "Малыя аддаленыя астравы ЗША"
+
+msgctxt "country"
+msgid "Uruguay"
+msgstr "Уругвай"
+
+msgctxt "country"
+msgid "Uzbekistan"
+msgstr "Узбекістан"
+
+msgctxt "country"
+msgid "Vanuatu"
+msgstr "Вануату"
+
+msgctxt "country"
+msgid "Vatican"
+msgstr "Ватыкан"
+
+msgctxt "country"
+msgid "Venezuela"
+msgstr "Венесуэла"
+
+msgctxt "country"
+msgid "Vietnam"
+msgstr "В’етнам"
+
+msgctxt "country"
+msgid "Wallis and Futuna"
+msgstr "Уоліс і Футуна"
+
+msgctxt "country"
+msgid "Western Sahara"
+msgstr "Заходняя Сахара"
+
+msgctxt "country"
+msgid "Yemen"
+msgstr "Емен"
+
+msgctxt "country"
+msgid "Zambia"
+msgstr "Замбія"
+
+msgctxt "country"
+msgid "Zimbabwe"
+msgstr "Зімбабвэ"
+
+msgctxt "error"
+msgid "An unknown error occurred"
+msgstr "Адбылася невядомая памылка"
+
+msgctxt "error"
+msgid "Authentication denied"
+msgstr "Аўтэнтыфікацыя адхілена"
+
+msgctxt "error"
+msgid "Device disconnected"
+msgstr "Прылада адключана"
+
+msgctxt "error"
+msgid "Enter a valid IPv4 or IPv6 address"
+msgstr "Увядзіце сапраўдны адрас IPv4 або IPv6"
+
+msgctxt "error"
+msgid "Incorrect 2FA code."
+msgstr "Няправільны код 2ФА."
+
+msgctxt "error"
+msgid "Incorrect credentials."
+msgstr "Няправільныя ўліковыя даныя."
+
+msgctxt "error"
+msgid "Invalid username."
+msgstr "Памылковае імя карыстальніка."
+
+msgctxt "error"
+msgid ""
+"Proton services could not be reached.\n"
+"Please try again."
+msgstr ""
+"Немагчыма звязацца з сэрвісамі Proton.\n"
+"Паспрабуйце яшчэ раз."
+
+msgctxt "error"
+msgid "Session limit reached"
+msgstr "Дасягнута абмежаванне па колькасці сеансаў"
+
+msgctxt "error"
+msgid "Something went wrong. Please try submitting your report at:\n"
+msgstr "Нешта пайшло не так. Паспрабуйце адправіць сваю справаздачу:\n"
+
+msgctxt "error"
+msgid "Timeout"
+msgstr "Час чакання"
+
+msgctxt "error"
+msgid "Tunnel setup failed"
+msgstr "Збой наладжвання тунэлю"
+
+msgctxt "error"
+msgid ""
+"Two-factor authentication failed. Security key 2FA is not enabled for your "
+"account."
+msgstr ""
+"Збой двухфактарнай аўтэнтыфікацыі. Функцыя ключа бяспекі 2ФА не ўключана для"
+" вашага ўліковага запісу."
+
+msgctxt "error"
+msgid "Two-factor authentication failed: Incorrect PIN"
+msgstr "Збой двухфактарнай аўтэнтыфікацыі: няправільны PIN"
+
+msgctxt "error"
+msgid "Two-factor authentication failed: No security key detected"
+msgstr "Збой двухфактарнай аўтэнтыфікацыі: ключ бяспекі не выяўлены"
+
+msgctxt "error"
+msgid ""
+"Two-factor authentication failed: The security key you used is not linked to"
+" your Proton Account."
+msgstr ""
+"Збой двухфактарнай аўтэнтыфікацыі: ключ бяспекі, якім вы карыстаецеся, не "
+"звязаны з вашым уліковым запісам Proton."
+
+msgctxt "error"
+msgid "Two-factor authentication failed: Your security key has no PIN set"
+msgstr ""
+"Збой двухфактарнай аўтэнтыфікацыі: у вашага ключа адсутнічае зададзены PIN"
+
+msgctxt "error"
+msgid "Unable to sign out, please ensure you have internet access."
+msgstr "Немагчыма выйсці. Пераканайце, што вы падключаны да інтэрнэту."
+
+msgctxt "error"
+msgid ""
+"You've reached your maximum device limit. To reconnect to VPN, please "
+"disconnect from another device."
+msgstr ""
+"Дасягнута абмежаванне па максімальнай колькасці прылад. Адключыце якую-"
+"небудзь прыладу, каб перападключыцца да VPN."
+
+msgctxt "label"
+msgid "6-digit authentication code"
+msgstr "6-значны код аўтэнтыфікацыі"
+
+msgctxt "label"
+msgid "Active port:"
+msgstr "Актыўны порт:"
+
+msgctxt "label"
+msgid "Add new server"
+msgstr "Дадаць новы сервер"
+
+msgctxt "label"
+msgid "All countries ({count})"
+msgstr "Усе краіны ({count})"
+
+msgctxt "label"
+msgid "Auto-selected from free locations"
+msgstr "Аўтаматычны выбар з бясплатных месцазнаходжанняў"
+
+msgctxt "label"
+msgid "BETA"
+msgstr "БЭТА"
+
+msgctxt "label"
+msgid "Block Malware"
+msgstr "Блакіраваць шкодныя праграмы"
+
+msgctxt "label"
+msgid "Block ads, trackers and malware"
+msgstr "Блакіроўка рэкламы, праграм сачэння і шкодных праграм"
+
+msgctxt "label"
+msgid "Description (minimum {count} characters)"
+msgstr "Апісанне (мінімальная колькасць сімвалаў: {count})"
+
+msgctxt "label"
+msgid "Email"
+msgstr "Электронная пошта"
+
+msgctxt "label"
+msgid "Excluded apps "
+msgstr "Выключаныя праграмы "
+
+msgctxt "label"
+msgid "Free"
+msgstr "Бясплатна"
+
+msgctxt "label"
+msgid "Included apps "
+msgstr "Уключаныя праграмы "
+
+msgctxt "label"
+msgid "Off"
+msgstr "Выключана"
+
+msgctxt "label"
+msgid "PIN code"
+msgstr "PIN-код"
+
+msgctxt "label"
+msgid "Proton VPN Linux Client"
+msgstr "Кліент Proton VPN для Linux"
+
+msgctxt "label"
+msgid "Recovery code"
+msgstr "Код аднаўлення"
+
+msgctxt "label"
+msgid "Server load"
+msgstr "Загружанасць сервера"
+
+msgctxt "label"
+msgid "Use Proton protocols"
+msgstr "Выкарыстоўваць пратаколы Proton"
+
+msgctxt "label"
+msgid "Username"
+msgstr "Імя карыстальніка"
+
+msgctxt "label"
+msgid "VPN Plus"
+msgstr "VPN Plus"
+
+msgctxt "label"
+msgid "VPN plan: {plan}"
+msgstr "Тарыфны план VPN: {plan}"
+
+msgctxt "label"
+msgid "Via Secure Core"
+msgstr "Праз Secure Core"
+
+msgctxt "label"
+msgid "Via {country}"
+msgstr "Праз краіну {country}"
+
+msgctxt "link"
+msgid "Learn more"
+msgstr "Даведацца больш"
+
+msgctxt "menu"
+msgid "About"
+msgstr "Аб праграме"
+
+msgctxt "menu"
+msgid "Quit"
+msgstr "Выйсці"
+
+msgctxt "menu"
+msgid "Release notes"
+msgstr "Нататкі да выпуску"
+
+msgctxt "menu"
+msgid "Report an issue"
+msgstr "Паведаміць аб праблеме"
+
+msgctxt "menu"
+msgid "Settings"
+msgstr "Налады"
+
+msgctxt "menu"
+msgid "Sign out"
+msgstr "Выйсці"
+
+msgctxt "message"
+msgid ""
+"Access preferred connections from system tray. Enter country or server "
+"codes, separated by commas, to quickly connect (e.g.: NL#42, JP, US, IT#01)."
+msgstr ""
+"Доступ да пажаданых падключэнняў з сістэмнага латка. Увядзіце краіну або код"
+" сервера, які раздзелены коскамі для хуткага падключэння (напрыклад: NL#42, "
+"JP, US, IT#01)."
+
+msgctxt "message"
+msgid "Active port is {new_port}"
+msgstr "Актыўны порт: {new_port}"
+
+msgctxt "message"
+msgid "Allow selected apps to connect without VPN protection."
+msgstr "Дазваляе выбраным праграмам падключацца без абароны па VPN."
+
+msgctxt "message"
+msgid ""
+"Beta access has been disabled.\n"
+"Please restart the app for changes to take effect."
+msgstr ""
+"Доступ да бэта-версіі адключаны.\n"
+"Перазапусціце праграму, каб прымяніць змены."
+
+msgctxt "message"
+msgid ""
+"Beta access has been enabled.\n"
+"Please restart the app for changes to take effect."
+msgstr ""
+"Доступ да бэта-версіі ўключаны.\n"
+"Перазапусціце праграму, каб прымяніць змены."
+
+msgctxt "message"
+msgid ""
+"Bypass firewalls to connect to P2P servers and devices on your local "
+"network. "
+msgstr ""
+"Абыходзьце міжсеткавыя экраны для падключэння да сервераў P2P і прылад у "
+"вашай лакальнай сетцы. "
+
+msgctxt "message"
+msgid ""
+"Captures a specific issue you're facing when using Proton VPN to get help from our customer support team.\n"
+"\n"
+"Warning: This file is a recording of all your internet activity during the capture session."
+msgstr ""
+"Захоплівае ўказаную праблему з якой вы сутыкнуліся пры выкарыстанні Proton VPN, каб атрымаць дапамогу ад нашай каманды падтрымкі кліентаў.\n"
+"\n"
+"Папярэджанне: гэты файл запісвае ўсю вашу актыўнасць у інтэрнэце падчас сеансу захопу."
+
+msgctxt "message"
+msgid "Connect to Proton VPN using your own domain name servers (DNS)."
+msgstr ""
+"Падключайцеся да Proton VPN з дапамогай вашага ўласнага сервера даменных "
+"імён (DNS)."
+
+msgctxt "message"
+msgid ""
+"Connect to a Tor server to access hidden services and onion sites using any "
+"browser."
+msgstr ""
+"Падключайцеся да сервера Tor, каб атрымаць доступ да схаваных сэрвісаў і "
+"сайтаў onion праз любы браўзер."
+
+msgctxt "message"
+msgid ""
+"Connect to your destination server through a second, maximum security VPN "
+"server. Slower, but more private."
+msgstr ""
+"Падключыцеся да сервера прызначэння праз прамежкавы сервер VPN для "
+"максімальнай бяспекі. Больш павольна, але гарантуе большую прыватнасць."
+
+msgctxt "message"
+msgid "Copied!"
+msgstr "Скапіявана!"
+
+msgctxt "message"
+msgid ""
+"Crash reports help us fix bugs, detect firewalls, and avoid VPN blocks.\n"
+"\n"
+"These statistics do not contain your IP address, and they cannot be used to identify you. We'll never share them with third parties."
+msgstr ""
+"Справаздачы аб збоях дапамагаюць нам выпраўляць памылкі, вызначаць міжсеткавыя экраны, а таксама пазбягаць блакіровак VPN.\n"
+"\n"
+"Гэта статыстыка не змяшчае ваш IP-адрас і яна не будзе выкарыстана, каб ідэнтыфікаваць вас. Вашы даныя ніколі не будуць абагульвацца са староннімі асобамі."
+
+msgctxt "message"
+msgid "Customize your connection by deciding which apps are protected by VPN."
+msgstr "Наладзьце падключэнне вырашыўшы, якія праграмы будуць абаронены VPN."
+
+msgctxt "message"
+msgid ""
+"Disables randomization of the local addresses mapping. This can slightly "
+"reduce connection security, but should allow direct connections for online "
+"gaming and similar purposes."
+msgstr ""
+"Адключае рандамізацыю супастаўлення лакальных адрасоў. Гэта можа крыху "
+"знізіць бяспеку падключэння, але павінна дазволіць рабіць наўпроставыя "
+"падключэнні для гульняў у інтэрнэце і аналагічных мэт."
+
+msgctxt "message"
+msgid "Disabling Beta access..."
+msgstr "Адключыць доступ да бэта-версіі"
+
+msgctxt "message"
+msgid "Each code can only be used once"
+msgstr "Кожны код можа выкарыстоўвацца толькі адзін раз"
+
+msgctxt "message"
+msgid "Enabling Beta access..."
+msgstr "Уключэнне доступу да бэта-версіі..."
+
+msgctxt "message"
+msgid "Get early access and help us test new versions of Proton VPN."
+msgstr ""
+"Атрымайце ранні доступ і дапамажыце нам пратэсціраваць новую версію Proton "
+"VPN."
+
+msgctxt "message"
+msgid "If your security key has a button or a gold disc, tap it now."
+msgstr ""
+"Націсніце па ключу бяспекі зараз, калі на ім ёсць кнопка або залаты дыск."
+
+msgctxt "message"
+msgid ""
+"Increase your connection speed by up to 400% with performance enhancing "
+"technologies."
+msgstr ""
+"Павялічце хуткасць свайго падключэння да 400% дзякуючы тэхналогіям павышэння"
+" прадукцыйнасці."
+
+msgctxt "message"
+msgid "Insert the U2F or FIDO key linked to your Proton Account. "
+msgstr ""
+"Устаўце ключ U2F або FIDO, які звязаны з вашым уліковым запісам Proton. "
+
+msgctxt "message"
+msgid "It was not possible to disable Beta access.\n"
+msgstr "Не ўдалося адключыць доступ да бэта-версіі.\n"
+
+msgctxt "message"
+msgid "It was not possible to enable Beta access.\n"
+msgstr "Не ўдалося ўключыць доступ да бэта-версіі.\n"
+
+msgctxt "message"
+msgid "Kill switch is blocking any outgoing connections."
+msgstr "Kill Switch блакіруе ўсе выходныя падключэнні."
+
+msgctxt "message"
+msgid ""
+"Kill switch selection is disabled while VPN is active. Disconnect to make "
+"changes."
+msgstr ""
+"Выбар Kill Switch адключаны пры актаўным падключэнні да VPN. Адключыцеся, "
+"каб зрабіць змены."
+
+msgctxt "message"
+msgid "Multiple security keys were found. Tap one to select it."
+msgstr ""
+"Было знойдзена некалькі ключоў бяспекі. Націсніце на адзін з іх, каб выбраць"
+" яго."
+
+msgctxt "message"
+msgid ""
+"Only selected apps connect with VPN protection. All other traffic is "
+"unprotected."
+msgstr ""
+"Толькі выбраныя праграмы будуць падключаны з абаронай па VPN. Увесь астатні "
+"трафік застанецца неабароненым."
+
+msgctxt "message"
+msgid ""
+"Permanent Kill Switch is blocking any outgoing connections and preventing your IP to be exposed.\n"
+"\n"
+"Do you want to disable Kill Switch?"
+msgstr ""
+"Пастаянны Kill Switch блакіруе любыя выходныя падключэнні і прадухіляе ўцечку вашага IP.\n"
+"\n"
+"Адключыць Kill Switch?"
+
+msgctxt "message"
+msgid "Please establish a new VPN connection for changes to take effect."
+msgstr "Усталюйце новае падключэнне па VPN, каб прымяніць змены."
+
+msgctxt "message"
+msgid "Protect yourself from ads, malware, and trackers on websites and apps."
+msgstr ""
+"Абараніце сябе ад рэкламы, шкодных праграм, праграм сачэння на вэб-сайтах і "
+"ў праграмах."
+
+msgctxt "message"
+msgid "Protocol can only be changed when VPN is disconnected."
+msgstr "Пратакол можна змяніць толькі пры адключаным VPN."
+
+msgctxt "message"
+msgid ""
+"Protocol selection is disabled while VPN is active. Disconnect to make "
+"changes."
+msgstr ""
+"Выбар пратаколаў адключаны пры актаўным падключэнні да VPN. Адключыцеся, каб"
+" зрабіць змены."
+
+msgctxt "message"
+msgid ""
+"Quitting the application will cancel the current VPN connection.\n"
+"\n"
+"Do you want to continue?"
+msgstr ""
+"Выхад з праграмы прывядзе да скасавання бягучага падключэння па VPN. \n"
+"\n"
+"Працягнуць?"
+
+msgctxt "message"
+msgid ""
+"Quitting the application will keep the kill switch active, but your current VPN connection will be terminated.\n"
+"\n"
+"Do you want to continue?"
+msgstr ""
+"Выхад з праграмы захавае актыўным Kill Switch, але ваша бягучае падключэнне па VPN будзе перапынена.\n"
+"\n"
+"Працягнуць?"
+
+msgctxt "message"
+msgid "Reporting your issue..."
+msgstr "Адбываецца адпраўка вашай праблемы..."
+
+msgctxt "message"
+msgid "Signing in..."
+msgstr "Адбываецца ўваход..."
+
+msgctxt "message"
+msgid ""
+"Signing out will cancel the current VPN connection and disable the kill switch.\n"
+"\n"
+"Do you want to continue?"
+msgstr ""
+"Выхад скасуе бягучае падключэнне па VPN і адключыць Kill Switch.\n"
+"\n"
+"Працягнуць?"
+
+msgctxt "message"
+msgid ""
+"Signing out will cancel the current VPN connection.\n"
+"\n"
+"Do you want to continue?"
+msgstr ""
+"Выхад скасуе бягучае падключэнне па VPN.\n"
+"\n"
+"Працягнуць?"
+
+msgctxt "message"
+msgid ""
+"Signing out will disable the kill switch, potentially exposing your internet traffic. \n"
+"\n"
+"Do you want to continue?"
+msgstr ""
+"Выхад прывядзе да адключэння Kill Switch і тэарэтычна можа прывесці да кампраметацыі вашага трафіку.\n"
+"\n"
+"Працягнуць?"
+
+msgctxt "message"
+msgid "Signing out..."
+msgstr "Адбываецца выхад..."
+
+msgctxt "message"
+msgid "Split tunneling enabled. Remember to restart affected apps."
+msgstr ""
+"Split Tunneling уключаны. Не забудзьце перазапусціць праграму, каб прымяніць"
+" змены."
+
+msgctxt "message"
+msgid ""
+"These servers give the best performance for BitTorrent and file sharing."
+msgstr ""
+"Гэтыя серверы даюць найлепшую прадукцыйнасць для BitTorrent і абагульвання "
+"файлаў."
+
+msgctxt "message"
+msgid ""
+"This technology allows Proton VPN to provide higher speed and security in "
+"difficult-to-reach countries."
+msgstr ""
+"Гэта тэхналогія дазваляе Proton VPN забяспечваць больш высокую хуткасць і "
+"бяспеку ў цяжкадаступных краінах."
+
+msgctxt "message"
+msgid "This will disable NetShield."
+msgstr "Гэта дзеянне прывядзе да адключэння NetShield."
+
+msgctxt "message"
+msgid "This will disable custom DNS."
+msgstr "Гэта прывядзе да адключэння карыстальніцкага DNS."
+
+msgctxt "message"
+msgid ""
+"Tunnels IPv6 traffic through the VPN. Can enhance compatibility with IPv6 "
+"networks."
+msgstr ""
+"Адпраўляе ў тунэль трафік IPv6 праз VPN. Можа палепшыць сумяшчальнасць з "
+"сеткамі IPv6."
+
+msgctxt "message"
+msgid "When enabled, the app starts minimized to the tray."
+msgstr "Праграма запускаецца згорнутай у латок, калі ўключана."
+
+msgctxt "message"
+msgid ""
+"You will be connected to a server as soon as Proton VPN app starts. Replace "
+"it with a country ISO code (e.g.: US for United States), a server (e.g.: "
+"NL#42) or Fastest for quick connection. Default value: Off."
+msgstr ""
+"Вы будзеце падключаны да сервера, як толькі праграма Proton VPN будзе "
+"запушчана. Замяніце яго на код краіны ў ISO (напрыклад, US для Злучаных "
+"Штатаў), сервер (напрыклад: NL#42) або \"Fastest\" для хуткага падключэння. "
+"Прадвызначанае значэнне: выключана."
+
+msgctxt "message"
+msgid "Your issue has been reported"
+msgstr "Аб вашай праблеме было паведамлена"
+
+msgctxt "placeholder"
+msgid "Password"
+msgstr "Пароль"
+
+msgctxt "placeholder"
+msgid "Press Ctrl+F to search"
+msgstr "Націсніце спалучэнне Ctrl+F для пошуку"
+
+msgctxt "placeholder"
+msgid "Username"
+msgstr "Імя карыстальніка"
+
+msgctxt "status"
+msgid "Connecting..."
+msgstr "Падключэнне..."
+
+msgctxt "status"
+msgid "Connection error"
+msgstr "Памылка падключэння"
+
+msgctxt "status"
+msgid "Disconnecting..."
+msgstr "Адключэнне..."
+
+msgctxt "status"
+msgid "Protected"
+msgstr "Абаронена"
+
+msgctxt "status"
+msgid "Unprotected"
+msgstr "Неабаронена"
+
+msgctxt "title"
+msgid "About"
+msgstr "Аб праграме"
+
+msgctxt "title"
+msgid "Account"
+msgstr "Уліковы запіс"
+
+msgctxt "title"
+msgid "Active connection found"
+msgstr "Знойдзена актыўнае падключэнне"
+
+msgctxt "title"
+msgid "Add excluded apps"
+msgstr "Дадаць выключаныя праграмы"
+
+msgctxt "title"
+msgid "Add included apps"
+msgstr "Дадаць уключаныя праграмы"
+
+msgctxt "title"
+msgid "Authenticator app"
+msgstr "Праграма аўтэнтыфікацыі"
+
+msgctxt "title"
+msgid "Auto connect"
+msgstr "Аўтаматычнае падключэнне"
+
+msgctxt "title"
+msgid "Beta Access"
+msgstr "Доступ да бэта-версіі"
+
+msgctxt "title"
+msgid "Beta access"
+msgstr "Доступ да бэта-версіі"
+
+msgctxt "title"
+msgid "Connection"
+msgstr "Падключэнне"
+
+msgctxt "title"
+msgid "Connection error: session limit reached"
+msgstr "Памылка падключэння: дасягнута абмежаванне па колькасці сеансаў"
+
+msgctxt "title"
+msgid "Countries"
+msgstr "Краіны"
+
+msgctxt "title"
+msgid "Create a troubleshooting file"
+msgstr "Стварыць файл выпраўлення непаладак"
+
+msgctxt "title"
+msgid "Custom DNS servers"
+msgstr "Карыстальніцкія серверы DNS"
+
+msgctxt "title"
+msgid "Enable Custom DNS"
+msgstr "Уключыць карыстальніцкі DNS"
+
+msgctxt "title"
+msgid "Enable Custom DNS?"
+msgstr "Уключыць карыстальніцкі DNS?"
+
+msgctxt "title"
+msgid "Enable Netshield"
+msgstr "Уключыць NetShield"
+
+msgctxt "title"
+msgid "Enable Netshield ?"
+msgstr "Уключыць NetShield ?"
+
+msgctxt "title"
+msgid "Exclude mode"
+msgstr "Рэжым выключэння"
+
+msgctxt "title"
+msgid "Fastest country"
+msgstr "Найхутчэйшыя краіны"
+
+msgctxt "title"
+msgid "Fastest free server"
+msgstr "Найхутчэйшы бясплатны сервер"
+
+msgctxt "title"
+msgid "Features"
+msgstr "Функцыі"
+
+msgctxt "title"
+msgid "General"
+msgstr "Агульныя"
+
+msgctxt "title"
+msgid "Include mode"
+msgstr "Рэжым уключэння"
+
+msgctxt "title"
+msgid "Kill Switch Enabled"
+msgstr "Kill Switch уключаны"
+
+msgctxt "title"
+msgid "Kill Switch enabled"
+msgstr "Kill Switch уключаны"
+
+msgctxt "title"
+msgid "Locations"
+msgstr "Месцазнаходжанні"
+
+msgctxt "title"
+msgid "Moderate NAT"
+msgstr "Умераны NAT"
+
+msgctxt "title"
+msgid "NetShield"
+msgstr "NetShield"
+
+msgctxt "title"
+msgid "P2P/BitTorrent"
+msgstr "P2P/BitTorrent"
+
+msgctxt "title"
+msgid "Pinned tray connections"
+msgstr "Замацаваць падключэнні ў латку"
+
+msgctxt "title"
+msgid "Port forwarding"
+msgstr "Перанакіраванне партоў"
+
+msgctxt "title"
+msgid "Protocol"
+msgstr "Пратакол"
+
+msgctxt "title"
+msgid "Release notes"
+msgstr "Нататкі да выпуску"
+
+msgctxt "title"
+msgid "Report an Issue"
+msgstr "Паведаміць аб праблеме"
+
+msgctxt "title"
+msgid "Secure Core"
+msgstr "Secure Core"
+
+msgctxt "title"
+msgid "Security key"
+msgstr "Ключ бяспекі"
+
+msgctxt "title"
+msgid "Select packet capture directory"
+msgstr "Выбар каталогу для захопу пакетаў"
+
+msgctxt "title"
+msgid "Servers"
+msgstr "Серверы"
+
+msgctxt "title"
+msgid "Settings"
+msgstr "Налады"
+
+msgctxt "title"
+msgid "Share anonymous crash reports"
+msgstr "Абагульваць ананімныя справаздачы аб збоях"
+
+msgctxt "title"
+msgid "Smart routing"
+msgstr "Smart Routing"
+
+msgctxt "title"
+msgid "Split tunneling"
+msgstr "Split Tunneling"
+
+msgctxt "title"
+msgid "Start app minimized"
+msgstr "Згарнуць праграму пры запуску"
+
+msgctxt "title"
+msgid "Tor"
+msgstr "Tor"
+
+msgctxt "title"
+msgid "Two-factor authentication"
+msgstr "Двухфактарная аўтэнтыфікацыя"
+
+msgctxt "title"
+msgid "VPN Accelerator"
+msgstr "VPN Accelerator"
+
+msgctxt "tooltip"
+msgid "Close"
+msgstr "Закрыць"
+
+msgctxt "tooltip"
+msgid "Connect to {country_name}"
+msgstr "Падключыцца да {country_name}"
+
+msgctxt "tooltip"
+msgid "Connect to {country} via Secure Core"
+msgstr "Падключайцеся да краіны {country} праз Secure Core"
+
+msgctxt "tooltip"
+msgid "Connect to {exit_country} via {entry_country}"
+msgstr "Падключыць да краіны {exit_country} праз краіну {entry_country}"
+
+msgctxt "tooltip"
+msgid "Connect to {name}"
+msgstr "Падключыцца да {name}"
+
+msgctxt "tooltip"
+msgid "Copy port number"
+msgstr "Скапіяваць нумар парта"
+
+msgctxt "tooltip"
+msgid ""
+"Hide all Secure Core servers\n"
+"to connect to {country}"
+msgstr ""
+"Схаваць усе серверы Secure Core\n"
+"для падключэння да краіны {country}"
+
+msgctxt "tooltip"
+msgid "Hide all locations from {country_name}"
+msgstr "Схаваць усе месцазнаходжанні з краіны {country_name}"
+
+msgctxt "tooltip"
+msgid "Hide all servers from {name}"
+msgstr "Схаваць усе серверы ад {name}"
+
+msgctxt "tooltip"
+msgid "P2P/BitTorrent supported"
+msgstr "Падтрымліваецца P2P/BitTorrent"
+
+msgctxt "tooltip"
+msgid ""
+"Secure Core server that connects to {exit_country} through {entry_country}."
+msgstr ""
+"Сервер Secure Core, які падключае да краіны {exit_country} праз краіну "
+"{entry_country}."
+
+msgctxt "tooltip"
+msgid "Secure Core supported"
+msgstr "Падтрымліваецца Secure Core"
+
+msgctxt "tooltip"
+msgid "Server load is at {load}%"
+msgstr "Нагрузка на сервер складае {load}%"
+
+msgctxt "tooltip"
+msgid ""
+"Show all Secure Core servers\n"
+"to connect to {country}"
+msgstr ""
+"Паказаць усе серверы Secure Core\n"
+"для падключэння да краіны {country}"
+
+msgctxt "tooltip"
+msgid "Show all locations from {country_name}"
+msgstr "Паказаць усе месцазнаходжанні з краіны {country_name}"
+
+msgctxt "tooltip"
+msgid "Show all servers from {name}"
+msgstr "Паказаць усе серверы ад {name}"
+
+msgctxt "tooltip"
+msgid "Smart routing is used"
+msgstr "Выкарыстоўваецца Smart Routing"
+
+msgctxt "tooltip"
+msgid "Streaming supported"
+msgstr "Падтрымліваюцца трансляцыі"
+
+msgctxt "tooltip"
+msgid "To change split tunneling settings, please disconnect the VPN first."
+msgstr "Спачатку адключыце VPN, а потым змяняйце налады Split Tunneling."
+
+msgctxt "tooltip"
+msgid "Tor supported"
+msgstr "Падтрымліваецца Tor"
+
+msgctxt "tooltip"
+msgid "Upgrade to connect to {country_name}"
+msgstr "Палепшыць, каб падключацца да краіны {country_name}"
+
+msgctxt "tooltip"
+msgid "Upgrade to connect to {country} via Secure Core"
+msgstr "Палепшыце, каб падключацца да краіны {country} праз Secure Core"
+
+msgctxt "tooltip"
+msgid "Upgrade to connect to {exit_country} via {entry_country}"
+msgstr ""
+"Палепшыце, каб падключацца да краіны {exit_country} праз краіну "
+"{entry_country}"
+
+msgctxt "tooltip"
+msgid "Upgrade to connect to {name}"
+msgstr "Палепшыць, каб падключацца да краіны {name}"
+
+msgctxt "tooltip"
+msgid "{name} is under maintenance"
+msgstr "Сервер у краіне {name} на тэхнічным абслугоўванні"

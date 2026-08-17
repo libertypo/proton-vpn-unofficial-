@@ -1,0 +1,9 @@
+title = "Proton VPN GTK local policy"
+
+[allowlist]
+description = "Allow known non-secret test fixtures and generated build artifacts"
+paths = [
+  '''(^|/)target/''',
+  '''^python-proton-vpn-api-core/tests/python/session/data/vpn_secrets\.json$''',
+  '''^python-proton-vpn-api-core/tests/python/session/data/api_cert_response\.json$'''
+]

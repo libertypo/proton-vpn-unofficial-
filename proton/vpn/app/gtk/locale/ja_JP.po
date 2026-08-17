@@ -1,0 +1,1949 @@
+#
+msgid ""
+msgstr ""
+"Language-Team: Japanese\n"
+"Language: ja_JP\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+msgctxt "button"
+msgid "Add"
+msgstr "追加"
+
+msgctxt "button"
+msgid "Authenticate"
+msgstr "認証"
+
+msgctxt "button"
+msgid "Browse"
+msgstr "ブラウズ"
+
+msgctxt "button"
+msgid "Cancel"
+msgstr "キャンセル"
+
+msgctxt "button"
+msgid "Cancel Connection"
+msgstr "Cancel Connection"
+
+msgctxt "button"
+msgid "Connect"
+msgstr "接続"
+
+msgctxt "button"
+msgid "Create Account"
+msgstr "アカウントを作成"
+
+msgctxt "button"
+msgid "Disable"
+msgstr "無効化"
+
+msgctxt "button"
+msgid "Disconnect"
+msgstr "切断"
+
+msgctxt "button"
+msgid "Done"
+msgstr "完了"
+
+msgctxt "button"
+msgid "Learn more"
+msgstr "もっと詳しく知る"
+
+msgctxt "button"
+msgid "Manage Account"
+msgstr "Manage Account"
+
+msgctxt "button"
+msgid "Need Help?"
+msgstr "お困りですか？"
+
+msgctxt "button"
+msgid "Send error logs"
+msgstr "エラーログを送信"
+
+msgctxt "button"
+msgid "Sign in"
+msgstr "サインイン"
+
+msgctxt "button"
+msgid "Start"
+msgstr "開始"
+
+msgctxt "button"
+msgid "Stop"
+msgstr "Stop"
+
+msgctxt "button"
+msgid "Upgrade"
+msgstr "アップグレード"
+
+msgctxt "button"
+msgid "Use 6-digit authentication code"
+msgstr "6桁の認証コードを使用"
+
+msgctxt "button"
+msgid "Use recovery code"
+msgstr "回復用コードを使用"
+
+msgctxt "button"
+msgid "_Cancel"
+msgstr "キャンセル"
+
+msgctxt "button"
+msgid "_Close"
+msgstr "_Close"
+
+msgctxt "button"
+msgid "_Enable"
+msgstr "_Enable"
+
+msgctxt "button"
+msgid "_Select"
+msgstr "_Select"
+
+msgctxt "button"
+msgid "_Submit"
+msgstr "_Submit"
+
+msgctxt "button"
+msgid "_Yes"
+msgstr "_Yes"
+
+msgctxt "country"
+msgid "Afghanistan"
+msgstr "アフガニスタン"
+
+msgctxt "country"
+msgid "Aland Islands"
+msgstr "オーランド諸島"
+
+msgctxt "country"
+msgid "Albania"
+msgstr "アルバニア"
+
+msgctxt "country"
+msgid "Algeria"
+msgstr "アルジェリア"
+
+msgctxt "country"
+msgid "American Samoa"
+msgstr "アメリカ領サモア"
+
+msgctxt "country"
+msgid "Andorra"
+msgstr "アンドラ"
+
+msgctxt "country"
+msgid "Angola"
+msgstr "アンゴラ"
+
+msgctxt "country"
+msgid "Anguilla"
+msgstr "アンギラ"
+
+msgctxt "country"
+msgid "Antarctica"
+msgstr "南極大陸"
+
+msgctxt "country"
+msgid "Antigua and Barbuda"
+msgstr "アンティグア・バーブーダ"
+
+msgctxt "country"
+msgid "Argentina"
+msgstr "アルゼンチン"
+
+msgctxt "country"
+msgid "Armenia"
+msgstr "アルメニア"
+
+msgctxt "country"
+msgid "Aruba"
+msgstr "アルバ"
+
+msgctxt "country"
+msgid "Australia"
+msgstr "オーストラリア"
+
+msgctxt "country"
+msgid "Austria"
+msgstr "オーストリア"
+
+msgctxt "country"
+msgid "Azerbaijan"
+msgstr "アゼルバイジャン"
+
+msgctxt "country"
+msgid "Bahamas"
+msgstr "バハマ"
+
+msgctxt "country"
+msgid "Bahrain"
+msgstr "バーレーン"
+
+msgctxt "country"
+msgid "Bangladesh"
+msgstr "バングラデシュ"
+
+msgctxt "country"
+msgid "Barbados"
+msgstr "バルバドス"
+
+msgctxt "country"
+msgid "Belarus"
+msgstr "ベラルーシ"
+
+msgctxt "country"
+msgid "Belgium"
+msgstr "ベルギー"
+
+msgctxt "country"
+msgid "Belize"
+msgstr "ベリーズ"
+
+msgctxt "country"
+msgid "Benin"
+msgstr "ベナン"
+
+msgctxt "country"
+msgid "Bermuda"
+msgstr "バミューダ"
+
+msgctxt "country"
+msgid "Bhutan"
+msgstr "ブータン"
+
+msgctxt "country"
+msgid "Bolivia"
+msgstr "ボリビア"
+
+msgctxt "country"
+msgid "Bonaire, Saint Eustatius and Saba "
+msgstr "Bonaire, Saint Eustatius and Saba "
+
+msgctxt "country"
+msgid "Bosnia and Herzegovina"
+msgstr "ボスニア・ヘルツェゴビナ"
+
+msgctxt "country"
+msgid "Botswana"
+msgstr "ボツワナ"
+
+msgctxt "country"
+msgid "Bouvet Island"
+msgstr "ブーベ島"
+
+msgctxt "country"
+msgid "Brazil"
+msgstr "ブラジル"
+
+msgctxt "country"
+msgid "British Indian Ocean Territory"
+msgstr "イギリス領インド洋地域"
+
+msgctxt "country"
+msgid "British Virgin Islands"
+msgstr "イギリス領バージン諸島"
+
+msgctxt "country"
+msgid "Brunei"
+msgstr "Brunei"
+
+msgctxt "country"
+msgid "Bulgaria"
+msgstr "ブルガリア"
+
+msgctxt "country"
+msgid "Burkina Faso"
+msgstr "ブルキナファソ"
+
+msgctxt "country"
+msgid "Burundi"
+msgstr "ブルンジ"
+
+msgctxt "country"
+msgid "Cambodia"
+msgstr "カンボジア"
+
+msgctxt "country"
+msgid "Cameroon"
+msgstr "カメルーン"
+
+msgctxt "country"
+msgid "Canada"
+msgstr "カナダ"
+
+msgctxt "country"
+msgid "Cape Verde"
+msgstr "カーボベルデ"
+
+msgctxt "country"
+msgid "Cayman Islands"
+msgstr "ケイマン諸島"
+
+msgctxt "country"
+msgid "Central African Republic"
+msgstr "中央アフリカ共和国"
+
+msgctxt "country"
+msgid "Chad"
+msgstr "チャド"
+
+msgctxt "country"
+msgid "Chile"
+msgstr "チリ"
+
+msgctxt "country"
+msgid "China"
+msgstr "中国"
+
+msgctxt "country"
+msgid "Christmas Island"
+msgstr "クリスマス島"
+
+msgctxt "country"
+msgid "Cocos Islands"
+msgstr "Cocos Islands"
+
+msgctxt "country"
+msgid "Colombia"
+msgstr "コロンビア"
+
+msgctxt "country"
+msgid "Comoros"
+msgstr "コモロ"
+
+msgctxt "country"
+msgid "Cook Islands"
+msgstr "クック諸島"
+
+msgctxt "country"
+msgid "Costa Rica"
+msgstr "コスタリカ"
+
+msgctxt "country"
+msgid "Croatia"
+msgstr "クロアチア"
+
+msgctxt "country"
+msgid "Cuba"
+msgstr "キューバ"
+
+msgctxt "country"
+msgid "Curacao"
+msgstr "Curacao"
+
+msgctxt "country"
+msgid "Cyprus"
+msgstr "キプロス"
+
+msgctxt "country"
+msgid "Czech Republic"
+msgstr "チェコ共和国"
+
+msgctxt "country"
+msgid "Democratic Republic of the Congo"
+msgstr "Democratic Republic of the Congo"
+
+msgctxt "country"
+msgid "Denmark"
+msgstr "デンマーク"
+
+msgctxt "country"
+msgid "Djibouti"
+msgstr "ジブチ"
+
+msgctxt "country"
+msgid "Dominica"
+msgstr "ドミニカ"
+
+msgctxt "country"
+msgid "Dominican Republic"
+msgstr "ドミニカ共和国"
+
+msgctxt "country"
+msgid "East Timor"
+msgstr "東ティモール"
+
+msgctxt "country"
+msgid "Ecuador"
+msgstr "エクアドル"
+
+msgctxt "country"
+msgid "Egypt"
+msgstr "エジプト"
+
+msgctxt "country"
+msgid "El Salvador"
+msgstr "エルサルバドル"
+
+msgctxt "country"
+msgid "Equatorial Guinea"
+msgstr "赤道ギニア"
+
+msgctxt "country"
+msgid "Eritrea"
+msgstr "エリトリア"
+
+msgctxt "country"
+msgid "Estonia"
+msgstr "エストニア"
+
+msgctxt "country"
+msgid "Ethiopia"
+msgstr "エチオピア"
+
+msgctxt "country"
+msgid "Falkland Islands"
+msgstr "フォークランド諸島"
+
+msgctxt "country"
+msgid "Faroe Islands"
+msgstr "フェロー諸島"
+
+msgctxt "country"
+msgid "Fiji"
+msgstr "フィジー"
+
+msgctxt "country"
+msgid "Finland"
+msgstr "フィンランド"
+
+msgctxt "country"
+msgid "France"
+msgstr "フランス"
+
+msgctxt "country"
+msgid "French Guiana"
+msgstr "フランス領ギアナ"
+
+msgctxt "country"
+msgid "French Polynesia"
+msgstr "フランス領ポリネシア"
+
+msgctxt "country"
+msgid "French Southern Territories"
+msgstr "フランス領南方・南極地域"
+
+msgctxt "country"
+msgid "Gabon"
+msgstr "ガボン"
+
+msgctxt "country"
+msgid "Gambia"
+msgstr "ガンビア"
+
+msgctxt "country"
+msgid "Georgia"
+msgstr "ジョージア"
+
+msgctxt "country"
+msgid "Germany"
+msgstr "ドイツ"
+
+msgctxt "country"
+msgid "Ghana"
+msgstr "ガーナ"
+
+msgctxt "country"
+msgid "Gibraltar"
+msgstr "ジブラルタル"
+
+msgctxt "country"
+msgid "Greece"
+msgstr "ギリシャ"
+
+msgctxt "country"
+msgid "Greenland"
+msgstr "グリーンランド"
+
+msgctxt "country"
+msgid "Grenada"
+msgstr "グレナダ"
+
+msgctxt "country"
+msgid "Guadeloupe"
+msgstr "グアドループ"
+
+msgctxt "country"
+msgid "Guam"
+msgstr "グアム"
+
+msgctxt "country"
+msgid "Guatemala"
+msgstr "グアテマラ"
+
+msgctxt "country"
+msgid "Guernsey"
+msgstr "ガーンジー島"
+
+msgctxt "country"
+msgid "Guinea"
+msgstr "ギニア"
+
+msgctxt "country"
+msgid "Guinea-Bissau"
+msgstr "ギニアビサウ"
+
+msgctxt "country"
+msgid "Guyana"
+msgstr "ガイアナ"
+
+msgctxt "country"
+msgid "Haiti"
+msgstr "ハイチ"
+
+msgctxt "country"
+msgid "Heard Island and McDonald Islands"
+msgstr "ハード島とマクドナルド諸島"
+
+msgctxt "country"
+msgid "Honduras"
+msgstr "ホンジュラス"
+
+msgctxt "country"
+msgid "Hong Kong"
+msgstr "香港"
+
+msgctxt "country"
+msgid "Hungary"
+msgstr "ハンガリー"
+
+msgctxt "country"
+msgid "Iceland"
+msgstr "アイスランド"
+
+msgctxt "country"
+msgid "India"
+msgstr "インド"
+
+msgctxt "country"
+msgid "Indonesia"
+msgstr "インドネシア"
+
+msgctxt "country"
+msgid "Iran"
+msgstr "イラン"
+
+msgctxt "country"
+msgid "Iraq"
+msgstr "イラク"
+
+msgctxt "country"
+msgid "Ireland"
+msgstr "アイルランド"
+
+msgctxt "country"
+msgid "Isle of Man"
+msgstr "マン島"
+
+msgctxt "country"
+msgid "Israel"
+msgstr "イスラエル"
+
+msgctxt "country"
+msgid "Italy"
+msgstr "イタリア"
+
+msgctxt "country"
+msgid "Ivory Coast"
+msgstr "Ivory Coast"
+
+msgctxt "country"
+msgid "Jamaica"
+msgstr "ジャマイカ"
+
+msgctxt "country"
+msgid "Japan"
+msgstr "日本"
+
+msgctxt "country"
+msgid "Jersey"
+msgstr "ジャージー"
+
+msgctxt "country"
+msgid "Jordan"
+msgstr "ヨルダン"
+
+msgctxt "country"
+msgid "Kazakhstan"
+msgstr "カザフスタン"
+
+msgctxt "country"
+msgid "Kenya"
+msgstr "ケニア"
+
+msgctxt "country"
+msgid "Kiribati"
+msgstr "キリバス"
+
+msgctxt "country"
+msgid "Kosovo"
+msgstr "コソボ"
+
+msgctxt "country"
+msgid "Kuwait"
+msgstr "クウェート"
+
+msgctxt "country"
+msgid "Kyrgyzstan"
+msgstr "キルギス"
+
+msgctxt "country"
+msgid "Laos"
+msgstr "ラオス"
+
+msgctxt "country"
+msgid "Latvia"
+msgstr "ラトビア"
+
+msgctxt "country"
+msgid "Lebanon"
+msgstr "レバノン"
+
+msgctxt "country"
+msgid "Lesotho"
+msgstr "レソト"
+
+msgctxt "country"
+msgid "Liberia"
+msgstr "リベリア"
+
+msgctxt "country"
+msgid "Libya"
+msgstr "リビア"
+
+msgctxt "country"
+msgid "Liechtenstein"
+msgstr "リヒテンシュタイン"
+
+msgctxt "country"
+msgid "Lithuania"
+msgstr "リトアニア"
+
+msgctxt "country"
+msgid "Luxembourg"
+msgstr "ルクセンブルク"
+
+msgctxt "country"
+msgid "Macao"
+msgstr "マカオ"
+
+msgctxt "country"
+msgid "Macedonia"
+msgstr "マケドニア"
+
+msgctxt "country"
+msgid "Madagascar"
+msgstr "マダカスカル"
+
+msgctxt "country"
+msgid "Malawi"
+msgstr "マラウイ"
+
+msgctxt "country"
+msgid "Malaysia"
+msgstr "マレーシア"
+
+msgctxt "country"
+msgid "Maldives"
+msgstr "モルディブ"
+
+msgctxt "country"
+msgid "Mali"
+msgstr "マリ"
+
+msgctxt "country"
+msgid "Malta"
+msgstr "マルタ"
+
+msgctxt "country"
+msgid "Marshall Islands"
+msgstr "マーシャル諸島"
+
+msgctxt "country"
+msgid "Martinique"
+msgstr "マルティニーク"
+
+msgctxt "country"
+msgid "Mauritania"
+msgstr "モーリタニア"
+
+msgctxt "country"
+msgid "Mauritius"
+msgstr "モーリシャス"
+
+msgctxt "country"
+msgid "Mayotte"
+msgstr "マヨット"
+
+msgctxt "country"
+msgid "Mexico"
+msgstr "メキシコ"
+
+msgctxt "country"
+msgid "Micronesia"
+msgstr "ミクロネシア"
+
+msgctxt "country"
+msgid "Moldova"
+msgstr "モルドバ"
+
+msgctxt "country"
+msgid "Monaco"
+msgstr "モナコ"
+
+msgctxt "country"
+msgid "Mongolia"
+msgstr "モンゴル"
+
+msgctxt "country"
+msgid "Montenegro"
+msgstr "モンテネグロ"
+
+msgctxt "country"
+msgid "Montserrat"
+msgstr "モントセラト"
+
+msgctxt "country"
+msgid "Morocco"
+msgstr "モロッコ"
+
+msgctxt "country"
+msgid "Mozambique"
+msgstr "モザンビーク"
+
+msgctxt "country"
+msgid "Myanmar"
+msgstr "ミャンマー"
+
+msgctxt "country"
+msgid "Namibia"
+msgstr "ナミビア"
+
+msgctxt "country"
+msgid "Nauru"
+msgstr "ナウル"
+
+msgctxt "country"
+msgid "Nepal"
+msgstr "ネパール"
+
+msgctxt "country"
+msgid "Netherlands"
+msgstr "オランダ"
+
+msgctxt "country"
+msgid "New Caledonia"
+msgstr "ニューカレドニア"
+
+msgctxt "country"
+msgid "New Zealand"
+msgstr "ニュージーランド"
+
+msgctxt "country"
+msgid "Nicaragua"
+msgstr "ニカラグア"
+
+msgctxt "country"
+msgid "Niger"
+msgstr "ニジェール"
+
+msgctxt "country"
+msgid "Nigeria"
+msgstr "ナイジェリア"
+
+msgctxt "country"
+msgid "Niue"
+msgstr "ニウエ"
+
+msgctxt "country"
+msgid "Norfolk Island"
+msgstr "ノーフォーク島"
+
+msgctxt "country"
+msgid "North Korea"
+msgstr "北朝鮮"
+
+msgctxt "country"
+msgid "Northern Mariana Islands"
+msgstr "北マリアナ諸島"
+
+msgctxt "country"
+msgid "Norway"
+msgstr "ノルウェー"
+
+msgctxt "country"
+msgid "Oman"
+msgstr "オマーン"
+
+msgctxt "country"
+msgid "Pakistan"
+msgstr "パキスタン"
+
+msgctxt "country"
+msgid "Palau"
+msgstr "パラオ"
+
+msgctxt "country"
+msgid "Palestinian Territory"
+msgstr "Palestinian Territory"
+
+msgctxt "country"
+msgid "Panama"
+msgstr "パナマ"
+
+msgctxt "country"
+msgid "Papua New Guinea"
+msgstr "パプアニューギニア"
+
+msgctxt "country"
+msgid "Paraguay"
+msgstr "パラグアイ"
+
+msgctxt "country"
+msgid "Peru"
+msgstr "ペルー"
+
+msgctxt "country"
+msgid "Philippines"
+msgstr "フィリピン"
+
+msgctxt "country"
+msgid "Pitcairn"
+msgstr "ピトケアン諸島"
+
+msgctxt "country"
+msgid "Poland"
+msgstr "ポーランド"
+
+msgctxt "country"
+msgid "Portugal"
+msgstr "ポルトガル"
+
+msgctxt "country"
+msgid "Puerto Rico"
+msgstr "プエルトリコ"
+
+msgctxt "country"
+msgid "Qatar"
+msgstr "カタール"
+
+msgctxt "country"
+msgid "Republic of the Congo"
+msgstr "Republic of the Congo"
+
+msgctxt "country"
+msgid "Reunion"
+msgstr "レユニオン"
+
+msgctxt "country"
+msgid "Romania"
+msgstr "ルーマニア"
+
+msgctxt "country"
+msgid "Russia"
+msgstr "ロシア"
+
+msgctxt "country"
+msgid "Rwanda"
+msgstr "ルワンダ"
+
+msgctxt "country"
+msgid "Saint Barthelemy"
+msgstr "Saint Barthelemy"
+
+msgctxt "country"
+msgid "Saint Helena"
+msgstr "セントヘレナ島"
+
+msgctxt "country"
+msgid "Saint Kitts and Nevis"
+msgstr "セントクリストファー・ネービス"
+
+msgctxt "country"
+msgid "Saint Lucia"
+msgstr "セントルシア"
+
+msgctxt "country"
+msgid "Saint Martin"
+msgstr "Saint Martin"
+
+msgctxt "country"
+msgid "Saint Pierre and Miquelon"
+msgstr "サンピエール島・ミクロン島"
+
+msgctxt "country"
+msgid "Saint Vincent and the Grenadines"
+msgstr "セントビンセント及びグレナディーン諸島"
+
+msgctxt "country"
+msgid "Samoa"
+msgstr "サモア"
+
+msgctxt "country"
+msgid "San Marino"
+msgstr "サンマリノ"
+
+msgctxt "country"
+msgid "Sao Tome and Principe"
+msgstr "サントメ・プリンシペ"
+
+msgctxt "country"
+msgid "Saudi Arabia"
+msgstr "サウジアラビア"
+
+msgctxt "country"
+msgid "Senegal"
+msgstr "セネガル"
+
+msgctxt "country"
+msgid "Serbia"
+msgstr "セルビア"
+
+msgctxt "country"
+msgid "Seychelles"
+msgstr "セーシェル"
+
+msgctxt "country"
+msgid "Sierra Leone"
+msgstr "シエラレオネ"
+
+msgctxt "country"
+msgid "Singapore"
+msgstr "シンガポール"
+
+msgctxt "country"
+msgid "Sint Maarten"
+msgstr "セント・マーチン島"
+
+msgctxt "country"
+msgid "Slovakia"
+msgstr "スロバキア"
+
+msgctxt "country"
+msgid "Slovenia"
+msgstr "スロベニア"
+
+msgctxt "country"
+msgid "Solomon Islands"
+msgstr "ソロモン諸島"
+
+msgctxt "country"
+msgid "Somalia"
+msgstr "ソマリア"
+
+msgctxt "country"
+msgid "South Africa"
+msgstr "南アフリカ"
+
+msgctxt "country"
+msgid "South Georgia and the South Sandwich Islands"
+msgstr "サウスジョージア島と南サンドイッチ諸島"
+
+msgctxt "country"
+msgid "South Korea"
+msgstr "韓国"
+
+msgctxt "country"
+msgid "South Sudan"
+msgstr "南スーダン"
+
+msgctxt "country"
+msgid "Spain"
+msgstr "スペイン"
+
+msgctxt "country"
+msgid "Sri Lanka"
+msgstr "スリランカ"
+
+msgctxt "country"
+msgid "Sudan"
+msgstr "スーダン"
+
+msgctxt "country"
+msgid "Suriname"
+msgstr "スリナム"
+
+msgctxt "country"
+msgid "Svalbard and Jan Mayen"
+msgstr "スヴァールバル諸島およびヤンマイエン島"
+
+msgctxt "country"
+msgid "Swaziland"
+msgstr "スワジランド"
+
+msgctxt "country"
+msgid "Sweden"
+msgstr "スウェーデン"
+
+msgctxt "country"
+msgid "Switzerland"
+msgstr "スイス"
+
+msgctxt "country"
+msgid "Syria"
+msgstr "シリア"
+
+msgctxt "country"
+msgid "Taiwan"
+msgstr "台湾"
+
+msgctxt "country"
+msgid "Tajikistan"
+msgstr "タジキスタン"
+
+msgctxt "country"
+msgid "Tanzania"
+msgstr "タンザニア"
+
+msgctxt "country"
+msgid "Thailand"
+msgstr "タイ"
+
+msgctxt "country"
+msgid "Togo"
+msgstr "トーゴ"
+
+msgctxt "country"
+msgid "Tokelau"
+msgstr "トケラウ"
+
+msgctxt "country"
+msgid "Tonga"
+msgstr "トンガ"
+
+msgctxt "country"
+msgid "Trinidad and Tobago"
+msgstr "トリニダード・ドバゴ"
+
+msgctxt "country"
+msgid "Tunisia"
+msgstr "チュニジア"
+
+msgctxt "country"
+msgid "Turkey"
+msgstr "トルコ"
+
+msgctxt "country"
+msgid "Turkmenistan"
+msgstr "トルクメニスタン"
+
+msgctxt "country"
+msgid "Turks and Caicos Islands"
+msgstr "タークス・カイコス諸島"
+
+msgctxt "country"
+msgid "Tuvalu"
+msgstr "ツバル"
+
+msgctxt "country"
+msgid "U.S. Virgin Islands"
+msgstr "U.S. Virgin Islands"
+
+msgctxt "country"
+msgid "Uganda"
+msgstr "ウガンダ"
+
+msgctxt "country"
+msgid "Ukraine"
+msgstr "ウクライナ"
+
+msgctxt "country"
+msgid "United Arab Emirates"
+msgstr "アラブ首長国連邦"
+
+msgctxt "country"
+msgid "United Kingdom"
+msgstr "イギリス"
+
+msgctxt "country"
+msgid "United States"
+msgstr "アメリカ"
+
+msgctxt "country"
+msgid "United States Minor Outlying Islands"
+msgstr "合衆国領有小離島"
+
+msgctxt "country"
+msgid "Uruguay"
+msgstr "ウルグアイ"
+
+msgctxt "country"
+msgid "Uzbekistan"
+msgstr "ウズベキスタン"
+
+msgctxt "country"
+msgid "Vanuatu"
+msgstr "バヌアツ"
+
+msgctxt "country"
+msgid "Vatican"
+msgstr "Vatican"
+
+msgctxt "country"
+msgid "Venezuela"
+msgstr "ベネズエラ"
+
+msgctxt "country"
+msgid "Vietnam"
+msgstr "ベトナム"
+
+msgctxt "country"
+msgid "Wallis and Futuna"
+msgstr "ウォリス・フツナ"
+
+msgctxt "country"
+msgid "Western Sahara"
+msgstr "西サハラ"
+
+msgctxt "country"
+msgid "Yemen"
+msgstr "イエメン"
+
+msgctxt "country"
+msgid "Zambia"
+msgstr "ザンビア"
+
+msgctxt "country"
+msgid "Zimbabwe"
+msgstr "ジンバブエ"
+
+msgctxt "error"
+msgid "An unknown error occurred"
+msgstr "予期せぬエラー"
+
+msgctxt "error"
+msgid "Authentication denied"
+msgstr "Authentication denied"
+
+msgctxt "error"
+msgid "Device disconnected"
+msgstr "Device disconnected"
+
+msgctxt "error"
+msgid "Enter a valid IPv4 or IPv6 address"
+msgstr "有効なIPv4またはIPv6アドレスを入力してください。"
+
+msgctxt "error"
+msgid "Incorrect 2FA code."
+msgstr "2要素認証コードが無効です。"
+
+msgctxt "error"
+msgid "Incorrect credentials."
+msgstr "認証情報が間違っています。"
+
+msgctxt "error"
+msgid "Invalid username."
+msgstr "無効なユーザー名です。"
+
+msgctxt "error"
+msgid ""
+"Proton services could not be reached.\n"
+"Please try again."
+msgstr ""
+"Proton services could not be reached.\n"
+"Please try again."
+
+msgctxt "error"
+msgid "Session limit reached"
+msgstr "Session limit reached"
+
+msgctxt "error"
+msgid "Something went wrong. Please try submitting your report at:\n"
+msgstr "Something went wrong. Please try submitting your report at:\n"
+
+msgctxt "error"
+msgid "Timeout"
+msgstr "タイムアウト"
+
+msgctxt "error"
+msgid "Tunnel setup failed"
+msgstr "Tunnel setup failed"
+
+msgctxt "error"
+msgid ""
+"Two-factor authentication failed. Security key 2FA is not enabled for your "
+"account."
+msgstr "2要素認証に失敗しました。セキュリティーキーを使った2要素認証は、あなたのアカウントでは無効化されています。"
+
+msgctxt "error"
+msgid "Two-factor authentication failed: Incorrect PIN"
+msgstr "2要素認証に失敗しました：PINコードが無効です"
+
+msgctxt "error"
+msgid "Two-factor authentication failed: No security key detected"
+msgstr "2要素認証に失敗しました：セキュリティーキーが見つかりません"
+
+msgctxt "error"
+msgid ""
+"Two-factor authentication failed: The security key you used is not linked to"
+" your Proton Account."
+msgstr "2要素認証に失敗しました：このセキュリティーキーはあなたのProtonアカウントに関連がありません。"
+
+msgctxt "error"
+msgid "Two-factor authentication failed: Your security key has no PIN set"
+msgstr "2要素認証に失敗しました：セキュリティーキーにPINがありません"
+
+msgctxt "error"
+msgid "Unable to sign out, please ensure you have internet access."
+msgstr "Unable to sign out, please ensure you have internet access."
+
+msgctxt "error"
+msgid ""
+"You've reached your maximum device limit. To reconnect to VPN, please "
+"disconnect from another device."
+msgstr "最大のデバイス数に達しました。VPNに再接続するには、他のデバイスで切断してください。"
+
+msgctxt "label"
+msgid "6-digit authentication code"
+msgstr "6桁の認証コード"
+
+msgctxt "label"
+msgid "Active port:"
+msgstr "有効なポート:"
+
+msgctxt "label"
+msgid "Add new server"
+msgstr "Add new server"
+
+msgctxt "label"
+msgid "All countries ({count})"
+msgstr "すべての国 ({count})"
+
+msgctxt "label"
+msgid "Auto-selected from free locations"
+msgstr "Auto-selected from free locations"
+
+msgctxt "label"
+msgid "BETA"
+msgstr "ベータ"
+
+msgctxt "label"
+msgid "Block Malware"
+msgstr "Block Malware"
+
+msgctxt "label"
+msgid "Block ads, trackers and malware"
+msgstr "広告、トラッカー、マルウェアをブロック"
+
+msgctxt "label"
+msgid "Description (minimum {count} characters)"
+msgstr "Description (minimum {count} characters)"
+
+msgctxt "label"
+msgid "Email"
+msgstr "メール"
+
+msgctxt "label"
+msgid "Excluded apps "
+msgstr "除外するアプリ "
+
+msgctxt "label"
+msgid "Free"
+msgstr "無料"
+
+msgctxt "label"
+msgid "Included apps "
+msgstr "含まれるアプリ "
+
+msgctxt "label"
+msgid "Off"
+msgstr "オフ"
+
+msgctxt "label"
+msgid "PIN code"
+msgstr "PIN コード"
+
+msgctxt "label"
+msgid "Proton VPN Linux Client"
+msgstr "Proton VPN Linux Client"
+
+msgctxt "label"
+msgid "Recovery code"
+msgstr "回復用コード"
+
+msgctxt "label"
+msgid "Server load"
+msgstr "サーバー負荷"
+
+msgctxt "label"
+msgid "Use Proton protocols"
+msgstr "Use Proton protocols"
+
+msgctxt "label"
+msgid "Username"
+msgstr "ユーザー名"
+
+msgctxt "label"
+msgid "VPN Plus"
+msgstr "VPN Plus"
+
+msgctxt "label"
+msgid "VPN plan: {plan}"
+msgstr "VPN plan: {plan}"
+
+msgctxt "label"
+msgid "Via Secure Core"
+msgstr "Secure Coreを経由"
+
+msgctxt "label"
+msgid "Via {country}"
+msgstr "{country} 経由"
+
+msgctxt "link"
+msgid "Learn more"
+msgstr "詳細"
+
+msgctxt "menu"
+msgid "About"
+msgstr "アプリについて"
+
+msgctxt "menu"
+msgid "Quit"
+msgstr "終了"
+
+msgctxt "menu"
+msgid "Release notes"
+msgstr "更新情報"
+
+msgctxt "menu"
+msgid "Report an issue"
+msgstr "問題を報告"
+
+msgctxt "menu"
+msgid "Settings"
+msgstr "設定"
+
+msgctxt "menu"
+msgid "Sign out"
+msgstr "サインアウト"
+
+msgctxt "message"
+msgid ""
+"Access preferred connections from system tray. Enter country or server "
+"codes, separated by commas, to quickly connect (e.g.: NL#42, JP, US, IT#01)."
+msgstr ""
+"Access preferred connections from system tray. Enter country or server "
+"codes, separated by commas, to quickly connect (e.g.: NL#42, JP, US, IT#01)."
+
+msgctxt "message"
+msgid "Active port is {new_port}"
+msgstr "Active port is {new_port}"
+
+msgctxt "message"
+msgid "Allow selected apps to connect without VPN protection."
+msgstr "選択したアプリが VPN 保護なしで接続できるようにします。"
+
+msgctxt "message"
+msgid ""
+"Beta access has been disabled.\n"
+"Please restart the app for changes to take effect."
+msgstr ""
+"Beta access has been disabled.\n"
+"Please restart the app for changes to take effect."
+
+msgctxt "message"
+msgid ""
+"Beta access has been enabled.\n"
+"Please restart the app for changes to take effect."
+msgstr ""
+"Beta access has been enabled.\n"
+"Please restart the app for changes to take effect."
+
+msgctxt "message"
+msgid ""
+"Bypass firewalls to connect to P2P servers and devices on your local "
+"network. "
+msgstr ""
+"Bypass firewalls to connect to P2P servers and devices on your local "
+"network. "
+
+msgctxt "message"
+msgid ""
+"Captures a specific issue you're facing when using Proton VPN to get help from our customer support team.\n"
+"\n"
+"Warning: This file is a recording of all your internet activity during the capture session."
+msgstr ""
+"Captures a specific issue you're facing when using Proton VPN to get help from our customer support team.\n"
+"\n"
+"Warning: This file is a recording of all your internet activity during the capture session."
+
+msgctxt "message"
+msgid "Connect to Proton VPN using your own domain name servers (DNS)."
+msgstr "Connect to Proton VPN using your own domain name servers (DNS)."
+
+msgctxt "message"
+msgid ""
+"Connect to a Tor server to access hidden services and onion sites using any "
+"browser."
+msgstr "Tor サーバーに接続し、任意のブラウザを使用して隠しサービスやオニオン サイトにアクセスします。"
+
+msgctxt "message"
+msgid ""
+"Connect to your destination server through a second, maximum security VPN "
+"server. Slower, but more private."
+msgstr ""
+"Connect to your destination server through a second, maximum security VPN "
+"server. Slower, but more private."
+
+msgctxt "message"
+msgid "Copied!"
+msgstr "コピーしました!"
+
+msgctxt "message"
+msgid ""
+"Crash reports help us fix bugs, detect firewalls, and avoid VPN blocks.\n"
+"\n"
+"These statistics do not contain your IP address, and they cannot be used to identify you. We'll never share them with third parties."
+msgstr ""
+"Crash reports help us fix bugs, detect firewalls, and avoid VPN blocks.\n"
+"\n"
+"These statistics do not contain your IP address, and they cannot be used to identify you. We'll never share them with third parties."
+
+msgctxt "message"
+msgid "Customize your connection by deciding which apps are protected by VPN."
+msgstr "各アプリをVPNで保護するかどうかをカスタマイズできます。"
+
+msgctxt "message"
+msgid ""
+"Disables randomization of the local addresses mapping. This can slightly "
+"reduce connection security, but should allow direct connections for online "
+"gaming and similar purposes."
+msgstr ""
+"Disables randomization of the local addresses mapping. This can slightly "
+"reduce connection security, but should allow direct connections for online "
+"gaming and similar purposes."
+
+msgctxt "message"
+msgid "Disabling Beta access..."
+msgstr "Disabling Beta access..."
+
+msgctxt "message"
+msgid "Each code can only be used once"
+msgstr "各コードは1度のみ使用可能です"
+
+msgctxt "message"
+msgid "Enabling Beta access..."
+msgstr "Enabling Beta access..."
+
+msgctxt "message"
+msgid "Get early access and help us test new versions of Proton VPN."
+msgstr "早期アクセスを取得して、Proton VPN の新しいバージョンのテストにご協力ください。"
+
+msgctxt "message"
+msgid "If your security key has a button or a gold disc, tap it now."
+msgstr "セキュリティーキーにボタンもしくはゴールドディスクがある場合、タップしてください。"
+
+msgctxt "message"
+msgid ""
+"Increase your connection speed by up to 400% with performance enhancing "
+"technologies."
+msgstr "パフォーマンス強化テクノロジーにより、接続速度が最大 400% 向上します。"
+
+msgctxt "message"
+msgid "Insert the U2F or FIDO key linked to your Proton Account. "
+msgstr "ProtonアカウントにリンクされたU2FまたはFIDOキーを差し込んでください。 "
+
+msgctxt "message"
+msgid "It was not possible to disable Beta access.\n"
+msgstr "It was not possible to disable Beta access.\n"
+
+msgctxt "message"
+msgid "It was not possible to enable Beta access.\n"
+msgstr "It was not possible to enable Beta access.\n"
+
+msgctxt "message"
+msgid "Kill switch is blocking any outgoing connections."
+msgstr "キルスイッチが外部への接続をすべてブロックしています。"
+
+msgctxt "message"
+msgid ""
+"Kill switch selection is disabled while VPN is active. Disconnect to make "
+"changes."
+msgstr ""
+"Kill switch selection is disabled while VPN is active. Disconnect to make "
+"changes."
+
+msgctxt "message"
+msgid "Multiple security keys were found. Tap one to select it."
+msgstr "セキュリティーキーが複数見つかりました。タップして一つを選択してください。"
+
+msgctxt "message"
+msgid ""
+"Only selected apps connect with VPN protection. All other traffic is "
+"unprotected."
+msgstr "選択されたアプリのみがVPN保護を使用して接続します。その他のトラフィックは保護されません。"
+
+msgctxt "message"
+msgid ""
+"Permanent Kill Switch is blocking any outgoing connections and preventing your IP to be exposed.\n"
+"\n"
+"Do you want to disable Kill Switch?"
+msgstr ""
+"Permanent Kill Switch is blocking any outgoing connections and preventing your IP to be exposed.\n"
+"\n"
+"Do you want to disable Kill Switch?"
+
+msgctxt "message"
+msgid "Please establish a new VPN connection for changes to take effect."
+msgstr "Please establish a new VPN connection for changes to take effect."
+
+msgctxt "message"
+msgid "Protect yourself from ads, malware, and trackers on websites and apps."
+msgstr "ウェブサイトやアプリの使用中に、広告やマルウェア、追跡から保護"
+
+msgctxt "message"
+msgid "Protocol can only be changed when VPN is disconnected."
+msgstr "Protocol can only be changed when VPN is disconnected."
+
+msgctxt "message"
+msgid ""
+"Protocol selection is disabled while VPN is active. Disconnect to make "
+"changes."
+msgstr ""
+"Protocol selection is disabled while VPN is active. Disconnect to make "
+"changes."
+
+msgctxt "message"
+msgid ""
+"Quitting the application will cancel the current VPN connection.\n"
+"\n"
+"Do you want to continue?"
+msgstr ""
+"Quitting the application will cancel the current VPN connection.\n"
+"\n"
+"Do you want to continue?"
+
+msgctxt "message"
+msgid ""
+"Quitting the application will keep the kill switch active, but your current VPN connection will be terminated.\n"
+"\n"
+"Do you want to continue?"
+msgstr ""
+"Quitting the application will keep the kill switch active, but your current VPN connection will be terminated.\n"
+"\n"
+"Do you want to continue?"
+
+msgctxt "message"
+msgid "Reporting your issue..."
+msgstr "Reporting your issue..."
+
+msgctxt "message"
+msgid "Signing in..."
+msgstr "サインインしています..."
+
+msgctxt "message"
+msgid ""
+"Signing out will cancel the current VPN connection and disable the kill switch.\n"
+"\n"
+"Do you want to continue?"
+msgstr ""
+"Signing out will cancel the current VPN connection and disable the kill switch.\n"
+"\n"
+"Do you want to continue?"
+
+msgctxt "message"
+msgid ""
+"Signing out will cancel the current VPN connection.\n"
+"\n"
+"Do you want to continue?"
+msgstr ""
+"Signing out will cancel the current VPN connection.\n"
+"\n"
+"Do you want to continue?"
+
+msgctxt "message"
+msgid ""
+"Signing out will disable the kill switch, potentially exposing your internet traffic. \n"
+"\n"
+"Do you want to continue?"
+msgstr ""
+"Signing out will disable the kill switch, potentially exposing your internet traffic. \n"
+"\n"
+"Do you want to continue?"
+
+msgctxt "message"
+msgid "Signing out..."
+msgstr "サインアウト中..."
+
+msgctxt "message"
+msgid "Split tunneling enabled. Remember to restart affected apps."
+msgstr "Split tunneling enabled. Remember to restart affected apps."
+
+msgctxt "message"
+msgid ""
+"These servers give the best performance for BitTorrent and file sharing."
+msgstr "これらのサーバーは BitTorrent とファイル共有のための最適なパフォーマンスを提供します。"
+
+msgctxt "message"
+msgid ""
+"This technology allows Proton VPN to provide higher speed and security in "
+"difficult-to-reach countries."
+msgstr ""
+"This technology allows Proton VPN to provide higher speed and security in "
+"difficult-to-reach countries."
+
+msgctxt "message"
+msgid "This will disable NetShield."
+msgstr "これにより NetShield が無効化されます。"
+
+msgctxt "message"
+msgid "This will disable custom DNS."
+msgstr "This will disable custom DNS."
+
+msgctxt "message"
+msgid ""
+"Tunnels IPv6 traffic through the VPN. Can enhance compatibility with IPv6 "
+"networks."
+msgstr "IPv6トラフィックをVPN経由にします。 IPv6ネットワークとのより良い互換性が期待できます。"
+
+msgctxt "message"
+msgid "When enabled, the app starts minimized to the tray."
+msgstr "When enabled, the app starts minimized to the tray."
+
+msgctxt "message"
+msgid ""
+"You will be connected to a server as soon as Proton VPN app starts. Replace "
+"it with a country ISO code (e.g.: US for United States), a server (e.g.: "
+"NL#42) or Fastest for quick connection. Default value: Off."
+msgstr ""
+"You will be connected to a server as soon as Proton VPN app starts. Replace "
+"it with a country ISO code (e.g.: US for United States), a server (e.g.: "
+"NL#42) or Fastest for quick connection. Default value: Off."
+
+msgctxt "message"
+msgid "Your issue has been reported"
+msgstr "Your issue has been reported"
+
+msgctxt "placeholder"
+msgid "Password"
+msgstr "パスワード"
+
+msgctxt "placeholder"
+msgid "Press Ctrl+F to search"
+msgstr "Press Ctrl+F to search"
+
+msgctxt "placeholder"
+msgid "Username"
+msgstr "ユーザー名"
+
+msgctxt "status"
+msgid "Connecting..."
+msgstr "接続中..."
+
+msgctxt "status"
+msgid "Connection error"
+msgstr "接続エラー"
+
+msgctxt "status"
+msgid "Disconnecting..."
+msgstr "切断中..."
+
+msgctxt "status"
+msgid "Protected"
+msgstr "保護されています"
+
+msgctxt "status"
+msgid "Unprotected"
+msgstr "保護されていません"
+
+msgctxt "title"
+msgid "About"
+msgstr "アプリについて"
+
+msgctxt "title"
+msgid "Account"
+msgstr "アカウント"
+
+msgctxt "title"
+msgid "Active connection found"
+msgstr "Active connection found"
+
+msgctxt "title"
+msgid "Add excluded apps"
+msgstr "Add excluded apps"
+
+msgctxt "title"
+msgid "Add included apps"
+msgstr "Add included apps"
+
+msgctxt "title"
+msgid "Authenticator app"
+msgstr "認証アプリ"
+
+msgctxt "title"
+msgid "Auto connect"
+msgstr "自動接続"
+
+msgctxt "title"
+msgid "Beta Access"
+msgstr "ベータ版アクセス"
+
+msgctxt "title"
+msgid "Beta access"
+msgstr "ベータ版アクセス"
+
+msgctxt "title"
+msgid "Connection"
+msgstr "接続"
+
+msgctxt "title"
+msgid "Connection error: session limit reached"
+msgstr "Connection error: session limit reached"
+
+msgctxt "title"
+msgid "Countries"
+msgstr "国"
+
+msgctxt "title"
+msgid "Create a troubleshooting file"
+msgstr "Create a troubleshooting file"
+
+msgctxt "title"
+msgid "Custom DNS servers"
+msgstr "カスタムDNSサーバー"
+
+msgctxt "title"
+msgid "Enable Custom DNS"
+msgstr "Enable Custom DNS"
+
+msgctxt "title"
+msgid "Enable Custom DNS?"
+msgstr "カスタム DNS を有効にしますか？"
+
+msgctxt "title"
+msgid "Enable Netshield"
+msgstr "Enable Netshield"
+
+msgctxt "title"
+msgid "Enable Netshield ?"
+msgstr "Enable Netshield ?"
+
+msgctxt "title"
+msgid "Exclude mode"
+msgstr "除外モード"
+
+msgctxt "title"
+msgid "Fastest country"
+msgstr "最速の国"
+
+msgctxt "title"
+msgid "Fastest free server"
+msgstr "最速の無料サーバー"
+
+msgctxt "title"
+msgid "Features"
+msgstr "機能"
+
+msgctxt "title"
+msgid "General"
+msgstr "一般"
+
+msgctxt "title"
+msgid "Include mode"
+msgstr "含めるモード"
+
+msgctxt "title"
+msgid "Kill Switch Enabled"
+msgstr "キルスイッチオン"
+
+msgctxt "title"
+msgid "Kill Switch enabled"
+msgstr "Kill Switch enabled"
+
+msgctxt "title"
+msgid "Locations"
+msgstr "Locations"
+
+msgctxt "title"
+msgid "Moderate NAT"
+msgstr "モデレート NAT"
+
+msgctxt "title"
+msgid "NetShield"
+msgstr "NetShield"
+
+msgctxt "title"
+msgid "P2P/BitTorrent"
+msgstr "P2P/BitTorrent"
+
+msgctxt "title"
+msgid "Pinned tray connections"
+msgstr "Pinned tray connections"
+
+msgctxt "title"
+msgid "Port forwarding"
+msgstr "ポート転送"
+
+msgctxt "title"
+msgid "Protocol"
+msgstr "プロトコル"
+
+msgctxt "title"
+msgid "Release notes"
+msgstr "更新情報"
+
+msgctxt "title"
+msgid "Report an Issue"
+msgstr "問題を報告"
+
+msgctxt "title"
+msgid "Secure Core"
+msgstr "Secure Core"
+
+msgctxt "title"
+msgid "Security key"
+msgstr "セキュリティキー"
+
+msgctxt "title"
+msgid "Select packet capture directory"
+msgstr "Select packet capture directory"
+
+msgctxt "title"
+msgid "Servers"
+msgstr "サーバー"
+
+msgctxt "title"
+msgid "Settings"
+msgstr "設定"
+
+msgctxt "title"
+msgid "Share anonymous crash reports"
+msgstr "匿名のクラッシュレポートを共有"
+
+msgctxt "title"
+msgid "Smart routing"
+msgstr "スマートルーティング"
+
+msgctxt "title"
+msgid "Split tunneling"
+msgstr "スプリットトンネル"
+
+msgctxt "title"
+msgid "Start app minimized"
+msgstr "Start app minimized"
+
+msgctxt "title"
+msgid "Tor"
+msgstr "Tor"
+
+msgctxt "title"
+msgid "Two-factor authentication"
+msgstr "2 要素認証"
+
+msgctxt "title"
+msgid "VPN Accelerator"
+msgstr "VPN アクセラレーター"
+
+msgctxt "tooltip"
+msgid "Close"
+msgstr "閉じる"
+
+msgctxt "tooltip"
+msgid "Connect to {country_name}"
+msgstr "{country_name} に接続"
+
+msgctxt "tooltip"
+msgid "Connect to {country} via Secure Core"
+msgstr "Connect to {country} via Secure Core"
+
+msgctxt "tooltip"
+msgid "Connect to {exit_country} via {entry_country}"
+msgstr "Connect to {exit_country} via {entry_country}"
+
+msgctxt "tooltip"
+msgid "Connect to {name}"
+msgstr "{name} に接続"
+
+msgctxt "tooltip"
+msgid "Copy port number"
+msgstr "ポート番号をコピー"
+
+msgctxt "tooltip"
+msgid ""
+"Hide all Secure Core servers\n"
+"to connect to {country}"
+msgstr ""
+"Hide all Secure Core servers\n"
+"to connect to {country}"
+
+msgctxt "tooltip"
+msgid "Hide all locations from {country_name}"
+msgstr "Hide all locations from {country_name}"
+
+msgctxt "tooltip"
+msgid "Hide all servers from {name}"
+msgstr "Hide all servers from {name}"
+
+msgctxt "tooltip"
+msgid "P2P/BitTorrent supported"
+msgstr "P2P/BitTorrent supported"
+
+msgctxt "tooltip"
+msgid ""
+"Secure Core server that connects to {exit_country} through {entry_country}."
+msgstr ""
+"Secure Core server that connects to {exit_country} through {entry_country}."
+
+msgctxt "tooltip"
+msgid "Secure Core supported"
+msgstr "Secure Core supported"
+
+msgctxt "tooltip"
+msgid "Server load is at {load}%"
+msgstr "Server load is at {load}%"
+
+msgctxt "tooltip"
+msgid ""
+"Show all Secure Core servers\n"
+"to connect to {country}"
+msgstr ""
+"Show all Secure Core servers\n"
+"to connect to {country}"
+
+msgctxt "tooltip"
+msgid "Show all locations from {country_name}"
+msgstr "Show all locations from {country_name}"
+
+msgctxt "tooltip"
+msgid "Show all servers from {name}"
+msgstr "Show all servers from {name}"
+
+msgctxt "tooltip"
+msgid "Smart routing is used"
+msgstr "Smart routing is used"
+
+msgctxt "tooltip"
+msgid "Streaming supported"
+msgstr "Streaming supported"
+
+msgctxt "tooltip"
+msgid "To change split tunneling settings, please disconnect the VPN first."
+msgstr "To change split tunneling settings, please disconnect the VPN first."
+
+msgctxt "tooltip"
+msgid "Tor supported"
+msgstr "Tor supported"
+
+msgctxt "tooltip"
+msgid "Upgrade to connect to {country_name}"
+msgstr "Upgrade to connect to {country_name}"
+
+msgctxt "tooltip"
+msgid "Upgrade to connect to {country} via Secure Core"
+msgstr "Upgrade to connect to {country} via Secure Core"
+
+msgctxt "tooltip"
+msgid "Upgrade to connect to {exit_country} via {entry_country}"
+msgstr "Upgrade to connect to {exit_country} via {entry_country}"
+
+msgctxt "tooltip"
+msgid "Upgrade to connect to {name}"
+msgstr "Upgrade to connect to {name}"
+
+msgctxt "tooltip"
+msgid "{name} is under maintenance"
+msgstr "{name} is under maintenance"

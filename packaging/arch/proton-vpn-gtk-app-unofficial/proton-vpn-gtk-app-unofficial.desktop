@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Name=Proton VPN (Community)
+Comment=Proton VPN GTK client
+Exec=proton-vpn-gtk-app-community
+Icon=network-vpn
+Terminal=false
+Categories=Network;
+StartupNotify=true

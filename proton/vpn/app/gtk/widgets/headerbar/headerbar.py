@@ -1,0 +1,53 @@
+"""
+This module defines the headerbar widget
+that is present at the top of the window.
+
+
+Copyright (c) 2023 Proton AG
+
+This file is part of Proton VPN.
+
+Proton VPN is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+Proton VPN is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with ProtonVPN.  If not, see <https://www.gnu.org/licenses/>.
+"""
+
+from typing import TYPE_CHECKING
+
+from proton.vpn.app.gtk import Gtk
+from proton.vpn.app.gtk.controller import Controller
+from proton.vpn.app.gtk.widgets.headerbar.menu.menu import Menu
+from proton.vpn.app.gtk.widgets.main.loading_widget import OverlayWidget
+
+if TYPE_CHECKING:
+    from proton.vpn.app.gtk.app import MainWindow
+
+
+class HeaderBar(Gtk.HeaderBar):
+    """
+    Allows to customize the header bar (also known as the title bar),
+    by adding custom buttons, icons and text.
+    """
+
+    def __init__(self, controller: Controller, main_window: "MainWindow", overlay_widget: OverlayWidget):
+        super().__init__()
+        self.set_name("main-headerbar")
+
+        self.set_decoration_layout("menu:minimize,close")
+
+        menu_button = Gtk.MenuButton()
+        menu_button.add_css_class("app-menu-button")
+        menu_button.set_has_frame(False)
+        menu_button.set_icon_name("open-menu-symbolic")
+        self.menu = Menu(controller=controller, main_window=main_window, overlay_widget=overlay_widget)
+        menu_button.set_menu_model(self.menu)
+        self.pack_start(menu_button)

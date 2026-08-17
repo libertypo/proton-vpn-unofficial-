@@ -1,0 +1,103 @@
+"""
+GLib utility functions.
+
+
+Copyright (c) 2023 Proton AG
+
+This file is part of Proton VPN.
+
+Proton VPN is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+Proton VPN is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with ProtonVPN.  If not, see <https://www.gnu.org/licenses/>.
+"""
+
+from concurrent.futures import Future
+from typing import Callable
+
+from gi.repository import GLib
+
+from proton.vpn import logging
+
+logger = logging.getLogger(__name__)
+
+
+def run_once(function: Callable, *args, priority=GLib.PRIORITY_DEFAULT, **kwargs) -> int:
+    """
+    Python implementation of GLib.idle_add_once, as currently is not available
+    in pygobject.
+    https://docs.gtk.org/glib/func.idle_add_once.html.
+    """
+
+    def wrapper_function():
+        try:
+            function(*args, **kwargs)
+        except Exception:  # pragma: no cover - defensive fallback
+            logger.exception("Unhandled exception while dispatching GLib callback.")
+        # Returning a falsy value is required so that GLib does not keep
+        # running the function over and over again.
+        return False
+
+    return GLib.idle_add(wrapper_function, priority=priority)
+
+
+def run_periodically(function, *args, interval_ms: int, **kwargs) -> int:
+    """
+    Runs a function periodically on the GLib main loop.
+
+    :param function: function to be called periodically
+    :param *args: arguments to be passed to the function.
+    :param interval_ms: interval at which the function should be called.
+    :param **kwargs: keyword arguments to be passed to the function.
+    """
+    run_once(function, *args, **kwargs)
+
+    def wrapper_function():
+        try:
+            result = function(*args, **kwargs)
+        except Exception:  # pragma: no cover - defensive fallback
+            logger.exception("Unhandled exception while running periodic GLib callback.")
+            return False
+
+        # Returning False stops the periodic source; returning True keeps it running.
+        return True if result is not False else False
+
+    return GLib.timeout_add(interval_ms, wrapper_function)
+
+
+def _safe_dispatch(callback: Callable[..., None], *args, **kwargs) -> None:
+    try:
+        callback(*args, **kwargs)
+    except Exception:  # pragma: no cover - defensive fallback
+        logger.exception("Unhandled exception while dispatching GLib callback.")
+
+
+def bubble_up_errors(future: Future):
+    """Makes sure that any error the future resolves to bubbles up to the GLib main loop."""
+    # run_once guarantees the callback is removed even if the invoked callable
+    # returns a truthy value.
+    future.add_done_callback(lambda f: run_once(_safe_dispatch, f.result))
+
+
+def add_done_callback(future: Future, callback: Callable[[Future], None]):
+    """
+    Adds a callback to be executed once the future completes, but in a way that's GLib-compatible.
+
+    We currently use Futures to bridge between the asyncio event loop and the GLib event loop.
+    When using Future.add_done_callback(callback), the callback is run by the thread
+    running the asyncio loop. However, if the callback does GTK-related work, it needs to
+    run on the thread running the GLib loop.
+
+    This function takes care of wrapping the callback in a GLib.idle_add call to make sure the
+    callback runs on the GLib thread.
+    """
+    # Use run_once so callback return values cannot accidentally reschedule.
+    future.add_done_callback(lambda f: run_once(_safe_dispatch, callback, f))

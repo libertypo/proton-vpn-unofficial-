@@ -1,0 +1,191 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+ARTIFACT_DIR="$ROOT_DIR/python-proton-vpn-api-core/resources"
+NM_PROTUN_BIN_DIR="${NM_PROTUN_BIN_DIR:-/usr/libexec}"
+OUT_DIR="${OUT_DIR:-$ROOT_DIR/dist/arch}"
+WORK_DIR="${WORK_DIR:-$(mktemp -d)}"
+KEEP_WORKDIR="${KEEP_WORKDIR:-0}"
+GPG_KEY="${GPG_KEY:-B2B8E2F00629B64ADEEBC5AF7903F448BD7BBBF1}"
+PUBLIC_KEY_NAME="libertypo-release-key.asc"
+
+if [[ "${1:-}" == "--script-help" ]]; then
+  cat <<'EOF'
+Build an Arch package that installs required NetworkManager ProTun artifacts.
+
+Usage:
+  ./build-arch-nm-protun-package.sh [makepkg options]
+
+Examples:
+  ./build-arch-nm-protun-package.sh -f
+  ./build-arch-nm-protun-package.sh -f --syncdeps --cleanbuild
+
+Environment variables:
+  OUT_DIR       Output directory for built package (default: dist/arch)
+  NM_PROTUN_BIN_DIR Directory containing proven nm-protun binaries (default: /usr/libexec)
+  WORK_DIR      Temporary working directory (default: mktemp dir)
+  KEEP_WORKDIR  Set to 1 to keep WORK_DIR after script exits
+  GPG_KEY       Signing-key fingerprint (default: libertypo release key)
+
+Notes:
+  This script is build-only and will never install the package.
+  Passing -i or --install is rejected.
+EOF
+  exit 0
+fi
+
+for arg in "$@"; do
+  if [[ "$arg" == "-i" || "$arg" == "--install" ]]; then
+    echo "error: install options (-i/--install) are not allowed; this script only builds packages." >&2
+    exit 1
+  fi
+done
+
+required_files=(
+  "$NM_PROTUN_BIN_DIR/nm-protun-service"
+  "$NM_PROTUN_BIN_DIR/nm-protun-auth-dialog"
+  "$ARTIFACT_DIR/nm-protun.name"
+  "$ARTIFACT_DIR/nm-protun-service.conf"
+)
+
+for f in "${required_files[@]}"; do
+  if [[ ! -f "$f" ]]; then
+    echo "error: required artifact missing: $f" >&2
+    exit 1
+  fi
+done
+
+if ! command -v makepkg >/dev/null 2>&1; then
+  echo "error: makepkg is required (install pacman-contrib/base-devel)." >&2
+  exit 1
+fi
+
+if ! command -v gpg >/dev/null 2>&1; then
+  echo "error: gpg is required to sign package artifacts." >&2
+  exit 1
+fi
+
+if ! gpg --batch --list-secret-keys "$GPG_KEY" >/dev/null 2>&1; then
+  echo "error: configured signing key is not available: $GPG_KEY" >&2
+  exit 1
+fi
+
+if [[ "$KEEP_WORKDIR" != "1" ]]; then
+  trap 'rm -rf "$WORK_DIR"' EXIT
+fi
+
+mkdir -p "$OUT_DIR"
+gpg --batch --export-options export-minimal --armor --export "$GPG_KEY" > "$OUT_DIR/$PUBLIC_KEY_NAME"
+cp "$ROOT_DIR/install-arch-testing-packages.sh" "$OUT_DIR/install-arch-testing-packages.sh"
+chmod 755 "$OUT_DIR/install-arch-testing-packages.sh"
+PKGDIR="$WORK_DIR/nm-protun-artifacts"
+mkdir -p "$PKGDIR"
+
+# Package the locally proven service and auth dialog binaries.
+cp -f "$NM_PROTUN_BIN_DIR/nm-protun-service" "$PKGDIR/nm-protun-service"
+cp -f "$NM_PROTUN_BIN_DIR/nm-protun-auth-dialog" "$PKGDIR/nm-protun-auth-dialog"
+cp -f "$ARTIFACT_DIR/nm-protun.name" "$PKGDIR/nm-protun.name"
+cp -f "$ARTIFACT_DIR/nm-protun-service.conf" "$PKGDIR/nm-protun-service.conf"
+cat > "$PKGDIR/nm-protun.service" <<'UNIT'
+[Unit]
+Description=NetworkManager ProTun service
+After=NetworkManager.service
+PartOf=NetworkManager.service
+
+[Service]
+Type=dbus
+BusName=org.freedesktop.NetworkManager.protun
+ExecStart=/usr/libexec/nm-protun-service
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
+UNIT
+
+source_hashes=()
+for source in nm-protun-service nm-protun-auth-dialog nm-protun.name nm-protun-service.conf nm-protun.service; do
+  source_hashes+=("$(sha256sum "$PKGDIR/$source" | awk '{print $1}')")
+done
+
+PKGVER_DATE="$(date +%Y%m%d)"
+PKGREL="2"
+
+cat > "$PKGDIR/PKGBUILD" <<PKG
+pkgname=nm-protun-artifacts-unofficial
+pkgver=${PKGVER_DATE}
+pkgrel=${PKGREL}
+pkgdesc="NetworkManager ProTun runtime artifacts for Proton VPN GTK app"
+arch=('x86_64')
+url='https://github.com/libertypo/proton-vpn-unofficial-'
+license=('GPL-3.0-or-later')
+depends=('networkmanager' 'dbus')
+options=('!strip')
+source=(
+  'nm-protun-service'
+  'nm-protun-auth-dialog'
+  'nm-protun.name'
+  'nm-protun-service.conf'
+  'nm-protun.service'
+)
+sha256sums=('${source_hashes[0]}' '${source_hashes[1]}' '${source_hashes[2]}' '${source_hashes[3]}' '${source_hashes[4]}')
+
+package() {
+  install -Dm755 "\$srcdir/nm-protun-service" "\$pkgdir/usr/libexec/nm-protun-service"
+  install -Dm755 "\$srcdir/nm-protun-auth-dialog" "\$pkgdir/usr/libexec/nm-protun-auth-dialog"
+  install -Dm644 "\$srcdir/nm-protun.name" "\$pkgdir/usr/lib/NetworkManager/VPN/nm-protun.name"
+  install -Dm644 "\$srcdir/nm-protun-service.conf" "\$pkgdir/usr/share/dbus-1/system.d/nm-protun-service.conf"
+  install -Dm644 "\$srcdir/nm-protun.service" "\$pkgdir/usr/lib/systemd/system/nm-protun.service"
+
+  # Ensure plugin metadata points to installed system binaries.
+  sed -i 's|^program=.*|program=/usr/libexec/nm-protun-service|' "\$pkgdir/usr/lib/NetworkManager/VPN/nm-protun.name"
+  sed -i 's|^auth-dialog=.*|auth-dialog=/usr/libexec/nm-protun-auth-dialog|' "\$pkgdir/usr/lib/NetworkManager/VPN/nm-protun.name"
+}
+PKG
+
+cat > "$PKGDIR/README.txt" <<'TXT'
+This directory is generated by build-arch-nm-protun-package.sh.
+Run makepkg here to build an installable package for nm-protun artifacts.
+TXT
+
+echo "==> Building Arch package in: $PKGDIR"
+(
+  cd "$PKGDIR"
+  makepkg -f "$@"
+)
+
+packages=()
+for artifact in "$PKGDIR"/*.pkg.tar.*; do
+  [[ -f "$artifact" && "$artifact" =~ \.pkg\.tar\.[^.]+$ ]] || continue
+  packages+=("$artifact")
+done
+
+if [[ ${#packages[@]} -eq 0 ]]; then
+  echo "==> No package archive produced (makepkg option may have skipped build)."
+  echo "==> Working directory: $PKGDIR"
+  exit 0
+fi
+
+cp -f "${packages[@]}" "$OUT_DIR"/
+
+shopt -s nullglob
+old_packages=("$OUT_DIR"/nm-protun-artifacts-unofficial-*.pkg.tar.*)
+shopt -u nullglob
+for old_package in "${old_packages[@]}"; do
+  [[ "$old_package" == "$OUT_DIR/$(basename "${packages[0]}")" ]] || rm -f "$old_package"
+done
+
+for package in "${packages[@]}"; do
+  package_name="$(basename "$package")"
+  (
+    cd "$OUT_DIR"
+    sha256sum "$package_name" > "$package_name.sha256"
+    gpg --batch --yes --local-user "$GPG_KEY" --detach-sign --output "$package_name.sig" "$package_name"
+  )
+done
+
+echo "==> Package copied to: $OUT_DIR"
+ls -1 "$OUT_DIR"/*.pkg.tar.*
+echo "==> SHA-256 checksums: $OUT_DIR/*.pkg.tar.*.sha256"
+echo "==> Public signing key: $OUT_DIR/$PUBLIC_KEY_NAME"
+echo "==> GPG signatures: $OUT_DIR/*.pkg.tar.*.sig"

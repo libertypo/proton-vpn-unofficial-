@@ -1,0 +1,30 @@
+check_nm_protun_artifacts() {
+  local required missing
+  required=(
+    /usr/libexec/nm-protun-service
+    /usr/libexec/nm-protun-auth-dialog
+    /usr/lib/NetworkManager/VPN/nm-protun.name
+    /usr/share/dbus-1/system.d/nm-protun-service.conf
+  )
+  missing=0
+
+  for path in "${required[@]}"; do
+    if [[ ! -f "$path" ]]; then
+      echo "warning: missing nm-protun artifact: $path"
+      missing=1
+    fi
+  done
+
+  if [[ "$missing" -eq 1 ]]; then
+    echo "warning: Smart/Stealth protocols will be unavailable until nm-protun artifacts are installed."
+    echo "warning: reinstall or repair python-proton-vpn-api-core-local before using Smart/Stealth."
+  fi
+}
+
+post_install() {
+  check_nm_protun_artifacts
+}
+
+post_upgrade() {
+  check_nm_protun_artifacts
+}

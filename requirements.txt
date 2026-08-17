@@ -1,0 +1,13 @@
+# Runtime dependencies
+# These are kept intentionally minimal and explicit for reproducible installs.
+# GTK/PyGObject bindings are expected to be provided by the host Linux system.
+#
+# Split tunneling requires proton-vpn-daemon (system package) to be installed
+# and proton.VPN.service to be running. Without it the feature is silently
+# hidden. Also requires bcc >= 0.26.0 (python-bcc system package).
+dbus-python==1.4.0
+distro==1.9.0
+packaging==24.2
+proton-core==0.7.0
+proton-vpn-api-core==5.5.11
+requests==2.33.1

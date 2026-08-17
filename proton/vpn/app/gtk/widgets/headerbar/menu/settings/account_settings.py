@@ -1,0 +1,57 @@
+"""
+Account settings module.
+
+
+Copyright (c) 2023 Proton AG
+
+This file is part of Proton VPN.
+
+Proton VPN is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+Proton VPN is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with ProtonVPN.  If not, see <https://www.gnu.org/licenses/>.
+"""
+
+from gi.repository import Gio
+
+from proton.vpn import logging
+from proton.vpn.app.gtk.controller import Controller
+from proton.vpn.app.gtk.i18n import tr as _
+from proton.vpn.app.gtk.widgets.headerbar.menu.settings.common import BaseCategoryContainer, CustomButton
+
+logger = logging.getLogger(__name__)
+
+
+class AccountSettings(BaseCategoryContainer):  # pylint: disable=too-many-instance-attributes
+    """Account settings are grouped under this class."""
+
+    CATEGORY_NAME = "Account"
+    MANAGE_ACCOUNT_URL = "https://account.protonvpn.com/account"
+
+    def __init__(self, controller: Controller):
+        super().__init__(_(self.CATEGORY_NAME))
+        self._controller = controller
+
+    def build_ui(self):
+        """Builds the UI, invoking all necessary methods that are
+        under this category."""
+        self.append(
+            CustomButton(
+                title=self._controller.account_name,
+                description=_("VPN plan: {plan}").format(plan=self._controller.account_data.plan_title or _("Free")),
+                button_label=_("Manage Account"),
+                on_click_callback=self._on_click_manage_account_button,
+                bold_title=True,
+            )
+        )
+
+    def _on_click_manage_account_button(self, *_):
+        Gio.AppInfo.launch_default_for_uri(self.MANAGE_ACCOUNT_URL, None)
