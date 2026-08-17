@@ -1,6 +1,6 @@
 # Proton VPN GTK App Community Build
 
-An independent community build of a Proton VPN GTK client for Arch Linux.
+An independent community build of a native Proton VPN client for Arch Linux.
 
 ## License And Disclaimer
 
