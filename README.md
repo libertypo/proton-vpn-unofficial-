@@ -12,11 +12,16 @@ Use this software at your own risk.
 
 ## Run From The Checkout
 
-For a direct local run, clone the repository with its
-`python-proton-vpn-api-core` directory intact, install the GTK runtime
-dependencies, then start the launcher from the repository root:
+The public checkout includes the local `python-proton-vpn-api-core` and ProTun
+sources required by the launcher and package builders. No separate full Proton
+checkout or manual source link is required.
+
+Clone the repository, install the GTK runtime dependencies, then start the
+launcher from the repository root:
 
 ```bash
+git clone https://github.com/libertypo/proton-vpn-unofficial-.git
+cd proton-vpn-unofficial-
 sudo pacman -S --needed python python-gobject gtk4 networkmanager
 ./run-app.sh
 ```
@@ -40,7 +45,8 @@ package pair requires:
 - `base-devel`, `git`, `rustup`, `cargo`, and `gnupg`
 - Rust toolchain `1.93.1`
 - NetworkManager development and runtime dependencies declared by the PKGBUILDs
-- Access to Proton's `proton` and `proton_public` Rust registries
+- Network access to the Proton Rust registry configured in
+	`python-proton-vpn-api-core/.cargo/config.toml`
 
 Install the general build tools and pinned Rust toolchain:
 
@@ -48,9 +54,6 @@ Install the general build tools and pinned Rust toolchain:
 sudo pacman -S --needed base-devel git rustup cargo gnupg
 rustup toolchain install 1.93.1
 ```
-
-The application requires the local API-core/ProTun package. Build that package
-first, then build the GTK application package from the same checkout:
 
 The application requires the local API-core/ProTun package. Build that package
 first, then build the GTK application package from the same checkout:
