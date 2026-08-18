@@ -80,8 +80,8 @@ options and environment variables with:
 
 ## Testing Scope
 
-This is a community build for experienced Arch and Manjaro users. Do not treat
-it as an official Proton or Manjaro package, and do not use it where a failed VPN
-or NetworkManager transition would be unacceptable. Test installation, login,
-connect/disconnect, Smart and Stealth behavior, kill-switch behavior, and
+This is a community build. Do not treat it as an official Proton or Manjaro
+package. Test on a personally controlled, recoverable machine, not one where a
+VPN or NetworkManager failure has meaningful consequences. Test installation,
+login, connect/disconnect, Smart and Stealth behavior, kill-switch behavior, and
 recovery or removal of test NetworkManager/ProTun state.
