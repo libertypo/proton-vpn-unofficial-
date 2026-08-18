@@ -9,3 +9,75 @@ project and is not endorsed, sponsored, or sanctioned by Proton AG. Proton AG
 retains copyright in its original work.
 
 Use this software at your own risk.
+
+## Run From The Checkout
+
+For a direct local run, clone the repository with its
+`python-proton-vpn-api-core` directory intact, install the GTK runtime
+dependencies, then start the launcher from the repository root:
+
+```bash
+sudo pacman -S --needed python python-gobject gtk4 networkmanager
+./run-app.sh
+```
+
+The launcher verifies that the application and API-core modules resolve from the
+checkout instead of mixed system packages. It also reports whether the installed
+NetworkManager ProTun artifacts are available. Without those artifacts, the app
+can run but Smart and Stealth protocols are unavailable.
+
+Use the following diagnostic if the launcher reports an import-resolution issue:
+
+```bash
+./run-app.sh --diagnose-imports
+```
+
+## Build Packages (For The Brave At Heart)
+
+This source tree targets Arch Linux and Manjaro. Building the complete local
+package pair requires:
+
+- `base-devel`, `git`, `rustup`, `cargo`, and `gnupg`
+- Rust toolchain `1.93.1`
+- NetworkManager development and runtime dependencies declared by the PKGBUILDs
+- Access to Proton's `proton` and `proton_public` Rust registries
+
+Install the general build tools and pinned Rust toolchain:
+
+```bash
+sudo pacman -S --needed base-devel git rustup cargo gnupg
+rustup toolchain install 1.93.1
+```
+
+The application requires the local API-core/ProTun package. Build that package
+first, then build the GTK application package from the same checkout:
+
+The application requires the local API-core/ProTun package. Build that package
+first, then build the GTK application package from the same checkout:
+
+```bash
+SIGN_PACKAGES=0 ./build-arch-local-api-core-package.sh -f
+SIGN_PACKAGES=0 ./build-arch-proton-vpn-package.sh -f
+```
+
+The scripts write their artifacts to `dist/arch/` by default. They use a
+low-memory build configuration by default; set `LOW_MEMORY_BUILD=0` to use the
+normal parallel build settings. These commands produce unsigned local test
+artifacts; do not distribute them as release packages.
+
+Package signing is enabled by default and requires the configured release key.
+Maintainers can inspect each script's accepted `makepkg` options and environment
+variables with:
+
+```bash
+./build-arch-local-api-core-package.sh --script-help
+./build-arch-proton-vpn-package.sh --script-help
+```
+
+## Testing Scope
+
+This is a community build for experienced Arch and Manjaro users. Do not treat
+it as an official Proton or Manjaro package, and do not use it where a failed VPN
+or NetworkManager transition would be unacceptable. Test installation, login,
+connect/disconnect, Smart and Stealth behavior, kill-switch behavior, and
+recovery or removal of test NetworkManager/ProTun state.
