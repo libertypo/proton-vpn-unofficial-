@@ -65,12 +65,13 @@ SIGN_PACKAGES=0 ./build-arch-proton-vpn-package.sh -f
 
 The scripts write their artifacts to `dist/arch/` by default. They use a
 low-memory build configuration by default; set `LOW_MEMORY_BUILD=0` to use the
-normal parallel build settings. These commands produce unsigned local test
+normal parallel build settings. The `SIGN_PACKAGES=0` prefix intentionally
+overrides the scripts' signing default and produces unsigned local test
 artifacts; do not distribute them as release packages.
 
-Package signing is enabled by default and requires the configured release key.
-Maintainers can inspect each script's accepted `makepkg` options and environment
-variables with:
+To produce signed release artifacts, omit `SIGN_PACKAGES=0`; this requires the
+configured release key. Maintainers can inspect each script's accepted `makepkg`
+options and environment variables with:
 
 ```bash
 ./build-arch-local-api-core-package.sh --script-help
