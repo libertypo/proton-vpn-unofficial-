@@ -30,7 +30,7 @@ pub(crate) fn set_adapter_ipv4_dns_servers(interface_guid: GUID, ips: &mut Vec<I
     ips.distinct_mut();
 
     let mut settings: DNS_INTERFACE_SETTINGS = create_settings();
-    settings.Flags = DNS_SETTING_NAMESERVER.into();    
+    settings.Flags = DNS_SETTING_NAMESERVER.into();
     let ips_as_string: String = ips.to_comma_separated_string();
     let mut buffer: Vec<u16> = vec![];
     settings.NameServer = ips_string_to_pwstr(&ips_as_string, &mut buffer);

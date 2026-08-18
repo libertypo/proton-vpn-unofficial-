@@ -129,5 +129,3 @@ An abstract view of the user interface.
    :members:
    :special-members: __init__
    :undoc-members:
-
-

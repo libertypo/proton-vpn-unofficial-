@@ -23,7 +23,6 @@ along with ProtonVPN.  If not, see <https://www.gnu.org/licenses/>.
 from typing import TYPE_CHECKING, Optional
 
 from gi.repository import GObject, Gtk
-from proton.vpn.core.settings import NetShield
 
 from proton.vpn.app.gtk.controller import Controller
 from proton.vpn.app.gtk.i18n import tr as _
@@ -38,6 +37,7 @@ from proton.vpn.app.gtk.widgets.headerbar.menu.settings.custom_dns import Custom
 from proton.vpn.app.gtk.widgets.headerbar.menu.settings.kill_switch import KillSwitchWidget
 from proton.vpn.app.gtk.widgets.headerbar.menu.settings.split_tunneling import SplitTunnelingToggle
 from proton.vpn.app.gtk.widgets.main.confirmation_dialog import ConfirmationDialog
+from proton.vpn.core.settings import NetShield
 
 if TYPE_CHECKING:
     from proton.vpn.app.gtk.widgets.headerbar.menu.settings.settings_window import SettingsWindow

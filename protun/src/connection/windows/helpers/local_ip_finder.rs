@@ -111,8 +111,8 @@ pub(crate) fn get_internet_interfaces() -> core::result::Result<(Option<Ipv4Inte
     }
     if let Some(ipv6interface) = &ipv6_result {
         log::info!("Internet IPv6 interface: {ipv6interface}");
-    }    
-    
+    }
+
     Ok((ipv4_result, ipv6_result))
 }
 
@@ -208,13 +208,13 @@ fn is_route_interface_up(route: &MIB_IPFORWARD_ROW2) -> windows::core::Result<bo
         if status == NO_ERROR {
             log::info!("Status of the interface with index {} (AdminStatus: {}) (OperStatus: {}) (MediaConnectState: {})",
                 route.InterfaceIndex, row.AdminStatus.0, row.OperStatus.0, row.MediaConnectState.0);
-            Ok(row.AdminStatus == NET_IF_ADMIN_STATUS_UP && 
-               row.OperStatus == IfOperStatusUp && 
+            Ok(row.AdminStatus == NET_IF_ADMIN_STATUS_UP &&
+               row.OperStatus == IfOperStatusUp &&
                row.MediaConnectState == MediaConnectStateConnected)
         } else {
             log::error!("Error when fetching the status of the interface with index {}", route.InterfaceIndex);
             Err(windows::core::Error::from_win32())
-        } 
+        }
     }
 }
 

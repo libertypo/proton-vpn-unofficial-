@@ -21,14 +21,14 @@ along with ProtonVPN.  If not, see <https://www.gnu.org/licenses/>.
 """
 # pylint: disable=duplicate-code
 
-from typing import Optional, TYPE_CHECKING
-
 import subprocess  # nosec B404:blacklist # nosemgrep
+from typing import TYPE_CHECKING, Optional
 
-from proton.vpn.killswitch.interface import KillSwitch
-from proton.vpn.backend.linux.networkmanager.killswitch.wireguard.killswitch_connection_handler\
-    import KillSwitchConnectionHandler
 from proton.vpn import logging
+from proton.vpn.backend.linux.networkmanager.killswitch.wireguard.killswitch_connection_handler import (
+    KillSwitchConnectionHandler,
+)
+from proton.vpn.killswitch.interface import KillSwitch
 
 if TYPE_CHECKING:
     from proton.vpn.connection import VPNServer
@@ -50,15 +50,11 @@ class WGKillSwitch(KillSwitch):
     primary VPN connection.
     """
 
-    def __init__(
-            self, ks_handler: Optional[KillSwitchConnectionHandler] = None
-    ):
+    def __init__(self, ks_handler: Optional[KillSwitchConnectionHandler] = None):
         self._ks_handler = ks_handler or KillSwitchConnectionHandler()
         super().__init__()
 
-    async def enable(
-            self, vpn_server: Optional["VPNServer"] = None, permanent: bool = False
-    ):  # noqa
+    async def enable(self, vpn_server: Optional["VPNServer"] = None, permanent: bool = False):  # noqa
         """Enables the kill switch."""
         # Block all traffic.
         await self._ks_handler.add_kill_switch_connection(permanent)
@@ -67,9 +63,7 @@ class WGKillSwitch(KillSwitch):
             return
 
         # Allow traffic going to the VPN server IP.
-        await self._ks_handler.add_vpn_server_route(
-            server_ip=vpn_server.server_ip
-        )
+        await self._ks_handler.add_vpn_server_route(server_ip=vpn_server.server_ip)
 
     async def disable(self):
         """Disables general kill switch."""
@@ -109,9 +103,7 @@ class WGKillSwitch(KillSwitch):
         # switch implementation when IPv6 is disabled via the ipv6.disabled kernel option.
         try:
             result = subprocess.run(
-                ["/usr/bin/apt", "show", "libnetplan1"],
-                capture_output=True,
-                check=True, shell=False
+                ["/usr/bin/apt", "show", "libnetplan1"], capture_output=True, check=True, shell=False
             )  # nosec B603:subprocess_without_shell_equals_true
         except (FileNotFoundError, subprocess.CalledProcessError):
             pass

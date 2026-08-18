@@ -37,12 +37,12 @@ connectionManager.state.forEach { state ->
             ...
         }
         is VpnConnectionState.Connecting -> ...
-    
+
         // Connection attempt requires app, user or system action to proceed.
         is VpnConnectionState.WaitingForAction -> when (state.reason) {
             ...
         }
-    
+
         // If Disconnected::error != null connection failed due to error that might require app
         // action to fix and restart connection.
         is VpnConnectionState.Disconnected -> {

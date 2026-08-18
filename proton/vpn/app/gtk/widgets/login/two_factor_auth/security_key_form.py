@@ -25,14 +25,6 @@ from concurrent.futures import Future
 from typing import Optional
 
 from gi.repository import GLib, GObject
-from proton.vpn.session.exceptions import (
-    Fido2NotSupportedError,
-    InvalidSecurityKeyError,
-    SecurityKeyError,
-    SecurityKeyNotFoundError,
-    SecurityKeyPINInvalidError,
-    SecurityKeyPINNotSetError,
-)
 
 from proton.vpn import logging
 from proton.vpn.app.gtk import Gtk
@@ -44,6 +36,14 @@ from proton.vpn.app.gtk.widgets.login.password_entry import PasswordEntry
 from proton.vpn.app.gtk.widgets.login.two_factor_auth.authenticate_button import AuthenticateButton
 from proton.vpn.app.gtk.widgets.main.loading_widget import OverlayWidget
 from proton.vpn.app.gtk.widgets.main.notifications import Notifications
+from proton.vpn.session.exceptions import (
+    Fido2NotSupportedError,
+    InvalidSecurityKeyError,
+    SecurityKeyError,
+    SecurityKeyNotFoundError,
+    SecurityKeyPINInvalidError,
+    SecurityKeyPINNotSetError,
+)
 
 logger = logging.getLogger(__name__)
 

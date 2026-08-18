@@ -25,13 +25,13 @@ from types import ModuleType
 from typing import TYPE_CHECKING, List, Optional, cast
 
 from gi.repository import GObject, Gtk
-from proton.vpn.core.settings import CustomDNSEntry, NetShield
 
 from proton.vpn.app.gtk.controller import Controller
 from proton.vpn.app.gtk.i18n import tr as _
 from proton.vpn.app.gtk.utils.safe_signal_connect import safe_signal_connect
 from proton.vpn.app.gtk.widgets.headerbar.menu.settings.common import ToggleWidget
 from proton.vpn.app.gtk.widgets.main.confirmation_dialog import ConfirmationDialog
+from proton.vpn.core.settings import CustomDNSEntry, NetShield
 
 if TYPE_CHECKING:
     from proton.vpn.app.gtk.widgets.headerbar.menu.settings.feature_settings import FeatureSettings

@@ -1,0 +1,34 @@
+pkgbase = python-proton-vpn-api-core-local
+	pkgdesc = Proton VPN API core with NetworkManager ProTun support
+	pkgver = 5.5.11
+	pkgrel = 1
+	arch = x86_64
+	license = GPL-3.0-or-later
+	makedepends = cargo
+	makedepends = rust
+	makedepends = python-setuptools
+	depends = python
+	depends = python-proton-core
+	depends = python-proton-vpn-local-agent
+	depends = python-cryptography
+	depends = python-distro
+	depends = python-jinja
+	depends = python-pynacl
+	depends = python-packaging
+	depends = python-sentry_sdk
+	depends = python-fido2
+	depends = python-gobject
+	depends = python-cairo
+	depends = networkmanager
+	depends = dbus
+	provides = python-proton-vpn-api-core=5.5.11
+	conflicts = python-proton-vpn-api-core
+	conflicts = python-proton-vpn-network-manager
+	conflicts = nm-protun-artifacts-unofficial
+	options = !lto
+	source = https://github.com/libertypo/proton-vpn-unofficial-/archive/refs/tags/v1.0.0.tar.gz
+	source = nm-protun.service
+	sha256sums = 979886fadb79587cc9231eb9e24e2f12b51c2c6fa4f446fe30ffdd1f7dc0be73
+	sha256sums = 900df4fee83a824ad620591f5cb2e8759fc3d855bacb688a466f731df23ced50
+
+pkgname = python-proton-vpn-api-core-local

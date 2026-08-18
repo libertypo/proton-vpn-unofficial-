@@ -23,13 +23,13 @@ from types import ModuleType
 from typing import Callable, Optional
 
 from gi.repository import Gtk
-from proton.vpn.core.settings.split_tunneling import SplitTunnelingMode
 
 from proton.vpn.app.gtk.controller import Controller
 from proton.vpn.app.gtk.utils.safe_signal_connect import safe_signal_connect
 from proton.vpn.app.gtk.widgets.headerbar.menu.settings.common import ConflictableToggleWidget, ReactiveSetting
 from proton.vpn.app.gtk.widgets.headerbar.menu.settings.split_tunneling.app import AppBasedSplitTunnelingSettings
 from proton.vpn.app.gtk.widgets.headerbar.menu.settings.split_tunneling.mode import SplitTunnelingModeSetting
+from proton.vpn.core.settings.split_tunneling import SplitTunnelingMode
 
 SPLIT_TUNNELING_TOGGLE_SETTING_NAME = "settings.features.split_tunneling.enabled"
 

@@ -19,12 +19,13 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with ProtonVPN.  If not, see <https://www.gnu.org/licenses/>.
 """
+
 from __future__ import annotations
+
 from abc import ABC, abstractmethod
 from typing import Optional, Union
 
 from proton.loader import Loader
-
 from proton.vpn import logging
 from proton.vpn.core.settings import SplitTunnelingConfig
 
@@ -32,8 +33,8 @@ logger = logging.getLogger(__name__)
 
 
 class SplitTunneling(ABC):
-    """Defines the interface to create a new split tunneling client.
-    """
+    """Defines the interface to create a new split tunneling client."""
+
     def __init__(self, uid: int):
         self._uid: int = uid
 
@@ -45,9 +46,7 @@ class SplitTunneling(ABC):
         :param uid: unix user ID
         """
         try:
-            split_tunneling_class = Loader.get(
-                type_name="split_tunneling"
-            )
+            split_tunneling_class = Loader.get(type_name="split_tunneling")
         except RuntimeError:
             logger.warning("Split tunneling backend not found")
             return None
@@ -88,14 +87,8 @@ class SplitTunneling(ABC):
         """
 
     @abstractmethod
-    async def get_all_configs(
-            self
-    ) -> Union[
-        list[tuple[int, SplitTunnelingConfig]],
-        list
-    ]:
-        """Clears data stored for the specified uid.
-        """
+    async def get_all_configs(self) -> Union[list[tuple[int, SplitTunnelingConfig]], list]:
+        """Clears data stored for the specified uid."""
 
     @classmethod
     @abstractmethod

@@ -16,17 +16,17 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with ProtonVPN.  If not, see <https://www.gnu.org/licenses/>.
 """
+
+import re
 from enum import Enum
 from pathlib import Path
-from typing import Optional, TYPE_CHECKING, Dict, Tuple
-import re
+from typing import TYPE_CHECKING, Dict, Optional, Tuple
 
 from proton.utils.environment import VPNExecutionEnvironment
-
 from proton.vpn.core.cache_handler import CacheHandler
 from proton.vpn.session.exceptions import ServerListDecodeError
+from proton.vpn.session.servers.logicals import PersistenceKeys, ServerList
 from proton.vpn.session.servers.types import ServerLoad
-from proton.vpn.session.servers.logicals import ServerList, PersistenceKeys
 from proton.vpn.session.utils import rest_api_request
 
 if TYPE_CHECKING:
@@ -37,6 +37,7 @@ try:
     # The import of the proton.vpn.lib module is delayed to avoid
     # importing it when the feature flag is disabled.
     from proton.vpn.lib import ServerStatus  # pylint: disable=C0415, E0401, E0611
+
     VPN_LIB_AVAILABLE = True
 except ImportError:
     VPN_LIB_AVAILABLE = False
@@ -49,6 +50,7 @@ NOT_MODIFIED_STATUS = 304
 
 class EndpointVersion(Enum):
     """Used to choose between v1 endpoint or v2"""
+
     V1 = 1
     V2 = 2
 
@@ -57,6 +59,7 @@ class MixinEndpointV1:  # pylint: disable=R0903
     """
     Mixin class for the v1 endpoints of the Proton VPN REST API.
     """
+
     LOGICALS = "/vpn/v1/logicals?SecureCoreFilter=all&WithState=true"
     LOADS = "/vpn/v1/loads"
 
@@ -68,9 +71,7 @@ class MixinEndpointV1:  # pylint: disable=R0903
         Fetches the server loads from the REST API and
         updates the current server list with them."""
         if not self._server_list:
-            raise RuntimeError(
-                "Server loads can only be updated after fetching the the full server list."
-            )
+            raise RuntimeError("Server loads can only be updated after fetching the the full server list.")
 
         response = await rest_api_request(
             self._session,
@@ -89,11 +90,11 @@ class MixinEndpointV2:  # pylint: disable=R0903
     """
     Mixin class for the v2 endpoints of the Proton VPN REST API.
     """
+
     LOGICALS = "/vpn/v2/logicals?SecureCoreFilter=all&WithState=true"
     STATUS = "/vpn/v2/status/{token}/binary"
 
     def _convert_load(self, load: Dict) -> Dict:
-
         # Going forward we want to properly integrate, IsEnabled, IsVisible and
         # IsAutoconnectable see VPNLINUX-1502.
         score = load["Score"] + (0 if load["IsAutoconnectable"] else 1000)
@@ -104,22 +105,15 @@ class MixinEndpointV2:  # pylint: disable=R0903
         }
 
     async def _v2_fetch_logicals(self, location: Optional["VPNLocation"]) -> Tuple[Dict, str]:
-
-        logicals, last_modified_time =\
-            await self._request_logicals(MixinEndpointV2.LOGICALS)
+        logicals, last_modified_time = await self._request_logicals(MixinEndpointV2.LOGICALS)
 
         self._server_status = ServerStatus(
             logicals,
-            user_location={
-                "Latitude": location.Lat,
-                "Longitude": location.Long
-            },
-            user_country=location.Country
+            user_location={"Latitude": location.Lat, "Longitude": location.Long},
+            user_country=location.Country,
         )
 
-        status = await self._request_status(
-            MixinEndpointV2.STATUS.format(token=logicals["StatusID"])
-        )
+        status = await self._request_status(MixinEndpointV2.STATUS.format(token=logicals["StatusID"]))
 
         loads = self._server_status.compute_loads(status)
 
@@ -127,8 +121,7 @@ class MixinEndpointV2:  # pylint: disable=R0903
         servers = logicals["LogicalServers"]
         if len(loads) != len(servers):
             raise RuntimeError(
-                "Loads computation produced a different number of servers "
-                "than the logicals list. This is unexpected."
+                "Loads computation produced a different number of servers than the logicals list. This is unexpected."
             )
 
         for server, load in zip(servers, loads):
@@ -141,13 +134,9 @@ class MixinEndpointV2:  # pylint: disable=R0903
         Fetches the server loads from the REST API and
         updates the current server list with them."""
         if not self._server_list:
-            raise RuntimeError(
-                "Server loads can only be updated after fetching the the full server list."
-            )
+            raise RuntimeError("Server loads can only be updated after fetching the the full server list.")
 
-        binary_status = await self._request_status(
-            MixinEndpointV2.STATUS.format(token=status)
-        )
+        binary_status = await self._request_status(MixinEndpointV2.STATUS.format(token=status))
 
         loads = self._server_status.compute_loads(binary_status)
         server_loads = [ServerLoad(self._convert_load(data)) for data in loads]
@@ -164,11 +153,9 @@ class ServerListFetcher(MixinEndpointV1, MixinEndpointV2):
     CACHE_PATH = Path(VPNExecutionEnvironment().path_cache) / "serverlist.json"
 
     """Fetches and caches the list of VPN servers from the REST API."""
+
     def __init__(
-            self,
-            session: "VPNSession",
-            server_list: Optional[ServerList] = None,
-            cache_file: Optional[CacheHandler] = None
+        self, session: "VPNSession", server_list: Optional[ServerList] = None, cache_file: Optional[CacheHandler] = None
     ):
         self._session = session
         self._server_list = server_list
@@ -181,10 +168,7 @@ class ServerListFetcher(MixinEndpointV1, MixinEndpointV2):
 
     async def _request_logicals(self, endpoint: str) -> Tuple[Dict, str]:
         raw_response = await rest_api_request(
-            self._session,
-            endpoint,
-            additional_headers=self._build_additional_headers(),
-            return_raw=True
+            self._session, endpoint, additional_headers=self._build_additional_headers(), return_raw=True
         )
 
         if raw_response.status_code == NOT_MODIFIED_STATUS:
@@ -193,25 +177,20 @@ class ServerListFetcher(MixinEndpointV1, MixinEndpointV2):
             response = raw_response.json
 
         # The last modified time
-        last_modified_time = raw_response.find_first_header(
-            LAST_MODIFIED_HEADER, ServerList.get_epoch_time()
-        )
+        last_modified_time = raw_response.find_first_header(LAST_MODIFIED_HEADER, ServerList.get_epoch_time())
 
         return response, last_modified_time
 
     async def _request_status(self, endpoint):
         status_response = await rest_api_request(
-            self._session,
-            endpoint,
-            additional_headers=self._build_additional_headers(),
-            return_raw=True
+            self._session, endpoint, additional_headers=self._build_additional_headers(), return_raw=True
         )
 
         return status_response.data
 
     def _v2_validate_location(self) -> Optional["VPNLocation"]:
         location = self._session.vpn_account.location
-        if (location.Lat is None or location.Long is None):
+        if location.Lat is None or location.Long is None:
             return None
 
         return location
@@ -220,9 +199,7 @@ class ServerListFetcher(MixinEndpointV1, MixinEndpointV2):
         """Fetches the list of VPN servers. Warning: this is a heavy request."""
 
         location = self._v2_validate_location()
-        use_v2 = endpoint_version == EndpointVersion.V2 \
-            and VPN_LIB_AVAILABLE\
-            and location is not None
+        use_v2 = endpoint_version == EndpointVersion.V2 and VPN_LIB_AVAILABLE and location is not None
 
         if use_v2:
             response, last_modified_time = await self._v2_fetch_logicals(location)
@@ -234,8 +211,7 @@ class ServerListFetcher(MixinEndpointV1, MixinEndpointV2):
             Keys.USER_TIER.value: self._session.vpn_account.max_tier,
             Keys.LAST_MODIFIED_TIME.value: last_modified_time,
             Keys.EXPIRATION_TIME.value: ServerList.get_expiration_time(),
-            Keys.LOADS_EXPIRATION_TIME.value:
-                ServerList.get_loads_expiration_time(),
+            Keys.LOADS_EXPIRATION_TIME.value: ServerList.get_loads_expiration_time(),
         }
 
         response.update(entries_to_update)
@@ -283,15 +259,11 @@ class ServerListFetcher(MixinEndpointV1, MixinEndpointV2):
         return headers
 
     def _build_header_netzone(self) -> str:
-        truncated_ip_address = truncate_ip_address(
-            self._session.vpn_account.location.IP
-        )
+        truncated_ip_address = truncate_ip_address(self._session.vpn_account.location.IP)
         return truncated_ip_address
 
     def _extract_modified_since_header(self) -> str:
-        return self._server_list.last_modified_time \
-            if self._server_list \
-            else ServerList.get_epoch_time()
+        return self._server_list.last_modified_time if self._server_list else ServerList.get_epoch_time()
 
 
 def truncate_ip_address(ip_address: str) -> str:

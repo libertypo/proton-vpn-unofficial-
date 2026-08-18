@@ -26,13 +26,13 @@ from pathlib import Path
 from typing import List, Optional
 
 from gi.repository import Gdk, Gio, GLib, GObject
-from proton.vpn.connection import states
 
 from proton.vpn.app.gtk import Gtk
 from proton.vpn.app.gtk.assets import icons
 from proton.vpn.app.gtk.i18n import tr as _
 from proton.vpn.app.gtk.utils.safe_signal_connect import safe_signal_connect
 from proton.vpn.app.gtk.widgets.main.notifications import Notifications
+from proton.vpn.connection import states
 
 
 class PortForwardRevealer(Gtk.Revealer):  # pylint: disable=too-few-public-methods

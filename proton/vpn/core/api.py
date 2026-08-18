@@ -19,25 +19,24 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with ProtonVPN.  If not, see <https://www.gnu.org/licenses/>.
 """
+
 import asyncio
 import copy
 from threading import Event
 from typing import Optional
 
+from proton.session.api import Fido2Assertion
 from proton.vpn import logging
-from proton.vpn.core.vpnconnector import VPNConnector
-from proton.vpn.core.registry import Registry
 from proton.vpn.core.refresher.scheduler import Scheduler
 from proton.vpn.core.refresher.vpn_data_refresher import VPNDataRefresher
+from proton.vpn.core.registry import Registry
+from proton.vpn.core.session_holder import ClientTypeMetadata, SessionHolder
 from proton.vpn.core.settings import Settings, SettingsPersistence
-from proton.vpn.core.session_holder import SessionHolder, ClientTypeMetadata
-from proton.vpn.session.dataclasses import LoginResult, BugReportForm, NPSSurveyResponse
-from proton.vpn.session.account import VPNAccount
-from proton.vpn.session import FeatureFlags
 from proton.vpn.core.usage import UsageReporting
-
-from proton.session.api import Fido2Assertion
-
+from proton.vpn.core.vpnconnector import VPNConnector
+from proton.vpn.session import FeatureFlags
+from proton.vpn.session.account import VPNAccount
+from proton.vpn.session.dataclasses import BugReportForm, LoginResult, NPSSurveyResponse
 from proton.vpn.session.u2f_interaction import UserInteraction
 
 logger = logging.getLogger(__name__)
@@ -45,18 +44,13 @@ logger = logging.getLogger(__name__)
 
 class ProtonVPNAPI:  # pylint: disable=too-many-public-methods
     """Class exposing the Proton VPN facade."""
-    def __init__(self, client_type_metadata: ClientTypeMetadata,
-                 registry: Optional[Registry] = None):
-        self._session_holder = SessionHolder(
-            client_type_metadata=client_type_metadata
-        )
+
+    def __init__(self, client_type_metadata: ClientTypeMetadata, registry: Optional[Registry] = None):
+        self._session_holder = SessionHolder(client_type_metadata=client_type_metadata)
         self._settings_persistence = SettingsPersistence()
         self._vpn_connector = None
-        self._usage_reporting = UsageReporting(
-            client_type_metadata=client_type_metadata)
-        self.refresher = VPNDataRefresher(
-            self._session_holder, Scheduler()
-        )
+        self._usage_reporting = UsageReporting(client_type_metadata=client_type_metadata)
+        self.refresher = VPNDataRefresher(self._session_holder, Scheduler())
         self._split_tunneling_client = None
         self._registry = registry or self.create_registry()
 
@@ -73,9 +67,9 @@ class ProtonVPNAPI:  # pylint: disable=too-many-public-methods
         # we load them explicitly. The day we need dynamic plugin discovery we'll modify
         # the registry to support it.
 
-        registry.register_from_module('proton.vpn.backend.networkmanager.protocol.openvpn')
-        registry.register_from_module('proton.vpn.backend.networkmanager.protocol.wireguard')
-        registry.register_from_module('proton.vpn.backend.networkmanager.protocol.protun')
+        registry.register_from_module("proton.vpn.backend.networkmanager.protocol.openvpn")
+        registry.register_from_module("proton.vpn.backend.networkmanager.protocol.wireguard")
+        registry.register_from_module("proton.vpn.backend.networkmanager.protocol.protun")
 
         return registry
 
@@ -108,10 +102,7 @@ class ProtonVPNAPI:  # pylint: disable=too-many-public-methods
         user_tier = self._session_holder.user_tier or 0
 
         loop = asyncio.get_running_loop()
-        settings = await loop.run_in_executor(
-            None, self._settings_persistence.get,
-            user_tier
-        )
+        settings = await loop.run_in_executor(None, self._settings_persistence.get, user_tier)
         self._usage_reporting.enabled = settings.anonymous_crash_reports
 
         # We have to return a copy of the settings to force the caller to
@@ -184,9 +175,7 @@ class ProtonVPNAPI:  # pylint: disable=too-many-public-methods
         return bool(lib_available and supports_fido2)
 
     async def generate_2fa_fido2_assertion(
-            self,
-            user_interaction: Optional[UserInteraction] = None,
-            cancel_assertion: Optional[Event] = None
+        self, user_interaction: Optional[UserInteraction] = None, cancel_assertion: Optional[Event] = None
     ) -> Fido2Assertion:
         """
         Generates a 2FA assertion using a U2F/FIDO2 security key.
@@ -197,9 +186,7 @@ class ProtonVPNAPI:  # pylint: disable=too-many-public-methods
         fido 2 assertion process.
         :returns: the generated FIDO 2 assertion.
         """
-        return await self._session_holder.session.generate_2fa_fido2_assertion(
-            user_interaction, cancel_assertion
-        )
+        return await self._session_holder.session.generate_2fa_fido2_assertion(user_interaction, cancel_assertion)
 
     async def submit_2fa_fido2(self, fido2_assertion: Fido2Assertion) -> LoginResult:
         """

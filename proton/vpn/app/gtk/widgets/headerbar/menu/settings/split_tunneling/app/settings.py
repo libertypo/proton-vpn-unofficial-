@@ -23,7 +23,6 @@ from types import ModuleType
 from typing import Optional, cast
 
 from gi.repository import Gtk
-from proton.vpn.core.settings.split_tunneling import SplitTunnelingMode
 
 from proton.vpn.app.gtk.controller import Controller
 from proton.vpn.app.gtk.utils.safe_signal_connect import safe_signal_connect
@@ -32,6 +31,7 @@ from proton.vpn.app.gtk.widgets.headerbar.menu.settings.split_tunneling.app.app_
 from proton.vpn.app.gtk.widgets.headerbar.menu.settings.split_tunneling.app.data_structures import AppData
 from proton.vpn.app.gtk.widgets.headerbar.menu.settings.split_tunneling.app.installed_apps import get_all_installed_apps
 from proton.vpn.app.gtk.widgets.headerbar.menu.settings.split_tunneling.app.selected_app_list import SelectedAppList
+from proton.vpn.core.settings.split_tunneling import SplitTunnelingMode
 
 LABEL_CONVERSION = {
     SplitTunnelingMode.INCLUDE: "Included apps ",

@@ -25,9 +25,8 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Callable, Optional, Set, Tuple
 
-from proton.vpn.session.servers import ServerFeatureEnum
-
 from proton.vpn.app.gtk import Gtk
+from proton.vpn.session.servers import ServerFeatureEnum
 
 
 @dataclass

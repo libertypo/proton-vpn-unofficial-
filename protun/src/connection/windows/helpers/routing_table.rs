@@ -113,7 +113,7 @@ fn create_ipv4_mib_ipforward_row(route: &Ipv4Route) -> MIB_IPFORWARD_ROW2 {
             S_addr: u32::from_le_bytes(route.destination_ip_addr.octets()),
         },
     };
-    
+
     if let Some(next_hop_address) = route.next_hop_address {
         row.NextHop.Ipv4.sin_family = ADDRESS_FAMILY(AF_INET.0 as u16);
         row.NextHop.Ipv4.sin_addr = IN_ADDR {
@@ -230,7 +230,7 @@ pub fn delete_v6_route(route: &Ipv6Route) -> Result<RouteDeletionSuccess, String
 pub fn delete_routes(interface_index: u32) -> Vec<Result<RouteDeletionSuccess, String>> {
     let interface_rows: Vec<MIB_IPFORWARD_ROW2> = get_interface_rows(interface_index);
     let mut results: Vec<Result<RouteDeletionSuccess, String>> = vec![];
-    
+
     for row in interface_rows {
         let result: WIN32_ERROR = unsafe { DeleteIpForwardEntry2(&row) };
         results.push(match result {

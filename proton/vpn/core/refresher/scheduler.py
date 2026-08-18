@@ -16,18 +16,19 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with ProtonVPN.  If not, see <https://www.gnu.org/licenses/>.
 """
+
 import asyncio
 import inspect
 import time
 from asyncio import CancelledError
-
 from dataclasses import dataclass
-from typing import Optional, Coroutine, List, Callable
+from typing import Callable, Coroutine, List, Optional
 
 
 @dataclass
 class RunAgain:
     """Object to be returned by a task to be run again after a certain amount of time."""
+
     delay_in_ms: int
 
     @staticmethod
@@ -39,6 +40,7 @@ class RunAgain:
 @dataclass
 class TaskRecord:
     """Record with details of the task to be executed and when."""
+
     id: int  # pylint: disable=invalid-name
     timestamp: float
     async_function: Callable[[], Coroutine]
@@ -94,10 +96,7 @@ class Scheduler:
         Returns the tasks that are ready to fire, that is the tasks with a timestamp lower or
         equal than the current unix time."""
         now = time.time()
-        return list(filter(
-            lambda record: record.timestamp <= now and not record.background_task,
-            self._task_list
-        ))
+        return list(filter(lambda record: record.timestamp <= now and not record.background_task, self._task_list))
 
     def start(self):
         """Starts the scheduler."""
@@ -108,7 +107,7 @@ class Scheduler:
 
     async def stop(self):
         """Stops the scheduler and discards all remaining tasks."""
-        if self.is_started:    # noqa: E501 # pylint: disable=line-too-long # nosemgrep: python.lang.maintainability.is-function-without-parentheses.is-function-without-parentheses
+        if self.is_started:  # noqa: E501 # pylint: disable=line-too-long # nosemgrep: python.lang.maintainability.is-function-without-parentheses.is-function-without-parentheses
             self._scheduler_task.cancel()
 
             for record in self._task_list:
@@ -134,18 +133,14 @@ class Scheduler:
         """
         return self.run_after(0, async_function)
 
-    def run_after(
-            self, delay_in_seconds: float, async_function: Callable[[], Coroutine]
-    ) -> int:
+    def run_after(self, delay_in_seconds: float, async_function: Callable[[], Coroutine]) -> int:
         """
         Runs the coroutine after a delay specified in seconds.
         :returns: the scheduled task id.
         """
         return self.run_at(time.time() + delay_in_seconds, async_function)
 
-    def run_at(
-            self, timestamp: float, async_function: Callable[[], Coroutine]
-    ) -> int:
+    def run_at(self, timestamp: float, async_function: Callable[[], Coroutine]) -> int:
         """
         Runs the task at the specified timestamp.
         :returns: the scheduled task id.
@@ -155,11 +150,7 @@ class Scheduler:
 
         self._last_task_id += 1
 
-        record = TaskRecord(
-            id=self._last_task_id,
-            timestamp=timestamp,
-            async_function=async_function
-        )
+        record = TaskRecord(id=self._last_task_id, timestamp=timestamp, async_function=async_function)
         self._task_list.append(record)
 
         return record.id

@@ -1,0 +1,13 @@
+[Unit]
+Description=NetworkManager ProTun service
+After=NetworkManager.service
+PartOf=NetworkManager.service
+
+[Service]
+Type=dbus
+BusName=org.freedesktop.NetworkManager.protun
+ExecStart=/usr/libexec/nm-protun-service
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target

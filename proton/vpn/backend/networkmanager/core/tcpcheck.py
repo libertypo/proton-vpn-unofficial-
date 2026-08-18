@@ -1,6 +1,7 @@
 """
 Utility module to do TCP connection checks.
 """
+
 import asyncio
 import ipaddress
 import logging
@@ -14,9 +15,7 @@ logger = logging.getLogger(__name__)
 DEFAULT_TIMEOUT = 5
 
 
-def _get_address_family(
-        ip_address: Union[ipaddress.IPv4Address, ipaddress.IPv6Address]
-) -> socket.AddressFamily:  # pylint: disable=no-member
+def _get_address_family(ip_address: Union[ipaddress.IPv4Address, ipaddress.IPv6Address]) -> socket.AddressFamily:  # pylint: disable=no-member
     if isinstance(ip_address, ipaddress.IPv4Address):
         return socket.AF_INET
     if isinstance(ip_address, ipaddress.IPv6Address):
@@ -24,9 +23,7 @@ def _get_address_family(
     raise TypeError(f"Invalid IP address: {ip_address}")
 
 
-def is_port_reachable(
-        ip_address: str, port: str, timeout_in_secs: int = DEFAULT_TIMEOUT
-) -> bool:
+def is_port_reachable(ip_address: str, port: str, timeout_in_secs: int = DEFAULT_TIMEOUT) -> bool:
     """
     Checks if the specified IP address is reachable by opening a TCP socket
     to the specified port.
@@ -48,9 +45,7 @@ def is_port_reachable(
         return socket_result == 0
 
 
-async def is_any_port_reachable(
-        ip_address: str, ports: List[str], timeout: int = DEFAULT_TIMEOUT
-) -> bool:
+async def is_any_port_reachable(ip_address: str, ports: List[str], timeout: int = DEFAULT_TIMEOUT) -> bool:
     """
     Checks if the specified IP address is reachable by opening a TCP socket
     to any of the specified ports.
@@ -70,10 +65,7 @@ async def is_any_port_reachable(
     async def _is_port_reachable(port):
         return await loop.run_in_executor(None, is_port_reachable, ip_address, port, timeout)
 
-    tasks = [
-        asyncio.create_task(_is_port_reachable(port))
-        for port in ports
-    ]
+    tasks = [asyncio.create_task(_is_port_reachable(port)) for port in ports]
     for task in as_completed(tasks):
         try:
             return await task

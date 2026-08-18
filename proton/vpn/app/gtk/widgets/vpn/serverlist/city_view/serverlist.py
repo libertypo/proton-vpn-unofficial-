@@ -26,8 +26,6 @@ import time
 from typing import List, Optional
 
 from gi.repository import GLib, GObject
-from proton.vpn.session.servers import ServerList, TierEnum
-from proton.vpn.session.servers.server_list_fetcher import ServerListFetcher
 
 from proton.vpn import logging as proton_logging
 from proton.vpn.app.gtk import Gtk
@@ -42,6 +40,8 @@ from proton.vpn.app.gtk.widgets.vpn.serverlist.city_view.utils import (
     bubble_up_errors,
     sync_rows_with_model_items,
 )
+from proton.vpn.session.servers import ServerList, TierEnum
+from proton.vpn.session.servers.server_list_fetcher import ServerListFetcher
 
 logger = proton_logging.getLogger(__name__)
 

@@ -51,7 +51,7 @@ impl WindowsStream for TunStreamWindows {
     fn has_error(&self) -> bool {
         false // WinTun doesn't have an error state, it returns errors on actions
     }
-    
+
     fn get_state(&mut self) -> WindowsStreamState {
         WindowsStreamState {
             is_readable: true,

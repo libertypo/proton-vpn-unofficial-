@@ -82,7 +82,7 @@ pub enum WaitJailReason {
     PendingInvoice { message: String },
     SessionOverLimit { message: String },
     WaitingClientChallengeReply { message: String },
-    
+
     /// Will be handled internally by the library - no action required by the app.
     Internal { message: String },
 

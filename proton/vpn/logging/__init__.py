@@ -19,21 +19,18 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with ProtonVPN.  If not, see <https://www.gnu.org/licenses/>.
 """
-from datetime import datetime, timezone
+
 import ipaddress
 import logging
 import os
 import re
+from datetime import datetime, timezone
 from logging.handlers import RotatingFileHandler
+
 from proton.utils.environment import VPNExecutionEnvironment
 
-
-_DEVICE_COUNTRY_PATTERN = re.compile(
-    r"(device_country\s*[:=]\s*(?:Some\([\"']?)?)([A-Z]{2})([\"']?\)?)"
-)
-_DEVICE_IP_PATTERN = re.compile(
-    r"(device_ip\s*[:=]\s*(?:Some\([\"']?)?)([^\"'\),\s}]+)([\"']?\)?)"
-)
+_DEVICE_COUNTRY_PATTERN = re.compile(r"(device_country\s*[:=]\s*(?:Some\([\"']?)?)([A-Z]{2})([\"']?\)?)")
+_DEVICE_IP_PATTERN = re.compile(r"(device_ip\s*[:=]\s*(?:Some\([\"']?)?)([^\"'\),\s}]+)([\"']?\)?)")
 
 
 def _anonymize_ip(value: str) -> str:
@@ -78,17 +75,17 @@ class _IPAnonymizingFilter(logging.Filter):
 def _format_log_attributes(category, subcategory, event, optional, msg):
     """Format the log message as per Proton VPN guidelines.
 
-        param category: Category of a log, uppercase.
-        :type category: string
-        param subcategory: Subcategory of a log, uppercase (optional).
-        :type subcategory: string
-        param event: Event of a log, uppercase.
-        :type event: string
-        param optional: Additional contextual data (optional).
-        :type optional: string
-        param msg: The message, should contain all necessary details that
-            help better understand the reason behind the message.
-        :type msg: string
+    param category: Category of a log, uppercase.
+    :type category: string
+    param subcategory: Subcategory of a log, uppercase (optional).
+    :type subcategory: string
+    param event: Event of a log, uppercase.
+    :type event: string
+    param optional: Additional contextual data (optional).
+    :type optional: string
+    param msg: The message, should contain all necessary details that
+        help better understand the reason behind the message.
+    :type msg: string
     """
     _category = f"{category}" if category else ""
     _subcategory = f".{subcategory}" if subcategory else ""
@@ -104,6 +101,7 @@ def _format_log_attributes(category, subcategory, event, optional, msg):
 
 class ProtonAdapter(logging.LoggerAdapter):
     """Adapter to add the allowed Proton attributes"""
+
     ALLOWED_PROTON_ATTRS = ["category", "subcategory", "event", "optional"]
 
     def process(self, msg, kwargs):
@@ -159,12 +157,12 @@ def getLogger(name):  # noqa # pylint: disable=C0103
 def config(filename, logdirpath=None, log_to_console=True):
     """Configure root logger.
 
-        param filename: Log filename without extension.
-        :type filename: string
-        param logdirpath: Path to log file (optional).
-        :type logdirpath: string
-        param log_to_console: Determines whether logs will output to console (optional)
-        :type log_to_console: bool
+    param filename: Log filename without extension.
+    :type filename: string
+    param logdirpath: Path to log file (optional).
+    :type logdirpath: string
+    param log_to_console: Determines whether logs will output to console (optional)
+    :type log_to_console: bool
     """
     logger = logging.getLogger()
     logging_level = logging.INFO
@@ -184,14 +182,10 @@ def config(filename, logdirpath=None, log_to_console=True):
     _formatter = logging.Formatter(
         fmt="%(asctime)s | %(name)s:%(lineno)d | %(levelname)s | %(message)s",
     )
-    _formatter.formatTime = (
-        lambda record, datefmt=None: datetime.now(timezone.utc).isoformat()
-    )
+    _formatter.formatTime = lambda record, datefmt=None: datetime.now(timezone.utc).isoformat()
 
     # Starts a new file at 3MB size limit
-    _handler_file = RotatingFileHandler(
-        log_filepath, maxBytes=3145728, backupCount=3
-    )
+    _handler_file = RotatingFileHandler(log_filepath, maxBytes=3145728, backupCount=3)
     _handler_file.setFormatter(_formatter)
 
     anonymize_ips = os.environ.get("PROTON_VPN_ANONYMIZE_IPS", "true").lower() == "true"

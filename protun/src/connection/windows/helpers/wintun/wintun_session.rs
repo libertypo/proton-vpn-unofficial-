@@ -50,7 +50,7 @@ impl WinTunSession {
         let adapter: Arc<Adapter> = Self::create_wintun_adapter()?;
         let interface_index: u32 = adapter.get_adapter_index()
             .map_err(|e| ProTunFatalError::WintunAdapterIndexFetchFailed(format!("Failed to get the Wintun adapter index. Error: {e}")))?;
-        
+
         log::info!("WinTUN uses interface with index {interface_index}");
 
         _ = set_ipv4_adapter_configurations(interface_index, adapter_config.mtu);
@@ -60,7 +60,7 @@ impl WinTunSession {
         } else {
             _ = disable_adapter_ipv6();
         };
-        
+
         let (client_ipv4_addr, client_ipv6_addr) = set_adapter_ip_addresses(interface_index)?;
         let (server_ipv4_addr, server_ipv6_addr) = calculate_and_set_dns_servers(adapter_config.custom_dns_server_ips, client_ipv4_addr, client_ipv6_addr);
 
@@ -68,7 +68,7 @@ impl WinTunSession {
 
         let session: Arc<Session> = Arc::new(adapter.start_session(buffer_size_bytes)
             .map_err(|e| ProTunFatalError::WintunSessionCreationFailed(format!("Failed to create the Wintun session. Error: {e}")))?);
-        
+
         log::info!("WinTUN initialization complete");
         Ok(WinTunSession {
             adapter: adapter,
@@ -81,7 +81,7 @@ impl WinTunSession {
             routes: routes
         })
     }
-    
+
     fn get_valid_wintun_buffer_size(proposed_size: u32) -> u32 {
         let valid_size: u32 = proposed_size
             .checked_next_power_of_two()
@@ -89,7 +89,7 @@ impl WinTunSession {
             .clamp(wintun::MIN_RING_CAPACITY, wintun::MAX_RING_CAPACITY);
 
         if valid_size != proposed_size {
-            log::error!("The provided WinTUN ring capacity of {proposed_size} is invalid as it is either below the minimum, 
+            log::error!("The provided WinTUN ring capacity of {proposed_size} is invalid as it is either below the minimum,
                 above the maximum, or not a power of two. The value is going to be set for the best closest value: {valid_size}");
         }
 
@@ -118,7 +118,7 @@ impl WinTunSession {
             }
         }
     }
-    
+
     pub fn disable_ipv6(&self) -> Result<(), String> {
         disable_adapter_ipv6()
     }
@@ -126,7 +126,7 @@ impl WinTunSession {
     pub fn enable_ipv6(&self) -> Result<(), String> {
         enable_adapter_ipv6()
     }
-    
+
     pub fn set_dns_servers(&self, custom_dns_server_ips: Vec<IpAddress>) -> Result<(), WIN32_ERROR> {
         set_dns_servers(custom_dns_server_ips, self.server_ipv4_addr, self.server_ipv6_addr)
     }
@@ -160,7 +160,7 @@ fn set_adapter_ip_addresses(interface_index: u32) -> Result<(Ipv4Addr, Option<Ip
 
 fn calculate_and_set_dns_servers(custom_dns_server_ips: Vec<IpAddress>, client_ipv4_addr: Ipv4Addr, client_ipv6_addr: Option<Ipv6Addr>) -> (Ipv4Addr, Option<Ipv6Addr>) {
     let server_ipv4_addr: Ipv4Addr = Ipv4Addr::new(10, client_ipv4_addr.octets()[1], 0, 1);
-    
+
     let server_ipv6_addr: Option<Ipv6Addr> = match client_ipv6_addr {
         Some(ipv6addr) => Some(Ipv6Addr::new(0x2a07, 0xb944, 0, 0, 0, 0, ipv6addr.segments()[6], 0x1)),
         None => None,

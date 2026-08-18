@@ -37,7 +37,7 @@ where
 }
 
 /// Macro to simplify calling the future function.
-/// 
+///
 /// It can be invoked with a function or a method call and will automatically
 /// clone self to allow the future to own it.
 /// Example usage:

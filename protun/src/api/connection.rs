@@ -49,7 +49,7 @@ pub struct WgPeerPublicKey(pub [u8; PEER_PUB_KEY_SIZE_BYTES]);
 ///
 /// Connection will make a best effort to maintain VPN connection cycling through a set of candidate peers
 /// (along with ports and protocols) based on their priority and availability in current network conditions.
-/// 
+///
 /// For initializing logging, see [crate::api::logger::init_logger].
 #[cfg_attr(feature = "uniffi", derive(uniffi::Object))]
 pub struct Connection {
@@ -117,7 +117,7 @@ impl Connection {
             }
         }
     }
-    
+
     #[cfg_attr(feature = "uniffi", uniffi::method)]
     pub fn start_packet_capture(&self, pcap_file: PcapFileInfo) {
         (self.send_pvpn_message)(PvpnMessage::StartPacketCapture(pcap_file));

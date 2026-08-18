@@ -16,13 +16,14 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with ProtonVPN.  If not, see <https://www.gnu.org/licenses/>.
 """
-from proton.vpn.session.session import VPNSession
+
 from proton.vpn.session.account import VPNAccount
 from proton.vpn.session.client_config import ClientConfig
-from proton.vpn.session.servers.logicals import ServerList
 from proton.vpn.session.credentials import VPNPubkeyCredentials
 from proton.vpn.session.feature_flags_fetcher import FeatureFlags
 from proton.vpn.session.notifications_fetcher import Notifications
+from proton.vpn.session.servers.logicals import ServerList
+from proton.vpn.session.session import VPNSession
 
 __all__ = [
     "VPNSession",
@@ -31,5 +32,5 @@ __all__ = [
     "ServerList",
     "VPNPubkeyCredentials",
     "FeatureFlags",
-    "Notifications"
+    "Notifications",
 ]

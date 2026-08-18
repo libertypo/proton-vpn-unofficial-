@@ -24,12 +24,14 @@ from enum import Enum, auto
 @dataclass
 class NPSSurveyResponse:
     """Content of response to NPS Survey"""
+
     COMMENT_CHAR_MAX_LENGTH = 250
     SCORE_MIN = 0
     SCORE_MAX = 10
 
     class ResponseType(Enum):
         """Types of responses to NPS Survey"""
+
         SUBMIT = auto()
         DISMISS = auto()
 
@@ -38,6 +40,5 @@ class NPSSurveyResponse:
     response_type: ResponseType = ResponseType.DISMISS
 
     def __post_init__(self):
-        self.user_score = \
-            max(NPSSurveyResponse.SCORE_MIN, min(self.user_score, NPSSurveyResponse.SCORE_MAX))
-        self.user_comments = self.user_comments[:NPSSurveyResponse.COMMENT_CHAR_MAX_LENGTH]
+        self.user_score = max(NPSSurveyResponse.SCORE_MIN, min(self.user_score, NPSSurveyResponse.SCORE_MAX))
+        self.user_comments = self.user_comments[: NPSSurveyResponse.COMMENT_CHAR_MAX_LENGTH]

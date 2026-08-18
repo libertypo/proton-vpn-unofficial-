@@ -16,9 +16,12 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with ProtonVPN.  If not, see <https://www.gnu.org/licenses/>.
 """
+
 from __future__ import annotations
+
 from dataclasses import dataclass
 from typing import Optional
+
 from proton.vpn.session.utils import Serializable
 
 # pylint: disable=invalid-name
@@ -27,6 +30,7 @@ from proton.vpn.session.utils import Serializable
 @dataclass
 class VPNLocation(Serializable):
     """Data about the physical location the VPN client runs from."""
+
     IP: str
     Country: str
     ISP: str

@@ -106,5 +106,3 @@ impl std::convert::From<Error> for pyo3::PyErr {
 }
 
 pub type Result<T> = std::result::Result<T, Error>;
-
-

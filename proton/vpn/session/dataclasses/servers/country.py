@@ -16,10 +16,12 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with ProtonVPN.  If not, see <https://www.gnu.org/licenses/>.
 """
+
 from __future__ import annotations
-from typing import Iterable, List, Optional, Protocol, TYPE_CHECKING
-from dataclasses import dataclass
+
 import itertools
+from dataclasses import dataclass
+from typing import TYPE_CHECKING, Iterable, List, Optional, Protocol
 
 from proton.vpn.session.servers.country_codes import get_country_name_by_code
 from proton.vpn.session.servers.types import ServerFeatureEnum
@@ -30,6 +32,7 @@ if TYPE_CHECKING:
 
 class ServerGroup(Protocol):  # pylint: disable=too-few-public-methods
     """A group of servers."""
+
     name: str
     servers: list[LogicalServer]
     free: bool  # Whether the group has servers available to the free tier or not
@@ -149,10 +152,11 @@ class Country(ServerGroup):  # pylint: disable=too-many-instance-attributes
     # pylint: disable=too-many-arguments
     def __init__(
         self,
-        code: str, servers: List[LogicalServer],
+        code: str,
+        servers: List[LogicalServer],
         group_by_location: bool = False,
         group_by_city: bool = False,
-        include_free_servers: bool = True
+        include_free_servers: bool = True,
     ):
         """
         :param code: The country code (ISO 3166-1 alpha-2).
@@ -228,31 +232,24 @@ class Country(ServerGroup):  # pylint: disable=too-many-instance-attributes
         return self._secure_core_group
 
     def _build_locations(
-        self,
-        servers: List[LogicalServer],
-        group_by_city: bool,
-        include_free_servers: bool
+        self, servers: List[LogicalServer], group_by_city: bool, include_free_servers: bool
     ) -> list[Location]:
         """Returns the list of locations available in the country."""
         filtered_servers = filter(
             lambda server: (
-                ServerFeatureEnum.SECURE_CORE not in server.features
-                and (not server.free or include_free_servers)
+                ServerFeatureEnum.SECURE_CORE not in server.features and (not server.free or include_free_servers)
             ),
-            servers
+            servers,
         )
         return [
             Location(location_name, list(location_servers))
             for location_name, location_servers in itertools.groupby(
-                filtered_servers,
-                key=lambda server: server.city if group_by_city else server.location
+                filtered_servers, key=lambda server: server.city if group_by_city else server.location
             )
         ]
 
     def _build_secure_core_group(self, servers: List[LogicalServer]) -> SecureCoreGroup:
-        secure_core_servers = list(filter(
-            lambda server: ServerFeatureEnum.SECURE_CORE in server.features, servers
-        ))
+        secure_core_servers = list(filter(lambda server: ServerFeatureEnum.SECURE_CORE in server.features, servers))
 
         if not secure_core_servers:
             return None
@@ -263,6 +260,7 @@ class Country(ServerGroup):  # pylint: disable=too-many-instance-attributes
 @dataclass
 class ServerAnalysis:
     """Contains a summary of the state all the servers in a given location."""
+
     smart_routing: bool
     under_maintenance: bool
     free: bool
@@ -291,16 +289,10 @@ class ServerAnalysis:
 
             # The country is under maintenance if (1) that was the case up until now and
             # (2) the current server is also under maintenance (i.e. is not enabled).
-            under_maintenance = (under_maintenance and not server.enabled)
+            under_maintenance = under_maintenance and not server.enabled
 
             # A country is flagged as a "Smart routing" location if *all* servers are
             # actually physically located in a neighboring country.
-            smart_routing_location = \
-                (smart_routing_location and server.smart_routing)
+            smart_routing_location = smart_routing_location and server.smart_routing
 
-        return ServerAnalysis(
-            smart_routing_location,
-            under_maintenance,
-            free_location,
-            features
-        )
+        return ServerAnalysis(smart_routing_location, under_maintenance, free_location, features)

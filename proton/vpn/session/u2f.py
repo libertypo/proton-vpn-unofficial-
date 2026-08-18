@@ -16,31 +16,33 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with ProtonVPN.  If not, see <https://www.gnu.org/licenses/>.
 """
+
 # pylint: disable=C0413
 import asyncio
 from getpass import getpass
 from threading import Event
 from typing import Iterator, Optional
 
-from proton.vpn.session import fido2_handler
+# pylint: disable=no-name-in-module
+from fido2.client import ClientError, Fido2Client  # pylint: disable=wrong-import-order
+from fido2.client import UserInteraction as Fido2UserInteraction
+from fido2.ctap import CtapError  # pylint: disable=wrong-import-order
+from fido2.ctap2.pin import ClientPin  # pylint: disable=wrong-import-order
+from fido2.hid import CtapHidDevice  # pylint: disable=wrong-import-order
+
 from proton.session import Session
-from proton.session.api import Fido2AssertionParameters, Fido2Assertion
+from proton.session.api import Fido2Assertion, Fido2AssertionParameters
+from proton.vpn.session import fido2_handler
 from proton.vpn.session.exceptions import (
-    SecurityKeyError, Fido2NotSupportedError,
-    SecurityKeyNotFoundError, InvalidSecurityKeyError,
-    SecurityKeyPINInvalidError, SecurityKeyPINNotSetError,
-    SecurityKeyTimeoutError
+    Fido2NotSupportedError,
+    InvalidSecurityKeyError,
+    SecurityKeyError,
+    SecurityKeyNotFoundError,
+    SecurityKeyPINInvalidError,
+    SecurityKeyPINNotSetError,
+    SecurityKeyTimeoutError,
 )
 from proton.vpn.session.u2f_interaction import UserInteraction
-
-
-from fido2.hid import CtapHidDevice    # pylint: disable=wrong-import-order
-# pylint: disable=no-name-in-module
-from fido2.client import (             # pylint: disable=wrong-import-order
-    Fido2Client, ClientError, UserInteraction as Fido2UserInteraction
-)
-from fido2.ctap import CtapError       # pylint: disable=wrong-import-order
-from fido2.ctap2.pin import ClientPin  # pylint: disable=wrong-import-order
 
 
 class Fido2UserInteractionAdaptor(Fido2UserInteraction):
@@ -50,6 +52,7 @@ class Fido2UserInteractionAdaptor(Fido2UserInteraction):
 
     See UserInteraction in fido2.client for details.
     """
+
     def __init__(self, user_interaction: UserInteraction):
         """Initialize the adaptor with the given UserInteraction object."""
         self._user_interaction = user_interaction
@@ -58,15 +61,11 @@ class Fido2UserInteractionAdaptor(Fido2UserInteraction):
         """Called when the authenticator is awaiting a user presence check."""
         self._user_interaction.prompt_up()
 
-    def request_pin(
-        self, permissions: ClientPin.PERMISSION, rp_id: Optional[str]
-    ) -> Optional[str]:
+    def request_pin(self, permissions: ClientPin.PERMISSION, rp_id: Optional[str]) -> Optional[str]:
         """Called when the client requires a PIN from the user"""
         return self._user_interaction.request_pin(permissions, rp_id)
 
-    def request_uv(
-        self, permissions: ClientPin.PERMISSION, rp_id: Optional[str]
-    ) -> bool:
+    def request_uv(self, permissions: ClientPin.PERMISSION, rp_id: Optional[str]) -> bool:
         """Called when the client is about to request UV from the user."""
         return self._user_interaction.request_uv(permissions, rp_id)
 
@@ -79,10 +78,10 @@ class U2FKeys:
         return CtapHidDevice.list_devices()
 
     async def scan_keys_and_get_assertion(
-            self,
-            session: Session,
-            user_interaction: Optional[UserInteraction] = None,
-            cancel_assertion: Optional[Event] = None
+        self,
+        session: Session,
+        user_interaction: Optional[UserInteraction] = None,
+        cancel_assertion: Optional[Event] = None,
     ) -> Fido2Assertion:
         """
         Select a FIDO2 client and get an assertion from it.
@@ -100,8 +99,7 @@ class U2FKeys:
             fido2_handler.create_client(
                 device,
                 origin,
-                Fido2UserInteractionAdaptor(user_interaction)
-                if user_interaction else Fido2UserInteraction()
+                Fido2UserInteractionAdaptor(user_interaction) if user_interaction else Fido2UserInteraction(),
             )
             for device in self.list_devices()
         ]
@@ -117,22 +115,15 @@ class U2FKeys:
 
         assertion_parameters = session.supports_fido2
         cancel_assertion = cancel_assertion or Event()
-        return await self.get_assertion_from_client(
-            selected_client, assertion_parameters, cancel_assertion
-        )
+        return await self.get_assertion_from_client(selected_client, assertion_parameters, cancel_assertion)
 
     async def get_assertion_from_client(
-            self,
-            client: Fido2Client,
-            assertion_parameters: Fido2AssertionParameters,
-            cancel_assertion: Event
+        self, client: Fido2Client, assertion_parameters: Fido2AssertionParameters, cancel_assertion: Event
     ) -> Fido2Assertion:
         """Get an assertion from the given FIDO2 client."""
         options = fido2_handler.create_options(assertion_parameters)
         try:
-            assertion_selection = await asyncio.to_thread(
-                client.get_assertion, options, cancel_assertion
-            )
+            assertion_selection = await asyncio.to_thread(client.get_assertion, options, cancel_assertion)
         except ClientError as error:
             if error.code == ClientError.ERR.DEVICE_INELIGIBLE:
                 raise InvalidSecurityKeyError("The security key is not eligible") from error
@@ -150,9 +141,7 @@ class U2FKeys:
                 and isinstance(error.cause, CtapError)
                 and error.cause.ERR.PIN_INVALID
             ):
-                raise SecurityKeyPINInvalidError(
-                    "The security key PIN provided is not valid"
-                ) from error
+                raise SecurityKeyPINInvalidError("The security key PIN provided is not valid") from error
 
             raise SecurityKeyError("An error occurred with the security key") from error
 
@@ -170,9 +159,7 @@ class U2FKeys:
         cancel_key_selection = Event()
 
         tasks = [
-            asyncio.create_task(asyncio.to_thread(
-                self._client_selection, client, cancel_key_selection
-            ))
+            asyncio.create_task(asyncio.to_thread(self._client_selection, client, cancel_key_selection))
             for client in fido2_clients
         ]
 
@@ -182,9 +169,7 @@ class U2FKeys:
 
         return selected_client
 
-    def _client_selection(
-            self, client: Fido2Client, cancel_client_selection: Event
-    ) -> Optional[Fido2Client]:
+    def _client_selection(self, client: Fido2Client, cancel_client_selection: Event) -> Optional[Fido2Client]:
         try:
             # Block until user touches the key or event is set
             client.selection(cancel_client_selection)
@@ -212,9 +197,7 @@ class CLIUserInteraction:
         """Called when the authenticator is awaiting a user presence check."""
         print("If your security key has a button or a gold disc, tap it now to authenticate.")
 
-    def request_pin(
-        self, *_args, **_kwargs
-    ) -> Optional[str]:
+    def request_pin(self, *_args, **_kwargs) -> Optional[str]:
         """Called when the client requires a PIN from the user.
 
         Should return a PIN, or None/Empty to cancel."""

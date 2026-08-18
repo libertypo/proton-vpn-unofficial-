@@ -24,9 +24,8 @@ from concurrent.futures import Future
 from typing import Optional
 
 from gi.repository import GLib, Gtk
-from proton.session.exceptions import ProtonAPIError, ProtonAPINotReachable
-from proton.vpn.session.dataclasses import NPSSurveyResponse
 
+from proton.session.exceptions import ProtonAPIError, ProtonAPINotReachable
 from proton.vpn import logging
 from proton.vpn.app.gtk.controller import Controller
 from proton.vpn.app.gtk.exceptions import NPSError
@@ -37,6 +36,7 @@ from proton.vpn.app.gtk.widgets.main.main_widget import MainWidget
 from proton.vpn.app.gtk.widgets.main.notification_bar import NotificationBar
 from proton.vpn.app.gtk.widgets.main.notifications import Notifications
 from proton.vpn.app.gtk.widgets.main.pull_notifications.nps_survey_modal import NPSSurveyModal
+from proton.vpn.session.dataclasses import NPSSurveyResponse
 
 logger = logging.getLogger(__name__)
 UNEXPECTED_SUBMISSION_ERRORS = (RuntimeError, ValueError, TypeError, OSError)

@@ -25,11 +25,11 @@ from pathlib import Path
 from typing import Callable, Optional
 
 from gi.repository import Gdk, Gio, Gtk
-from proton.vpn.session.dataclasses import NPSSurveyResponse
 
 from proton.vpn.app.gtk.assets import icons
 from proton.vpn.app.gtk.controller import Controller
 from proton.vpn.app.gtk.utils.safe_signal_connect import safe_signal_connect
+from proton.vpn.session.dataclasses import NPSSurveyResponse
 
 
 class ProtonReport(Gtk.Box):

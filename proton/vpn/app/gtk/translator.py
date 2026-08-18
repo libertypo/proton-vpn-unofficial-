@@ -18,12 +18,12 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with ProtonVPN.  If not, see <https://www.gnu.org/licenses/>.
 """
+
 import functools
 import gettext
 import os
 from pathlib import Path
 from typing import Optional
-
 
 DOMAIN = "proton-vpn-gtk-app"
 LOCALE_DIR = os.path.join(os.path.dirname(__file__), "locale", "binaries")

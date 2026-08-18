@@ -23,6 +23,7 @@ along with ProtonVPN.  If not, see <https://www.gnu.org/licenses/>.
 from typing import Callable, Optional
 
 from gi.repository import GLib
+
 from proton.vpn.connection import states
 from proton.vpn.core.vpnconnector import VPNConnector
 

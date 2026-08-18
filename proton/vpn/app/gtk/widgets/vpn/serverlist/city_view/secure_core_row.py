@@ -23,9 +23,6 @@ from __future__ import annotations
 
 from typing import List, Optional
 
-from proton.vpn.session.dataclasses.servers import SecureCoreGroup
-from proton.vpn.session.servers import LogicalServer, TierEnum
-
 from proton.vpn.app.gtk import Gtk
 from proton.vpn.app.gtk.controller import Controller
 from proton.vpn.app.gtk.utils.glib import bubble_up_errors
@@ -37,6 +34,8 @@ from proton.vpn.app.gtk.widgets.vpn.serverlist.icons import (
     DoubleFlagIcon,
     SecureCoreIcon,
 )
+from proton.vpn.session.dataclasses.servers import SecureCoreGroup
+from proton.vpn.session.servers import LogicalServer, TierEnum
 
 
 class SecureCoreRow(Gtk.Box):

@@ -19,13 +19,16 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with ProtonVPN.  If not, see <https://www.gnu.org/licenses/>.
 """
+
 import logging
 from concurrent.futures import Future
-from threading import Thread, Lock
+from threading import Lock, Thread
 from typing import Callable, Optional
 
 import gi
-gi.require_version("NM", "1.0")  # noqa: required before importing NM module
+
+# Select the NetworkManager API before importing its GI namespace.
+gi.require_version("NM", "1.0")
 # pylint: disable=wrong-import-position
 from gi.repository import NM, GLib
 
@@ -39,6 +42,7 @@ class NMClient:
     Wrapper over the NetworkManager client.
     It also starts the GLib main loop used by the NetworkManager client.
     """
+
     _lock = Lock()
     _main_context = None
     _nm_client = None
@@ -72,9 +76,7 @@ class NMClient:
         # exit the thread running the main loop calling self._main_loop.quit().
         Thread(target=cls._run_main_loop, daemon=True).start()
 
-        callback, future = cls.create_nmcli_callback(
-            finish_method_name="new_finish"
-        )
+        callback, future = cls.create_nmcli_callback(finish_method_name="new_finish")
 
         def new_async():
             cls._assert_running_on_main_loop_thread()
@@ -122,7 +124,6 @@ class NMClient:
                 # with source_object/res set to None.
                 # https://lazka.github.io/pgi-docs/index.html#NM-1.0/classes/Client.html#NM.Client.new_async
                 if not source_object or not res:
-
                     raise VPNConnectionError(
                         f"An unexpected error occurred initializing NMClient: "
                         f"source_object = {source_object}, res = {res}."
@@ -133,9 +134,7 @@ class NMClient:
                 # According to the docs, None is returned on errors
                 # https://lazka.github.io/pgi-docs/index.html#NM-1.0/classes/Client.html#NM.Client.new_finish
                 if not result:
-                    raise VPNConnectionError(
-                        "An unexpected error occurred initializing NMCLient"
-                    )
+                    raise VPNConnectionError("An unexpected error occurred initializing NMCLient")
 
                 future.set_result(result)
             except BaseException as exc:  # pylint: disable=broad-except
@@ -146,26 +145,17 @@ class NMClient:
     def __init__(self):
         self.initialize_nm_client_singleton()
 
-    def commit_changes_async(
-            self, new_connection: NM.RemoteConnection
-    ) -> Future:
+    def commit_changes_async(self, new_connection: NM.RemoteConnection) -> Future:
         """
         Commits changes asynchronously.
         https://lazka.github.io/pgi-docs/#NM-1.0/classes/RemoteConnection.html#NM.RemoteConnection.commit_changes_async
         :return: a Future to keep track of completion.
         """
-        callback, future = self.create_nmcli_callback(
-            finish_method_name="commit_changes_finish"
-        )
+        callback, future = self.create_nmcli_callback(finish_method_name="commit_changes_finish")
 
         def commit_changes_async():
             self._assert_running_on_main_loop_thread()
-            new_connection.commit_changes_async(
-                True,
-                None,
-                callback,
-                None
-            )
+            new_connection.commit_changes_async(True, None, callback, None)
 
         self._run_on_main_loop_thread(commit_changes_async)
         return future
@@ -177,18 +167,12 @@ class NMClient:
         :param connection: connection to be added.
         :return: a Future to keep track of completion.
         """
-        callback, future = self.create_nmcli_callback(
-            finish_method_name="add_connection_finish"
-        )
+        callback, future = self.create_nmcli_callback(finish_method_name="add_connection_finish")
 
         def add_connection_async():
             self._assert_running_on_main_loop_thread()
             self._nm_client.add_connection_async(
-                connection=connection,
-                save_to_disk=False,
-                cancellable=None,
-                callback=callback,
-                user_data=None
+                connection=connection, save_to_disk=False, cancellable=None, callback=callback, user_data=None
             )
 
         self._run_on_main_loop_thread(add_connection_async)
@@ -200,20 +184,11 @@ class NMClient:
         :return: Future to know when the connection has been started. Note that
         is just after the connection has started but before it is established.
         """
-        callback, future = self.create_nmcli_callback(
-            finish_method_name="activate_connection_finish"
-        )
+        callback, future = self.create_nmcli_callback(finish_method_name="activate_connection_finish")
 
         def activate_connection_async():
             self._assert_running_on_main_loop_thread()
-            self._nm_client.activate_connection_async(
-                connection,
-                None,
-                None,
-                None,
-                callback,
-                None
-            )
+            self._nm_client.activate_connection_async(connection, None, None, None, callback, None)
 
         self._run_on_main_loop_thread(activate_connection_async)
         return future
@@ -223,42 +198,27 @@ class NMClient:
         :param connection: connection to be stopped.
         :return: Future to know when the connection has been stopped.
         """
-        callback, future = self.create_nmcli_callback(
-            finish_method_name="deactivate_connection_finish"
-        )
+        callback, future = self.create_nmcli_callback(finish_method_name="deactivate_connection_finish")
 
         def deactivate_connection_async():
             self._assert_running_on_main_loop_thread()
-            self._nm_client.deactivate_connection_async(
-                connection,
-                None,
-                callback,
-                None
-            )
+            self._nm_client.deactivate_connection_async(connection, None, callback, None)
 
         self._run_on_main_loop_thread(deactivate_connection_async)
         return future
 
-    def remove_connection_async(
-            self, connection: NM.RemoteConnection
-    ) -> Future:
+    def remove_connection_async(self, connection: NM.RemoteConnection) -> Future:
         """
         Removes the specified connection asynchronously.
         https://lazka.github.io/pgi-docs/#NM-1.0/classes/RemoteConnection.html#NM.RemoteConnection.delete_async
         :param connection: connection to be removed.
         :return: a Future to keep track of completion.
         """
-        callback, future = self.create_nmcli_callback(
-            finish_method_name="delete_finish"
-        )
+        callback, future = self.create_nmcli_callback(finish_method_name="delete_finish")
 
         def delete_async():
             self._assert_running_on_main_loop_thread()
-            connection.delete_async(
-                None,
-                callback,
-                None
-            )
+            connection.delete_async(None, callback, None)
 
         self._run_on_main_loop_thread(delete_async)
         return future

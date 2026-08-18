@@ -23,7 +23,6 @@ along with ProtonVPN.  If not, see <https://www.gnu.org/licenses/>.
 from typing import Optional
 
 from gi.repository import Gio, GLib
-from proton.vpn.connection import states
 
 from proton.vpn import logging
 from proton.vpn.app.gtk.assets.icons import ICONS_PATH
@@ -32,6 +31,7 @@ from proton.vpn.app.gtk.utils.glib import bubble_up_errors
 from proton.vpn.app.gtk.utils.safe_signal_connect import safe_signal_connect
 from proton.vpn.app.gtk.widgets.main.main_window import MainWindow
 from proton.vpn.app.gtk.widgets.main.tray_icon import SNW_BUS_NAME, TrayIcon
+from proton.vpn.connection import states
 
 logger = logging.getLogger(__name__)
 

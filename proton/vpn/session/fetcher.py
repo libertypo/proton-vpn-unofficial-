@@ -16,25 +16,21 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with ProtonVPN.  If not, see <https://www.gnu.org/licenses/>.
 """
+
 from __future__ import annotations
 
 from typing import TYPE_CHECKING, Optional
 
 from proton.vpn import logging
-from proton.vpn.session.client_config import ClientConfigFetcher, ClientConfig
-from proton.vpn.session.credentials import VPNPubkeyCredentials
-from proton.vpn.session.dataclasses import (
-    VPNCertificate, VPNSessions, VPNSettings,
-    VPNLocation
-)
-from proton.vpn.session.servers.server_list_fetcher import ServerListFetcher
-from proton.vpn.session.servers.server_list_fetcher import EndpointVersion
-from proton.vpn.session.servers.logicals import ServerList
-from proton.vpn.session.utils import rest_api_request
-from proton.vpn.session.feature_flags_fetcher import FeatureFlagsFetcher, FeatureFlags
-from proton.vpn.session.notifications_fetcher import NotificationsFetcher, Notifications
-
 from proton.vpn.core.settings.features import Features
+from proton.vpn.session.client_config import ClientConfig, ClientConfigFetcher
+from proton.vpn.session.credentials import VPNPubkeyCredentials
+from proton.vpn.session.dataclasses import VPNCertificate, VPNLocation, VPNSessions, VPNSettings
+from proton.vpn.session.feature_flags_fetcher import FeatureFlags, FeatureFlagsFetcher
+from proton.vpn.session.notifications_fetcher import Notifications, NotificationsFetcher
+from proton.vpn.session.servers.logicals import ServerList
+from proton.vpn.session.servers.server_list_fetcher import EndpointVersion, ServerListFetcher
+from proton.vpn.session.utils import rest_api_request
 
 if TYPE_CHECKING:
     from proton.vpn.session import VPNSession
@@ -52,16 +48,18 @@ class VPNSessionFetcher:
     """
     Fetches PROTON VPN user account information.
     """
+
     # Note that the API does not allow intervals shorter than 1 day.
     _CERT_DURATION_IN_MIN = VPNPubkeyCredentials.REFRESH_INTERVAL // 60
 
     # pylint: disable=too-many-arguments
     def __init__(
-            self, session: "VPNSession",
-            server_list_fetcher: Optional[ServerListFetcher] = None,
-            client_config_fetcher: Optional[ClientConfigFetcher] = None,
-            features_fetcher: Optional[FeatureFlagsFetcher] = None,
-            notifications_fetcher: Optional[NotificationsFetcher] = None,
+        self,
+        session: "VPNSession",
+        server_list_fetcher: Optional[ServerListFetcher] = None,
+        client_config_fetcher: Optional[ClientConfigFetcher] = None,
+        features_fetcher: Optional[FeatureFlagsFetcher] = None,
+        notifications_fetcher: Optional[NotificationsFetcher] = None,
     ):
         self._session = session
         self._server_list_fetcher = server_list_fetcher or ServerListFetcher(session)
@@ -71,43 +69,27 @@ class VPNSessionFetcher:
 
     async def fetch_vpn_info(self) -> VPNSettings:
         """Fetches client VPN information."""
-        return VPNSettings.from_dict(
-            await rest_api_request(self._session, "/vpn/v2")
-        )
+        return VPNSettings.from_dict(await rest_api_request(self._session, "/vpn/v2"))
 
-    async def fetch_certificate(
-        self, client_public_key,
-        features: Optional[Features] = None
-    ) -> VPNCertificate:
+    async def fetch_certificate(self, client_public_key, features: Optional[Features] = None) -> VPNCertificate:
         """
         Fetches a certificated signed by the API server to authenticate against VPN servers.
         """
-        json_req = {
-            "ClientPublicKey": client_public_key,
-            "Duration": f"{self._CERT_DURATION_IN_MIN} min"
-        }
+        json_req = {"ClientPublicKey": client_public_key, "Duration": f"{self._CERT_DURATION_IN_MIN} min"}
         if features:
             json_req["Features"] = VPNSessionFetcher._convert_features(features)
 
-        return VPNCertificate.from_dict(
-            await rest_api_request(
-                self._session, "/vpn/v1/certificate", jsondata=json_req
-            )
-        )
+        return VPNCertificate.from_dict(await rest_api_request(self._session, "/vpn/v1/certificate", jsondata=json_req))
 
     async def fetch_active_sessions(self) -> VPNSessions:
         """
         Fetches information about active VPN sessions.
         """
-        return VPNSessions.from_dict(
-            await rest_api_request(self._session, "/vpn/v1/sessions")
-        )
+        return VPNSessions.from_dict(await rest_api_request(self._session, "/vpn/v1/sessions"))
 
     async def fetch_location(self) -> VPNLocation:
         """Fetches information about the physical location the VPN client is connected from."""
-        return VPNLocation.from_dict(
-            await rest_api_request(self._session, "/vpn/v1/location")
-        )
+        return VPNLocation.from_dict(await rest_api_request(self._session, "/vpn/v1/location"))
 
     def load_server_list_from_cache(self) -> ServerList:
         """
@@ -117,13 +99,11 @@ class VPNSessionFetcher:
         """
         return self._server_list_fetcher.load_from_cache()
 
-    async def fetch_server_list(
-            self, endpoint_version: EndpointVersion) -> ServerList:
+    async def fetch_server_list(self, endpoint_version: EndpointVersion) -> ServerList:
         """Fetches the list of VPN servers."""
         return await self._server_list_fetcher.fetch(endpoint_version)
 
-    async def update_server_loads(
-            self, endpoint_version: EndpointVersion) -> ServerList:
+    async def update_server_loads(self, endpoint_version: EndpointVersion) -> ServerList:
         """Fetches new server loads and updates the current server list with them."""
         return await self._server_list_fetcher.update_loads(endpoint_version)
 

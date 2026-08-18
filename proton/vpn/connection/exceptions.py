@@ -23,6 +23,7 @@ along with ProtonVPN.  If not, see <https://www.gnu.org/licenses/>.
 
 class VPNConnectionError(Exception):
     """Base class for VPN specific exceptions"""
+
     def __init__(self, message, additional_context=None):
         self.message = message
         self.additional_context = additional_context

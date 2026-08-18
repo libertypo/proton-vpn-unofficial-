@@ -105,7 +105,7 @@ impl WindowsStreams {
             .map(|s| Self::create_poll_result(s))
             .collect()
     }
-    
+
     fn get_stream_ref(&self, stream_id: StreamId) -> Option<&WindowsStreamInfo> {
         log::debug!("Trying to get stream reference with ID {stream_id}");
         self.streams.iter().find(|s| s.stream_id == stream_id)
@@ -162,7 +162,7 @@ impl Streams for WindowsStreams {
             false, // We are only interested in signaled events
         ) };
         let result_index: u32 = wait_result.0;
-        
+
         Ok(match result_index {
             TIMEOUT_EVENT => Vec::new(),
             WAKER_EVENT => {

@@ -98,7 +98,7 @@ unsafe fn handle_conflict_holder(net_cfg: &INetCfg, conflict_holder: Option<*mut
             Some(p) => p,
             None => return Err("Received no pointer".to_string()),
         };
-        
+
         if !conflict_holder.is_null() {
             let conflict: String = pwstr_to_string(*conflict_holder);
             CoTaskMemFree(Some(conflict_holder as *const _));
@@ -159,7 +159,7 @@ unsafe fn iterate_binding_paths(enum_binding_paths: &IEnumNetCfgBindingPath, tar
             let mut fetched: u32 = 0;
 
             let result: windows::core::Result<()> = enum_binding_paths.Next(&mut binding_paths, Some(&mut fetched));
-            
+
             if result.is_err() || fetched == 0 {
                 break;
             }
@@ -168,7 +168,7 @@ unsafe fn iterate_binding_paths(enum_binding_paths: &IEnumNetCfgBindingPath, tar
                 let mut path_token: Vec<u16> = String::new().encode_utf16().chain(std::iter::once(0u16)).collect();
                 let mut path_token: PWSTR = PWSTR(path_token.as_mut_ptr());
                 let path_token: Option<*mut PWSTR> = Some(&mut path_token as *mut _);
-                
+
                 if binding_path.GetPathToken(path_token).is_ok() {
                     if let Some(path_token) = path_token {
                         let path_str: String = pwstr_to_string(*path_token);

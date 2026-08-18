@@ -19,10 +19,11 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with ProtonVPN.  If not, see <https://www.gnu.org/licenses/>.
 """
+
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import TYPE_CHECKING, Optional, Any
+from typing import TYPE_CHECKING, Any, Optional
 
 from .enum import StateMachineEventEnum
 
@@ -33,6 +34,7 @@ if TYPE_CHECKING:
 @dataclass
 class ConnectionDetails:
     """Connection details obtained via local agent."""
+
     device_ip: Optional[str] = None
     device_country: Optional[str] = None
     server_ipv4: Optional[str] = None
@@ -40,6 +42,7 @@ class ConnectionDetails:
 
 
 # pylint: disable=too-few-public-methods
+
 
 @dataclass
 class EventContext:
@@ -50,6 +53,7 @@ class EventContext:
         reason: optional backend-dependent data providing more context about the event.
         error: an optional exception to be bubbled up while processing the event.
     """
+
     connection: "VPNConnection"
     connection_details: Optional[ConnectionDetails] = None
     forwarded_port: Optional[int] = None
@@ -59,6 +63,7 @@ class EventContext:
 
 class Event:
     """Base event that all the other events should inherit from."""
+
     type = None
 
     def __init__(self, context: EventContext = None):
@@ -75,26 +80,31 @@ class Event:
 
 class Initialized(Event):
     """Event that leads to the initial state."""
+
     type = StateMachineEventEnum.INITIALIZED
 
 
 class Up(Event):
     """Signals that the VPN connection should be started."""
+
     type = StateMachineEventEnum.UP
 
 
 class Down(Event):
     """Signals that the VPN connection should be stopped."""
+
     type = StateMachineEventEnum.DOWN
 
 
 class Connected(Event):
     """Signals that the VPN connection was successfully established."""
+
     type = StateMachineEventEnum.CONNECTED
 
 
 class Disconnected(Event):
     """Signals that the VPN connection was successfully disconnected by the user."""
+
     type = StateMachineEventEnum.DISCONNECTED
 
 
@@ -104,53 +114,63 @@ class Error(Event):
 
 class DeviceDisconnected(Error):
     """Signals that the VPN connection dropped unintentionally."""
+
     type = StateMachineEventEnum.DEVICE_DISCONNECTED
 
 
 class Timeout(Error):
     """Signals that a timeout occurred while trying to establish the VPN
     connection."""
+
     type = StateMachineEventEnum.TIMEOUT
 
 
 class AuthDenied(Error):
     """Signals that an authentication denied occurred while trying to establish
     the VPN connection."""
+
     type = StateMachineEventEnum.AUTH_DENIED
 
 
 class ExpiredCertificate(Error):
     """Signals that the passed certificate has expired and needs to be refreshed."""
+
     type = StateMachineEventEnum.CERTIFICATE_EXPIRED
 
 
 class NotYetValidCertificate(Error):
     """Signals that the passed certificate validity starts in the future."""
+
     type = StateMachineEventEnum.CERTIFICATE_NOT_YET_VALID
 
 
 class MaximumSessionsReached(Error):
     """Signals that for the given plan the user has too many devices/sessions connected."""
+
     type = StateMachineEventEnum.MAXIMUM_SESSIONS_REACHED
 
 
 class TunnelSetupFailed(Error):
     """Signals that there was an error setting up the VPN tunnel."""
+
     type = StateMachineEventEnum.TUNNEL_SETUP_FAILED
 
 
 class UnexpectedError(Error):
     """Signals that an unexpected error occurred."""
+
     type = StateMachineEventEnum.UNEXPECTED_ERROR
 
 
 class TwoFARequired(Error):
     """Signals that 2 factor authentication is required."""
+
     type = StateMachineEventEnum.TWOFA_REQUIRED
 
 
 _event_types = [
-    event_type for event_type in Event.__subclasses__()
+    event_type
+    for event_type in Event.__subclasses__()
     if event_type is not Error  # As error is an abstract class.
 ]
 _event_types.extend(Error.__subclasses__())

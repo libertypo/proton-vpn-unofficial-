@@ -16,14 +16,18 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with ProtonVPN.  If not, see <https://www.gnu.org/licenses/>.
 """
+
 from __future__ import annotations
 
-from typing import Sequence, TYPE_CHECKING
+from typing import TYPE_CHECKING, Sequence
 
 from proton.vpn.session.credentials import VPNPubkeyCredentials, VPNSecrets
 from proton.vpn.session.dataclasses import (
-    VPNSettings, VPNLocation, VPNCertificate,
-    VPNCredentials, VPNUserPassCredentials
+    VPNCertificate,
+    VPNCredentials,
+    VPNLocation,
+    VPNSettings,
+    VPNUserPassCredentials,
 )
 from proton.vpn.session.exceptions import VPNAccountDecodeError
 
@@ -37,10 +41,7 @@ class VPNAccount:
     including credentials (private keys, vpn user and password).
     """
 
-    def __init__(
-        self, vpninfo: VPNSettings, certificate: VPNCertificate,
-        secrets: VPNSecrets, location: VPNLocation
-    ):
+    def __init__(self, vpninfo: VPNSettings, certificate: VPNCertificate, secrets: VPNSecrets, location: VPNLocation):
         self._vpninfo = vpninfo
         self._certificate = certificate
         self._secrets = secrets
@@ -49,13 +50,13 @@ class VPNAccount:
     @staticmethod
     def from_dict(dict_data: dict) -> VPNAccount:
         """Creates a VPNAccount instance from the specified
-            dictionary for deserialization purposes."""
+        dictionary for deserialization purposes."""
         try:
             return VPNAccount(
-                vpninfo=VPNSettings.from_dict(dict_data['vpninfo']),
-                certificate=VPNCertificate.from_dict(dict_data['certificate']),
-                secrets=VPNSecrets.from_dict(dict_data['secrets']),
-                location=VPNLocation.from_dict(dict_data['location'])
+                vpninfo=VPNSettings.from_dict(dict_data["vpninfo"]),
+                certificate=VPNCertificate.from_dict(dict_data["certificate"]),
+                secrets=VPNSecrets.from_dict(dict_data["secrets"]),
+                location=VPNLocation.from_dict(dict_data["location"]),
             )
         except Exception as exc:
             raise VPNAccountDecodeError("Invalid VPN account") from exc
@@ -75,7 +76,7 @@ class VPNAccount:
             "vpninfo": self._vpninfo.to_dict(),
             "certificate": self._certificate.to_dict(),
             "secrets": self._secrets.to_dict(),
-            "location": self.location.to_dict()
+            "location": self.location.to_dict(),
         }
 
     @property
@@ -126,18 +127,15 @@ class VPNAccount:
 
     @property
     def vpn_credentials(self) -> VPNCredentials:
-        """ Return :class:`protonvpn.vpnconnection.interfaces.VPNCredentials` to
-            provide an interface readily usable to
-            instantiate a :class:`protonvpn.vpnconnection.VPNConnection`.
+        """Return :class:`protonvpn.vpnconnection.interfaces.VPNCredentials` to
+        provide an interface readily usable to
+        instantiate a :class:`protonvpn.vpnconnection.VPNConnection`.
         """
         return VPNCredentials(
             userpass_credentials=VPNUserPassCredentials(
-                username=self._vpninfo.VPN.Name,
-                password=self._vpninfo.VPN.Password
+                username=self._vpninfo.VPN.Name, password=self._vpninfo.VPN.Password
             ),
             pubkey_credentials=VPNPubkeyCredentials(
-                api_certificate=self._certificate,
-                secrets=self._secrets,
-                strict=True
-            )
+                api_certificate=self._certificate, secrets=self._secrets, strict=True
+            ),
         )

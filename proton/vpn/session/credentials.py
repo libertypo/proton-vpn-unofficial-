@@ -16,19 +16,19 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with ProtonVPN.  If not, see <https://www.gnu.org/licenses/>.
 """
+
 from __future__ import annotations
 
 import base64
 import binascii
 import random
-
 from typing import Optional
+
+from proton.vpn import logging
 from proton.vpn.session.certificates import Certificate
 from proton.vpn.session.dataclasses import VPNCertificate
 from proton.vpn.session.exceptions import VPNCertificateFingerprintError
 from proton.vpn.session.key_mgr import KeyHandler
-from proton.vpn import logging
-
 
 logger = logging.getLogger(__name__)
 
@@ -66,11 +66,12 @@ class _SyntheticKeyHandler:
 
 
 class VPNSecrets:
-    """ Asymmetric crypto secrets generated locally by the client to :
+    """Asymmetric crypto secrets generated locally by the client to :
 
-        - connect to the VPN service
-        - ask for a certificate to the API with the corresponding public key.
+    - connect to the VPN service
+    - ask for a certificate to the API with the corresponding public key.
     """
+
     def __init__(self, ed25519_privatekey: Optional[str] = None):
         self._key_handler = None
         self._ed25519_privatekey = None
@@ -109,7 +110,7 @@ class VPNSecrets:
     @property
     def wireguard_privatekey(self) -> str:
         """Wireguard private key encoded in base64.
-            To be added locally by the user. The API route is not providing it.
+        To be added locally by the user. The API route is not providing it.
         """
         return self._require_key_handler().x25519_sk_str
 
@@ -134,15 +135,14 @@ class VPNSecrets:
 
     def to_dict(self):  # pylint: disable=missing-function-docstring
         key_name = "ed25519_" + "private" + "key"
-        return {
-            key_name: self.ed25519_privatekey
-        }
+        return {key_name: self.ed25519_privatekey}
 
 
 class VPNPubkeyCredentials:
-    """ Class responsible to hold vpn public key API RAW certificates and
-        its associated private key for authentication.
+    """Class responsible to hold vpn public key API RAW certificates and
+    its associated private key for authentication.
     """
+
     MINIMUM_VALIDITY_PERIOD_IN_SECS = 300
     # FIXME: We were asked to increase the certification duration  # pylint: disable=fixme
     #  to 7 days due to certificate refresh issues, until a proper fix is put in place.
@@ -154,11 +154,7 @@ class VPNPubkeyCredentials:
         self._api_certificate = api_certificate
         self._secrets = secrets
 
-        self._certificate_obj = self._build_certificate(
-            api_certificate,
-            secrets,
-            strict
-        )
+        self._certificate_obj = self._build_certificate(api_certificate, secrets, strict)
 
     @classmethod
     def _generate_random_component(cls):
@@ -194,33 +190,33 @@ class VPNPubkeyCredentials:
 
     @property
     def certificate_pem(self) -> str:
-        """ X509 client certificate in PEM format, can be used
-            to connect for client based authentication to the local agent
+        """X509 client certificate in PEM format, can be used
+        to connect for client based authentication to the local agent
 
-            :raises VPNCertificateNotAvailableError: : certificate cannot be found
-                :class:`VPNSession` must be populated with :meth:`VPNSession.refresh`.
-            :return: :class:`api_data.VPNCertificate.Certificate`
+        :raises VPNCertificateNotAvailableError: : certificate cannot be found
+            :class:`VPNSession` must be populated with :meth:`VPNSession.refresh`.
+        :return: :class:`api_data.VPNCertificate.Certificate`
         """
         self._log_if_certificate_requires_to_be_refreshed_but_is_not_expired()
         return self._certificate_obj.get_as_pem()
 
     @property
     def openvpn_private_key(self) -> str:
-        """ Get OpenVPN private key in pem format, directly usable in an
-            OpenVPN configuration file.
+        """Get OpenVPN private key in pem format, directly usable in an
+        OpenVPN configuration file.
         """
         self._log_if_certificate_requires_to_be_refreshed_but_is_not_expired()
         return self._secrets.get_ed5519_sk_pem()
 
     @property
     def wg_private_key(self) -> str:
-        """ Get Wireguard private key in base64 format,
-            directly usable in a wireguard configuration file. This key
-            is tied to the Proton :class:`VPNCertCredentials` by its
-            corresponding API certificate.
+        """Get Wireguard private key in base64 format,
+        directly usable in a wireguard configuration file. This key
+        is tied to the Proton :class:`VPNCertCredentials` by its
+        corresponding API certificate.
 
-            :return: :class:`api_data.VPNSecrets.wireguard_privatekey`: Wireguard private key
-                in base64 format.
+        :return: :class:`api_data.VPNSecrets.wireguard_privatekey`: Wireguard private key
+            in base64 format.
         """
         self._log_if_certificate_requires_to_be_refreshed_but_is_not_expired()
         return self._secrets.wireguard_privatekey
@@ -231,10 +227,10 @@ class VPNPubkeyCredentials:
 
     @property
     def certificate_validity_remaining(self) -> Optional[float]:
-        """ remaining time the certificate is valid, in seconds.
+        """remaining time the certificate is valid, in seconds.
 
-            - < 0 : certificate is not valid anymore
-            -  None we don't have a certificate.
+        - < 0 : certificate is not valid anymore
+        -  None we don't have a certificate.
         """
         return self._certificate_obj.validity_period
 
@@ -249,19 +245,17 @@ class VPNPubkeyCredentials:
 
     @property
     def certificate_duration(self) -> Optional[float]:
-        """ certificate range in seconds, even if not valid anymore.
+        """certificate range in seconds, even if not valid anymore.
 
-            - return `None` if we don't have a certificate
+        - return `None` if we don't have a certificate
         """
         return self._certificate_obj.duration.total_seconds()
 
     def _log_if_certificate_requires_to_be_refreshed_but_is_not_expired(self):
-        if (
-            self._certificate_obj.validity_period
-            <= VPNPubkeyCredentials.MINIMUM_VALIDITY_PERIOD_IN_SECS
-        ):
+        if self._certificate_obj.validity_period <= VPNPubkeyCredentials.MINIMUM_VALIDITY_PERIOD_IN_SECS:
             logger.warning(
                 msg="Current certificate will expire.",
                 category="CREDENTIALS",
-                subcategory="CERTIFICATE", event="REQUIRE_REFRESH"
+                subcategory="CERTIFICATE",
+                event="REQUIRE_REFRESH",
             )

@@ -19,9 +19,11 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with ProtonVPN.  If not, see <https://www.gnu.org/licenses/>.
 """
+
 from __future__ import annotations
-from typing import List, Optional, Protocol
+
 from dataclasses import dataclass
+from typing import List, Optional, Protocol
 
 
 @dataclass
@@ -29,6 +31,7 @@ class ProtocolPorts:  # pylint: disable=R0801
     """Dataclass for ports.
     These ports are mainly used for establishing VPN connections.
     """
+
     udp: List
     tcp: List
     tls: List
@@ -37,21 +40,13 @@ class ProtocolPorts:  # pylint: disable=R0801
     def from_dict(ports: dict) -> ProtocolPorts:
         """Creates ProtocolPorts object from data."""
         # The lists are copied to avoid side effects if the dict is modified.
-        return ProtocolPorts(
-            udp=ports["udp"].copy(),
-            tcp=ports["tcp"].copy(),
-            tls=ports.get("tls", []).copy()
-        )
+        return ProtocolPorts(udp=ports["udp"].copy(), tcp=ports["tcp"].copy(), tls=ports.get("tls", []).copy())
 
     def to_dict(self) -> dict:
         """
         Returns a dictionary representation of the object.
         """
-        return {
-            "udp": self.udp.copy(),
-            "tcp": self.tcp.copy(),
-            "tls": self.tls.copy()
-        }
+        return {"udp": self.udp.copy(), "tcp": self.tcp.copy(), "tls": self.tls.copy()}
 
 
 @dataclass
@@ -75,6 +70,7 @@ class VPNServer:  # pylint: disable=too-few-public-methods,too-many-instance-att
         server_id: ID of the server to connect to.
         server_name: Name of the server to connect to.
     """
+
     server_ip: str
     openvpn_ports: ProtocolPorts
     wireguard_ports: ProtocolPorts
@@ -86,9 +82,11 @@ class VPNServer:  # pylint: disable=too-few-public-methods,too-many-instance-att
     label: str = None
 
     def __str__(self):
-        return f"Server: {self.server_name} / Domain: {self.domain} / " \
-               f"IP: {self.server_ip} / OpenVPN Ports: {self.openvpn_ports} / " \
-               f"WireGuard Ports: {self.wireguard_ports}"
+        return (
+            f"Server: {self.server_name} / Domain: {self.domain} / "
+            f"IP: {self.server_ip} / OpenVPN Ports: {self.openvpn_ports} / "
+            f"WireGuard Ports: {self.wireguard_ports}"
+        )
 
     @staticmethod
     def from_dict(data: dict) -> VPNServer:
@@ -104,7 +102,7 @@ class VPNServer:  # pylint: disable=too-few-public-methods,too-many-instance-att
             server_id=data["server_id"],
             server_name=data["server_name"],
             has_ipv6_support=data["has_ipv6_support"],
-            label=data.get("label")
+            label=data.get("label"),
         )
 
     def to_dict(self) -> dict:
@@ -120,7 +118,7 @@ class VPNServer:  # pylint: disable=too-few-public-methods,too-many-instance-att
             "server_id": self.server_id,
             "server_name": self.server_name,
             "has_ipv6_support": self.has_ipv6_support,
-            "label": self.label
+            "label": self.label,
         }
 
 
@@ -136,6 +134,7 @@ class VPNPubkeyCredentials(Protocol):  # pylint: disable=too-few-public-methods
         wg_private_key: wireguard private key in base64 format.
         openvpn_private_key: OpenVPN private key in PEM format.
     """
+
     certificate_pem: str
     wg_private_key: str
     openvpn_private_key: str
@@ -143,6 +142,7 @@ class VPNPubkeyCredentials(Protocol):  # pylint: disable=too-few-public-methods
 
 class VPNUserPassCredentials(Protocol):  # pylint: disable=too-few-public-methods
     """Provides username and password for username/password VPN authentication."""
+
     username: str
     password: str
 
@@ -160,6 +160,7 @@ class VPNCredentials(Protocol):  # pylint: disable=too-few-public-methods
     compatibility, it is recommended to pass both objects for
     username/password and certificates.
     """
+
     pubkey_credentials: Optional[VPNPubkeyCredentials]
     userpass_credentials: Optional[VPNUserPassCredentials]
 
@@ -168,6 +169,7 @@ class Features(Protocol):
     """
     This class is used to define which features are supported.
     """
+
     # pylint: disable=too-few-public-methods duplicate-code
     netshield: int
     moderate_nat: bool
@@ -210,6 +212,7 @@ class Settings(Protocol):
 
     Passing only this is perfectly fine.
     """
+
     # pylint: disable=too-few-public-methods
     killswitch: int
     dns_custom_ips: List[str]

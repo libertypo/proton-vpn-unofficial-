@@ -16,26 +16,17 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with ProtonVPN.  If not, see <https://www.gnu.org/licenses/>.
 """
+
 from importlib.metadata import version
+
 from packaging.version import Version
 
 fido2_version = Version(version("fido2"))
 if fido2_version >= Version("2.0.0"):
-    from proton.vpn.session.fido2_2 import (create_client,  # noqa: F401
-                                            create_options,
-                                            create_from_client_assertion)
+    from proton.vpn.session.fido2_2 import create_client, create_from_client_assertion, create_options  # noqa: F401
 elif fido2_version >= Version("1.1.2"):
-    from proton.vpn.session.fido2_1 import (create_client,  # noqa: F401
-                                            create_options,
-                                            create_from_client_assertion)
+    from proton.vpn.session.fido2_1 import create_client, create_from_client_assertion, create_options  # noqa: F401
 else:
-    raise ImportError(
-        f"python3-fido2 version {fido2_version} not supported. "
-        "Version 1.1.2 or higher required."
-    )
+    raise ImportError(f"python3-fido2 version {fido2_version} not supported. Version 1.1.2 or higher required.")
 
-__all__ = [
-    "create_client",
-    "create_options",
-    "create_from_client_assertion"
-]
+__all__ = ["create_client", "create_options", "create_from_client_assertion"]

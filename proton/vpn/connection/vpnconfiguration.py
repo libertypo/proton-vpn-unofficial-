@@ -20,15 +20,17 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with ProtonVPN.  If not, see <https://www.gnu.org/licenses/>.
 """
+
 import ipaddress
-import tempfile
 import os
+import tempfile
 
 from proton.utils.environment import ExecutionEnvironment
 
 
 class VPNConfiguration:
     """Base VPN configuration."""
+
     PROTOCOL = None
     EXTENSION = None
 
@@ -49,8 +51,7 @@ class VPNConfiguration:
             # NOTE: we should try to keep filename length
             # below 15 characters, including the prefix.
             self._configfile = tempfile.NamedTemporaryFile(
-                dir=self.__base_path, delete=False,
-                prefix='pvpn', suffix=self.EXTENSION, mode='w'
+                dir=self.__base_path, delete=False, prefix="pvpn", suffix=self.EXTENSION, mode="w"
             )
             self._configfile.write(self.generate())
             self._configfile.close()

@@ -16,14 +16,16 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with ProtonVPN.  If not, see <https://www.gnu.org/licenses/>.
 """
+
 from __future__ import annotations
+
 import os
-from typing import TYPE_CHECKING
 from pathlib import Path
+from typing import TYPE_CHECKING
 
 from proton.utils.environment import VPNExecutionEnvironment
-from proton.vpn.session.utils import RefreshCalculator, rest_api_request
 from proton.vpn.core.cache_handler import CacheHandler
+from proton.vpn.session.utils import RefreshCalculator, rest_api_request
 
 if TYPE_CHECKING:
     from proton.vpn.session.api import VPNSession
@@ -38,34 +40,26 @@ DEFAULT = {
             "name": "BinaryServerStatus",
             "enabled": False,
             "impressionData": False,
-            "variant": {
-                "name": "disabled",
-                "enabled": False
-            }
+            "variant": {"name": "disabled", "enabled": False},
         },
         {
             "name": "ProTunV1",
             "enabled": False,
             "impressionData": False,
-            "variant": {
-                "name": "disabled",
-                "enabled": False
-            }
+            "variant": {"name": "disabled", "enabled": False},
         },
     ],
-    "ExpirationTime": 0
+    "ExpirationTime": 0,
 }
 
 
 class FeatureFlags:  # pylint: disable=too-few-public-methods
     """Contains a record of available features."""
+
     def __init__(self, api_data: dict):
         self._api_data = api_data
         self._expiration_time = api_data.get(
-            "ExpirationTime",
-            RefreshCalculator.get_expiration_time(
-                refresh_interval=REFRESH_INTERVAL
-            )
+            "ExpirationTime", RefreshCalculator.get_expiration_time(refresh_interval=REFRESH_INTERVAL)
         )
 
     def get(self, feature_flag_name: str) -> bool:
@@ -117,13 +111,12 @@ class FeatureFlags:  # pylint: disable=too-few-public-methods
 
 class FeatureFlagsFetcher:
     """Fetches and caches features from Proton's REST API."""
+
     ROUTE = "/feature/v2/frontend"
     CACHE_PATH = Path(VPNExecutionEnvironment().path_cache) / "features.json"
 
     def __init__(
-        self, session: "VPNSession",
-        refresh_calculator: RefreshCalculator = None,
-        cache_handler: CacheHandler = None
+        self, session: "VPNSession", refresh_calculator: RefreshCalculator = None, cache_handler: CacheHandler = None
     ):
         """
         :param session: session used to retrieve the client configuration.
@@ -147,8 +140,7 @@ class FeatureFlagsFetcher:
             self._session,
             self.ROUTE,
         )
-        response["ExpirationTime"] = self._refresh_calculator\
-            .get_expiration_time(refresh_interval=REFRESH_INTERVAL)
+        response["ExpirationTime"] = self._refresh_calculator.get_expiration_time(refresh_interval=REFRESH_INTERVAL)
         self._cache_file.save(response)
         self._features = FeatureFlags(response)
         return self._features

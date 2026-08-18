@@ -53,7 +53,7 @@ impl BinaryBlobFile {
             Ok(Some(buf))
         }
     }
-    
+
     pub fn clear(&mut self) -> io::Result<()> {
         self.file.set_len(0)?;
         self.file.seek(io::SeekFrom::Start(0))?;

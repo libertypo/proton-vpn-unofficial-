@@ -23,12 +23,12 @@ from dataclasses import dataclass
 from typing import ClassVar, List
 
 from gi.repository import GObject, Gtk
-from proton.vpn.core.settings.split_tunneling import SplitTunnelingMode
 
 from proton.vpn.app.gtk.controller import Controller
 from proton.vpn.app.gtk.i18n import tr as _
 from proton.vpn.app.gtk.utils.safe_signal_connect import safe_signal_connect
 from proton.vpn.app.gtk.widgets.headerbar.menu.settings.common import SettingDescription, SettingName
+from proton.vpn.core.settings.split_tunneling import SplitTunnelingMode
 
 
 @dataclass

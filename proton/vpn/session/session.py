@@ -16,29 +16,24 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with ProtonVPN.  If not, see <https://www.gnu.org/licenses/>.
 """
+
 import asyncio
 from os.path import basename
 from threading import Event
 from typing import Optional
 
-from proton.session import Session, FormData, FormField
+from proton.session import FormData, FormField, Session
 from proton.session.api import Fido2Assertion, Fido2AssertionParameters
-
 from proton.vpn import logging
 from proton.vpn.session.account import VPNAccount
-from proton.vpn.session.fetcher import (VPNSessionFetcher, EndpointVersion)
 from proton.vpn.session.client_config import ClientConfig
 from proton.vpn.session.credentials import VPNSecrets
-from proton.vpn.session.dataclasses import \
-    BugReportForm, \
-    LoginResult, \
-    NPSSurveyResponse, \
-    VPNCertificate, \
-    VPNLocation
-from proton.vpn.session.exceptions import VPNAccountDecodeError, ServerListDecodeError
-from proton.vpn.session.servers.logicals import ServerList
+from proton.vpn.session.dataclasses import BugReportForm, LoginResult, NPSSurveyResponse, VPNCertificate, VPNLocation
+from proton.vpn.session.exceptions import ServerListDecodeError, VPNAccountDecodeError
 from proton.vpn.session.feature_flags_fetcher import FeatureFlags
+from proton.vpn.session.fetcher import EndpointVersion, VPNSessionFetcher
 from proton.vpn.session.notifications_fetcher import Notifications
+from proton.vpn.session.servers.logicals import ServerList
 from proton.vpn.session.u2f_interaction import UserInteraction
 
 logger = logging.getLogger(__name__)
@@ -77,20 +72,22 @@ class VPNSession(Session):
     NPS_SURVEY_DISMISS_ENDPOINT = "/vpn/v1/nps/dismiss"
 
     def __init__(
-            self, *args,
-            fetcher: Optional[VPNSessionFetcher] = None,
-            vpn_account: Optional[VPNAccount] = None,
-            server_list: Optional[ServerList] = None,
-            client_config: Optional[ClientConfig] = None,
-            feature_flags: Optional[FeatureFlags] = None,
-            notifications: Optional[Notifications] = None,
-            **kwargs
+        self,
+        *args,
+        fetcher: Optional[VPNSessionFetcher] = None,
+        vpn_account: Optional[VPNAccount] = None,
+        server_list: Optional[ServerList] = None,
+        client_config: Optional[ClientConfig] = None,
+        feature_flags: Optional[FeatureFlags] = None,
+        notifications: Optional[Notifications] = None,
+        **kwargs,
     ):  # pylint: disable=too-many-arguments
         self._fetcher = fetcher or VPNSessionFetcher(session=self)
 
         try:
             # pylint: disable=import-outside-toplevel
             from proton.vpn.session.u2f import U2FKeys
+
             self._u2f_keys = U2FKeys()
         except ImportError as error:
             self._u2f_keys = None
@@ -106,20 +103,22 @@ class VPNSession(Session):
     @property
     def loaded(self) -> bool:
         """:returns: whether the VPN session data was already loaded or not."""
-        return self._vpn_account \
-            and self._server_list \
-            and self._client_config \
-            and self._feature_flags \
+        return (
+            self._vpn_account
+            and self._server_list
+            and self._client_config
+            and self._feature_flags
             and self._notifications
+        )
 
     def __setstate__(self, data):
         """This method is called when deserializing the session."""
         # It might be useful to load feature flags cache/defaults, even in logged out state.
         self._feature_flags = self._fetcher.load_feature_flags_from_cache()
 
-        if 'vpn' in data:
+        if "vpn" in data:
             try:
-                self._vpn_account = VPNAccount.from_dict(data['vpn'])
+                self._vpn_account = VPNAccount.from_dict(data["vpn"])
             except VPNAccountDecodeError:
                 logger.warning("VPN account could not be deserialized", exc_info=True)
 
@@ -139,7 +138,7 @@ class VPNSession(Session):
         state = super().__getstate__()
 
         if state and self._vpn_account:
-            state['vpn'] = self._vpn_account.to_dict()
+            state["vpn"] = self._vpn_account.to_dict()
 
         # Note the server list is not persisted to the keyring
 
@@ -182,9 +181,7 @@ class VPNSession(Session):
         return bool(self._u2f_keys)
 
     async def generate_2fa_fido2_assertion(
-            self,
-            user_interaction: Optional[UserInteraction] = None,
-            cancel_assertion: Optional[Event] = None
+        self, user_interaction: Optional[UserInteraction] = None, cancel_assertion: Optional[Event] = None
     ) -> Fido2Assertion:
         """
         Scans for U2F/FIDO2 keys and generates a FIDO2 assertion.
@@ -198,9 +195,7 @@ class VPNSession(Session):
         if not self.fido2_lib_available:
             raise RuntimeError("U2F/FIDO2 support is not available on this platform")
 
-        return await self._u2f_keys.scan_keys_and_get_assertion(
-            self, user_interaction, cancel_assertion
-        )
+        return await self._u2f_keys.scan_keys_and_get_assertion(self, user_interaction, cancel_assertion)
 
     async def provide_2fa_fido2(self, fido2_assertion: Fido2Assertion) -> LoginResult:
         """
@@ -277,8 +272,7 @@ class VPNSession(Session):
         try:
             secrets = (
                 VPNSecrets(
-                    ed25519_privatekey=self._vpn_account.vpn_credentials
-                    .pubkey_credentials.ed_255519_private_key
+                    ed25519_privatekey=self._vpn_account.vpn_credentials.pubkey_credentials.ed_255519_private_key
                 )
                 if self._vpn_account
                 else VPNSecrets()
@@ -286,15 +280,12 @@ class VPNSession(Session):
 
             vpninfo, certificate, location, client_config = await asyncio.gather(
                 self._fetcher.fetch_vpn_info(),
-                self._fetcher.fetch_certificate(
-                    client_public_key=secrets.ed25519_pk_pem, features=features),
+                self._fetcher.fetch_certificate(client_public_key=secrets.ed25519_pk_pem, features=features),
                 self._fetcher.fetch_location(),
                 self._fetcher.fetch_client_config(),
             )
 
-            self._vpn_account = VPNAccount(
-                vpninfo=vpninfo, certificate=certificate, secrets=secrets, location=location
-            )
+            self._vpn_account = VPNAccount(vpninfo=vpninfo, certificate=certificate, secrets=secrets, location=location)
             self._client_config = client_config
 
             # The feature flags must be fetched before the server list,
@@ -320,15 +311,11 @@ class VPNSession(Session):
 
         self._requests_lock(no_condition_check=True)
         try:
-            secrets = (
-                VPNSecrets(
-                    ed25519_privatekey=self._vpn_account.vpn_credentials
-                    .pubkey_credentials.ed_255519_private_key
-                )
+            secrets = VPNSecrets(
+                ed25519_privatekey=self._vpn_account.vpn_credentials.pubkey_credentials.ed_255519_private_key
             )
             new_certificate = await self._fetcher.fetch_certificate(
-                client_public_key=secrets.ed25519_pk_pem,
-                features=features
+                client_public_key=secrets.ed25519_pk_pem, features=features
             )
             self._vpn_account.set_certificate(new_certificate)
 
@@ -362,9 +349,7 @@ class VPNSession(Session):
         """
         Fetches the server list from the REST API.
         """
-        self._server_list = await self._fetcher.fetch_server_list(
-            self._serverlist_endpoint_version()
-        )
+        self._server_list = await self._fetcher.fetch_server_list(self._serverlist_endpoint_version())
         return self._server_list
 
     @property
@@ -377,9 +362,7 @@ class VPNSession(Session):
         Fetches the server loads from the REST API and updates the current
         server list with them.
         """
-        self._server_list = await self._fetcher.update_server_loads(
-            self._serverlist_endpoint_version()
-        )
+        self._server_list = await self._fetcher.update_server_loads(self._serverlist_endpoint_version())
         return self._server_list
 
     async def fetch_client_config(self) -> ClientConfig:
@@ -437,33 +420,22 @@ class VPNSession(Session):
             data.add(FormField(name="Country", value=location.Country))
 
         for i, attachment in enumerate(bug_report.attachments):
-            data.add(FormField(
-                name=f"Attachment-{i}", value=attachment,
-                filename=basename(attachment.name)
-            ))
+            data.add(FormField(name=f"Attachment-{i}", value=attachment, filename=basename(attachment.name)))
 
-        return await self.async_api_request(
-            endpoint=VPNSession.BUG_REPORT_ENDPOINT, data=data
-        )
+        return await self.async_api_request(endpoint=VPNSession.BUG_REPORT_ENDPOINT, data=data)
 
     async def submit_nps_response(self, response: NPSSurveyResponse):
         """Submits an NPS Survey response"""
         data = {}
         nps_response_endpoint = self.NPS_SURVEY_DISMISS_ENDPOINT
         additional_headers = {
-            'x-pm-country': self._vpn_account.location.Country,
+            "x-pm-country": self._vpn_account.location.Country,
         }
 
         if response.response_type is NPSSurveyResponse.ResponseType.SUBMIT:
-            data = {
-                "Score": response.user_score,
-                "Comment": response.user_comments
-            }
+            data = {"Score": response.user_score, "Comment": response.user_comments}
             nps_response_endpoint = self.NPS_SURVEY_SUBMIT_ENDPOINT
 
         return await self.async_api_request(
-            nps_response_endpoint,
-            data,
-            method="post",
-            additional_headers=additional_headers
+            nps_response_endpoint, data, method="post", additional_headers=additional_headers
         )

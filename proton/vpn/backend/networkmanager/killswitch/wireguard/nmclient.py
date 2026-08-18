@@ -22,14 +22,15 @@ along with ProtonVPN.  If not, see <https://www.gnu.org/licenses/>.
 # pylint: disable=duplicate-code
 
 from concurrent.futures import Future
-from threading import Thread, Lock
-from typing import Optional, List
+from threading import Lock, Thread
+from typing import List, Optional
+
+import gi
 
 from packaging.version import Version
 
-import gi
 gi.require_version("NM", "1.0")
-from gi.repository import NM, GLib, Gio, GObject  # pylint: disable=C0413 # noqa: E402
+from gi.repository import NM, Gio, GLib, GObject  # pylint: disable=C0413 # noqa: E402
 
 from proton.vpn import logging  # noqa: E402 pylint: disable=wrong-import-position
 
@@ -53,6 +54,7 @@ class NMClient:
     Wrapper over the NetworkManager client.
     It also starts the GLib main loop used by the NetworkManager client.
     """
+
     _lock = Lock()
     _main_context = None
     _nm_client = None
@@ -135,9 +137,7 @@ class NMClient:
         self.initialize_nm_client_singleton()
         self._signal_handlers = []
 
-    def add_connection_async(
-            self, connection: NM.Connection, save_to_disk: bool = False
-    ) -> Future:
+    def add_connection_async(self, connection: NM.Connection, save_to_disk: bool = False) -> Future:
         """
         Adds a new connection asynchronously.
         https://lazka.github.io/pgi-docs/#NM-1.0/classes/Client.html#NM.Client.add_connection_async
@@ -152,9 +152,7 @@ class NMClient:
                 future_conn_activated.set_result(None)
             except Exception as exc:  # pylint: disable=broad-except
                 future_conn_activated.set_exception(
-                    RuntimeError(
-                        f"Error activating KS connection: {exc}"
-                    ).with_traceback(exc.__traceback__)
+                    RuntimeError(f"Error activating KS connection: {exc}").with_traceback(exc.__traceback__)
                 )
 
         def _on_connection_added(nm_client, res, _user_data):
@@ -170,9 +168,7 @@ class NMClient:
                 )
             except Exception as exc:  # pylint: disable=broad-except
                 future_conn_activated.set_exception(
-                    RuntimeError(
-                        f"Error adding KS connection: {exc}"
-                    ).with_traceback(exc.__traceback__)
+                    RuntimeError(f"Error adding KS connection: {exc}").with_traceback(exc.__traceback__)
                 )
 
         def _add_connection_async():
@@ -181,7 +177,7 @@ class NMClient:
                 save_to_disk=save_to_disk,
                 cancellable=None,
                 callback=_on_connection_added,
-                user_data=None
+                user_data=None,
             )
 
         self._run_on_glib_loop_thread(_add_connection_async).result()
@@ -191,7 +187,9 @@ class NMClient:
     def get_physical_devices(self) -> List[NM.Device]:
         """Returns all the active ethernet/wifi devices."""
         return [
-            device for device in self._nm_client.get_devices() if (
+            device
+            for device in self._nm_client.get_devices()
+            if (
                 device.get_device_type() in (NM.DeviceType.ETHERNET, NM.DeviceType.WIFI)
                 and device.get_state() is NM.DeviceState.ACTIVATED
                 and device.get_active_connection()  # Maybe this is redundant.
@@ -199,16 +197,11 @@ class NMClient:
         ]
 
     def _is_ethernet_or_wifi_connection(self, active_connection: NM.ActiveConnection):
-        return active_connection.props.type in (
-            NM.SETTING_WIRED_SETTING_NAME, NM.SETTING_WIRELESS_SETTING_NAME
-        )
+        return active_connection.props.type in (NM.SETTING_WIRED_SETTING_NAME, NM.SETTING_WIRELESS_SETTING_NAME)
 
     def get_ethernet_and_wifi_connections(self) -> List[NM.ActiveConnection]:
         """Returns the list of ethernet and wifi connections."""
-        return [
-            ac for ac in self._nm_client.get_active_connections()
-            if self._is_ethernet_or_wifi_connection(ac)
-        ]
+        return [ac for ac in self._nm_client.get_active_connections() if self._is_ethernet_or_wifi_connection(ac)]
 
     def is_monitoring_network_config_changes(self) -> bool:
         """
@@ -224,9 +217,9 @@ class NMClient:
 
         def on_active_connection_changed(active_connection, changed_field):
             if (
-                    changed_field.name == NM.DEVICE_IP4_CONFIG
-                    and active_connection.get_ip4_config()
-                    and active_connection.get_ip4_config().get_gateway()
+                changed_field.name == NM.DEVICE_IP4_CONFIG
+                and active_connection.get_ip4_config()
+                and active_connection.get_ip4_config().get_gateway()
             ):
                 callback(active_connection)
 
@@ -255,10 +248,7 @@ class NMClient:
         self._signal_handlers.clear()
 
     @classmethod
-    def _add_ipv4_route(
-            cls, active_connection: NM.ActiveConnection,
-            server_ip: str, gateway: str
-    ):
+    def _add_ipv4_route(cls, active_connection: NM.ActiveConnection, server_ip: str, gateway: str):
         cls._assert_running_on_glib_loop_thread()
 
         connection = active_connection.get_connection()
@@ -270,15 +260,12 @@ class NMClient:
                 dest=server_ip,
                 prefix=32,
                 next_hop=gateway,
-                metric=-1  # -1 just means that the default metric is applied.
+                metric=-1,  # -1 just means that the default metric is applied.
             )
         )
 
     @classmethod
-    def _remove_ipv4_routes(
-            cls, active_connection: NM.ActiveConnection,
-            server_ip: str
-    ):
+    def _remove_ipv4_routes(cls, active_connection: NM.ActiveConnection, server_ip: str):
         cls._assert_running_on_glib_loop_thread()
 
         connection = active_connection.get_connection()
@@ -294,9 +281,7 @@ class NMClient:
             config.remove_route_by_value(route)
 
     @classmethod
-    def _apply_connection_async(
-            cls, active_connection: NM.ActiveConnection, future: Future
-    ):
+    def _apply_connection_async(cls, active_connection: NM.ActiveConnection, future: Future):
         cls._assert_running_on_glib_loop_thread()
 
         device = active_connection.get_devices()[0]
@@ -313,8 +298,11 @@ class NMClient:
                 connection.commit_changes_finish(result)
                 device.reapply_async(
                     # Not sure if it's ok to always pass version_id and flags set to 0.
-                    connection, version_id=0, flags=0,
-                    cancellable=None, callback=on_device_reapplied
+                    connection,
+                    version_id=0,
+                    flags=0,
+                    cancellable=None,
+                    callback=on_device_reapplied,
                 )
             except Exception as exc:  # pylint: disable=broad-except
                 future.set_exception(exc)
@@ -325,9 +313,7 @@ class NMClient:
         )
 
     @classmethod
-    def add_route_to_device(
-            cls, device: NM.Device, new_server_ip: str, old_server_ip: Optional[str] = None
-    ) -> Future:
+    def add_route_to_device(cls, device: NM.Device, new_server_ip: str, old_server_ip: Optional[str] = None) -> Future:
         """
         Adds a route to the device to reach the new server ip via the gateway configured
         on the device.
@@ -350,10 +336,7 @@ class NMClient:
 
                 gateway = active_connection.get_ip4_config().get_gateway()
                 if not gateway:
-                    raise GatewayNotFoundError(
-                        "Gateway not found on interface "
-                        f"'{device.get_iface()}'"
-                    )
+                    raise GatewayNotFoundError(f"Gateway not found on interface '{device.get_iface()}'")
 
                 cls._add_ipv4_route(active_connection, new_server_ip, gateway)
 
@@ -385,9 +368,7 @@ class NMClient:
 
         return route_removed_future
 
-    def remove_connection_async(
-            self, connection: NM.RemoteConnection
-    ) -> Future:
+    def remove_connection_async(self, connection: NM.RemoteConnection) -> Future:
         """
         Removes the specified connection asynchronously.
         https://lazka.github.io/pgi-docs/#NM-1.0/classes/RemoteConnection.html#NM.RemoteConnection.delete_async
@@ -401,19 +382,13 @@ class NMClient:
                 connection.delete_finish(result)
             except Exception as exc:  # pylint: disable=broad-except
                 future_interface_removed.set_exception(
-                    RuntimeError(
-                        f"Error removing KS connection: {exc}"
-                    ).with_traceback(exc.__traceback__)
+                    RuntimeError(f"Error removing KS connection: {exc}").with_traceback(exc.__traceback__)
                 )
                 return
             future_interface_removed.set_result(None)
 
         def _remove_connection_async():
-            connection.delete_async(
-                None,
-                _on_connection_removed,
-                None
-            )
+            connection.delete_async(None, _on_connection_removed, None)
 
         self._run_on_glib_loop_thread(_remove_connection_async).result()
 
@@ -425,6 +400,7 @@ class NMClient:
         :param conn_id: ID of the active connection.
         :return: the active connection if it was found. Otherwise, None.
         """
+
         def _get_active_connection():
             active_connections = self._nm_client.get_active_connections()
 
@@ -442,21 +418,15 @@ class NMClient:
         :param conn_id: ID of the connection.
         :return: the connection if it was found. Otherwise, None.
         """
-        return self._run_on_glib_loop_thread(
-            self._nm_client.get_connection_by_id, conn_id
-        ).result()
+        return self._run_on_glib_loop_thread(self._nm_client.get_connection_by_id, conn_id).result()
 
     def get_nm_running(self) -> bool:
         """Returns if NetworkManager daemon is running or not."""
-        return self._run_on_glib_loop_thread(
-            self._nm_client.get_nm_running
-        ).result()
+        return self._run_on_glib_loop_thread(self._nm_client.get_nm_running).result()
 
     def connectivity_check_get_enabled(self) -> bool:
         """Returns if connectivity check is enabled or not."""
-        return self._run_on_glib_loop_thread(
-            self._nm_client.connectivity_check_get_enabled
-        ).result()
+        return self._run_on_glib_loop_thread(self._nm_client.connectivity_check_get_enabled).result()
 
     def disable_connectivity_check(self) -> Future:
         """Since `connectivity_check_set_enabled` has been deprecated,
@@ -472,9 +442,7 @@ class NMClient:
         if Version(self._nm_client.get_version()) < Version("1.24.0"):
             # NM.Client.connectivity_check_set_enabled is deprecated since version 1.22
             # but the replacement method is only available in version 1.24.
-            return self._run_on_glib_loop_thread(
-                self._nm_client.connectivity_check_set_enabled, False
-            )
+            return self._run_on_glib_loop_thread(self._nm_client.connectivity_check_set_enabled, False)
 
         return self._dbus_set_property(
             object_path="/org/freedesktop/NetworkManager",
@@ -482,13 +450,18 @@ class NMClient:
             property_name="ConnectivityCheckEnabled",
             value=GLib.Variant("b", False),
             timeout_msec=-1,
-            cancellable=None
+            cancellable=None,
         )
 
     def _dbus_set_property(  # pylint: disable=too-many-arguments
-            self, *userdata, object_path: str, interface_name: str, property_name: str,
-            value: GLib.Variant, timeout_msec: int = -1,
-            cancellable: Gio.Cancellable = None,
+        self,
+        *userdata,
+        object_path: str,
+        interface_name: str,
+        property_name: str,
+        value: GLib.Variant,
+        timeout_msec: int = -1,
+        cancellable: Gio.Cancellable = None,
     ) -> Future:
         """Set NM properties since dedicated methods have been deprecated deprecated.
         Source: https://lazka.github.io/pgi-docs/#NM-1.0/classes/Client.html"""  # noqa
@@ -497,11 +470,7 @@ class NMClient:
 
         def _on_property_set(nm_client, res, _user_data):
             if not nm_client or not res or not nm_client.dbus_set_property_finish(res):
-                future.set_exception(
-                    RuntimeError(
-                        f"Error disabling network connectivity check: {nm_client=}, {res=}"
-                    )
-                )
+                future.set_exception(RuntimeError(f"Error disabling network connectivity check: {nm_client=}, {res=}"))
                 return
 
             future.set_result(None)
@@ -509,9 +478,7 @@ class NMClient:
         def _set_property_async():
             self._assert_running_on_glib_loop_thread()
             self._nm_client.dbus_set_property(
-                object_path, interface_name, property_name,
-                value, timeout_msec, cancellable, _on_property_set,
-                userdata
+                object_path, interface_name, property_name, value, timeout_msec, cancellable, _on_property_set, userdata
             )
 
         self._run_on_glib_loop_thread(_set_property_async).result()

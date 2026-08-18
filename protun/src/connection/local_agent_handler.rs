@@ -128,7 +128,7 @@ impl LocalAgentHandler {
         self.last_peer = Some(new_peer);
         self.local_agent_stats.reset();
     }
-    
+
     pub(crate) fn handle_message(&mut self, message: LocalAgentMessage) -> Option<Event> {
         match message {
             LocalAgentMessage::Value(value) => self.handle_value(value),
@@ -240,7 +240,7 @@ impl LocalAgentHandler {
         }
         None
     }
-    
+
     fn handle_jails(&mut self, jails: Option<Jails>) -> Option<Event> {
         self.jails.clear();
         if let Some(jails) = jails {
@@ -289,7 +289,7 @@ impl LocalAgentHandler {
         }
         None
     }
-    
+
     fn handle_error(&mut self, error: LocalAgentError) -> Option<Event> {
         match error {
             LocalAgentError::Authentication =>

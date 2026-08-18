@@ -16,18 +16,15 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with ProtonVPN.  If not, see <https://www.gnu.org/licenses/>.
 """
+
 from datetime import timedelta
 from http import HTTPStatus
 
+from proton.session.exceptions import ProtonAPIError, ProtonAPINotAvailable, ProtonAPINotReachable
+from proton.vpn import logging
 from proton.vpn.core.refresher.scheduler import RunAgain
 from proton.vpn.core.session_holder import SessionHolder
 from proton.vpn.session import Notifications
-
-from proton.vpn import logging
-from proton.session.exceptions import (
-    ProtonAPINotReachable, ProtonAPINotAvailable,
-    ProtonAPIError
-)
 
 logger = logging.getLogger(__name__)
 
@@ -38,6 +35,7 @@ class NotificationsRefresher:
     """
     Service in charge of refreshing VPN client notification data.
     """
+
     def __init__(self, session_holder: SessionHolder):
         self._session_holder = session_holder
 
@@ -65,10 +63,7 @@ class NotificationsRefresher:
         except (ProtonAPINotReachable, ProtonAPINotAvailable) as error:
             logger.warning(f"Notification pull failed: {error}")
         except Exception:
-            logger.error(
-                "Notification pull failed unexpectedly. "
-                "Stopping notification update."
-            )
+            logger.error("Notification pull failed unexpectedly. Stopping notification update.")
             raise
 
     async def refresh(self) -> RunAgain:
@@ -87,14 +82,10 @@ class NotificationsRefresher:
             next_refresh_delay = Notifications.get_refresh_interval_in_seconds()
         except Exception:
             logger.error(  # noqa: E501 # pylint: disable=line-too-long # nosemgrep: python.lang.best-practice.logging-error-without-handling.logging-error-without-handling
-                "Notification pull failed unexpectedly. "
-                "Stopping notification update."
+                "Notification pull failed unexpectedly. Stopping notification update."
             )
             raise
 
-        logger.info(
-            f"Next notification pull scheduled in "
-            f"{timedelta(seconds=next_refresh_delay)}"
-        )
+        logger.info(f"Next notification pull scheduled in {timedelta(seconds=next_refresh_delay)}")
 
         return RunAgain.after_seconds(next_refresh_delay)

@@ -25,8 +25,6 @@ from __future__ import annotations
 from itertools import chain
 from typing import List, Optional
 
-from proton.vpn.session.servers import Location, TierEnum
-
 from proton.vpn.app.gtk import Gtk
 from proton.vpn.app.gtk.controller import Controller
 from proton.vpn.app.gtk.utils.glib import bubble_up_errors
@@ -35,6 +33,7 @@ from proton.vpn.app.gtk.widgets.vpn.serverlist.city_view.row_content import RowC
 from proton.vpn.app.gtk.widgets.vpn.serverlist.city_view.row_view_model import RowViewModel
 from proton.vpn.app.gtk.widgets.vpn.serverlist.city_view.utils import make_connect_callback, sync_rows_with_model_items
 from proton.vpn.app.gtk.widgets.vpn.serverlist.icons import LocationIcon
+from proton.vpn.session.servers import Location, TierEnum
 
 
 class LocationRow(Gtk.Box):

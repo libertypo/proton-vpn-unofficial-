@@ -19,20 +19,21 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with ProtonVPN.  If not, see <https://www.gnu.org/licenses/>.
 """
+
 # pylint: disable=duplicate-code
 # pylint: disable=duplicate-code
-import re
-import subprocess  # nosec blacklist # nosemgrep: gitlab.bandit.B404
 import asyncio
 import concurrent.futures
+import re
+import subprocess  # nosec blacklist # nosemgrep: gitlab.bandit.B404
 
 from proton.vpn import logging
-from proton.vpn.backend.linux.networkmanager.killswitch.wireguard.nmclient import (
-    NMClient, GatewayNotFoundError
-)
 from proton.vpn.backend.linux.networkmanager.killswitch.wireguard.killswitch_connection import (
-    KillSwitchConnection, KillSwitchGeneralConfig, KillSwitchIPConfig
+    KillSwitchConnection,
+    KillSwitchGeneralConfig,
+    KillSwitchIPConfig,
 )
+from proton.vpn.backend.linux.networkmanager.killswitch.wireguard.nmclient import GatewayNotFoundError, NMClient
 
 logger = logging.getLogger(__name__)
 
@@ -53,20 +54,13 @@ def _get_interface_name(permanent: bool, ipv6: bool = False):
 
 async def _wrap_future(future: concurrent.futures.Future, timeout=10):
     """Wraps a concurrent.future.Future object in an asyncio.Future object."""
-    return await asyncio.wait_for(
-        asyncio.wrap_future(future, loop=asyncio.get_running_loop()),
-        timeout=timeout
-    )
+    return await asyncio.wait_for(asyncio.wrap_future(future, loop=asyncio.get_running_loop()), timeout=timeout)
 
 
 class KillSwitchConnectionHandler:
     """Kill switch connection management."""
 
-    def __init__(
-            self, nm_client: NMClient = None,
-            config: KillSwitchGeneralConfig = None,
-            server_ip: str = None
-    ):
+    def __init__(self, nm_client: NMClient = None, config: KillSwitchGeneralConfig = None, server_ip: str = None):
         self._nm_client = nm_client
         self._config = config
         self._ipv4_ks_settings = KillSwitchIPConfig(
@@ -76,7 +70,7 @@ class KillSwitchConnectionHandler:
             gateway="100.85.0.1",
             ignore_auto_dns=True,
             route_metric=98,
-            routes=[]  # accept/block all routes.
+            routes=[],  # accept/block all routes.
         )
         self._ipv6_ks_settings = KillSwitchIPConfig(
             addresses=["fdeb:446c:912d:08da::/64"],
@@ -84,7 +78,7 @@ class KillSwitchConnectionHandler:
             dns_priority=-1400,
             gateway="fdeb:446c:912d:08da::1",
             ignore_auto_dns=True,
-            route_metric=95
+            route_metric=95,
         )
         self._server_ip = server_ip
 
@@ -114,13 +108,10 @@ class KillSwitchConnectionHandler:
         await self._ensure_connectivity_check_is_disabled()
 
         general_config = self._config or KillSwitchGeneralConfig(
-            human_readable_id=_get_connection_id(permanent),
-            interface_name=_get_interface_name(permanent)
+            human_readable_id=_get_connection_id(permanent), interface_name=_get_interface_name(permanent)
         )
 
-        connection = self.nm_client.get_active_connection(
-            conn_id=general_config.human_readable_id
-        )
+        connection = self.nm_client.get_active_connection(conn_id=general_config.human_readable_id)
 
         if connection:
             logger.debug("Kill switch was already present.")
@@ -131,13 +122,9 @@ class KillSwitchConnectionHandler:
             ipv4_settings=self._ipv4_ks_settings,
             ipv6_settings=self._ipv6_ks_settings,
         )
-        await _wrap_future(
-            self.nm_client.add_connection_async(kill_switch.connection, save_to_disk=permanent)
-        )
+        await _wrap_future(self.nm_client.add_connection_async(kill_switch.connection, save_to_disk=permanent))
         logger.debug(f"{'Permanent' if permanent else 'Non-permanent'} kill switch added.")
-        await self._remove_connection(
-            connection_id=_get_connection_id(permanent=not permanent)
-        )
+        await self._remove_connection(connection_id=_get_connection_id(permanent=not permanent))
         logger.debug(f"{'Non-permanent' if permanent else 'Permanent'} kill switch removed.")
 
     async def add_vpn_server_route(self, server_ip: str):
@@ -151,22 +138,15 @@ class KillSwitchConnectionHandler:
         for device in devices:
             try:
                 await _wrap_future(
-                    self.nm_client.add_route_to_device(
-                        device, new_server_ip=server_ip,
-                        old_server_ip=self._server_ip
-                    )
+                    self.nm_client.add_route_to_device(device, new_server_ip=server_ip, old_server_ip=self._server_ip)
                 )
             except GatewayNotFoundError as error:
-                logger.warning(
-                    "Wireguard connection cannot use interface "
-                    f"'{device.get_iface()}: {error}'")
+                logger.warning(f"Wireguard connection cannot use interface '{device.get_iface()}: {error}'")
                 continue
 
             # The new route doesn't seem to be available straight away.
             # For this reason, the routing table is polled until the route has been added.
-            await self._wait_for_vpn_server_route(
-                server_ip, device.get_iface(), found=True
-            )
+            await self._wait_for_vpn_server_route(server_ip, device.get_iface(), found=True)
 
         self._server_ip = server_ip
 
@@ -183,9 +163,7 @@ class KillSwitchConnectionHandler:
 
         devices = self.nm_client.get_physical_devices()
         for device in devices:
-            await _wrap_future(
-                self.nm_client.remove_route_from_device(device, self._server_ip)
-            )
+            await _wrap_future(self.nm_client.remove_route_from_device(device, self._server_ip))
             # The route doesn't seem to be removed straight away.
             # For this reason, the routing table is polled until the route has been removed.
             await self._wait_for_vpn_server_route(self._server_ip, device.get_iface(), found=False)
@@ -203,9 +181,7 @@ class KillSwitchConnectionHandler:
         return await loop.run_in_executor(None, run)
 
     @classmethod
-    async def _wait_for_vpn_server_route(
-            cls, server_ip: str, interface_name: str, found: bool = True
-    ):
+    async def _wait_for_vpn_server_route(cls, server_ip: str, interface_name: str, found: bool = True):
         server_route = f"{server_ip} via .* dev {interface_name} .*"
         for delay in [0.5, 0.5, 1, 1, 2]:
             result = await cls._run_ip_route_command()
@@ -215,9 +191,7 @@ class KillSwitchConnectionHandler:
 
             await asyncio.sleep(delay)
 
-        raise TimeoutError(
-            f"Error waiting for server route to be {'added' if found else 'removed'}"
-        )
+        raise TimeoutError(f"Error waiting for server route to be {'added' if found else 'removed'}")
 
     def _start_monitoring_network_config_changes(self):
         loop = asyncio.get_running_loop()
@@ -236,18 +210,14 @@ class KillSwitchConnectionHandler:
         await self._ensure_connectivity_check_is_disabled()
 
         connection_id = _get_connection_id(permanent=False, ipv6=True)
-        connection = self.nm_client.get_active_connection(
-            conn_id=connection_id)
+        connection = self.nm_client.get_active_connection(conn_id=connection_id)
 
         if connection:
             logger.debug("IPv6 leak protection already present.")
             return
 
         interface_name = _get_interface_name(permanent=False, ipv6=True)
-        general_config = KillSwitchGeneralConfig(
-            human_readable_id=connection_id,
-            interface_name=interface_name
-        )
+        general_config = KillSwitchGeneralConfig(human_readable_id=connection_id, interface_name=interface_name)
 
         kill_switch = KillSwitchConnection(
             general_config,
@@ -255,9 +225,7 @@ class KillSwitchConnectionHandler:
             ipv6_settings=self._ipv6_ks_settings,
         )
 
-        await _wrap_future(
-            self.nm_client.add_connection_async(kill_switch.connection, save_to_disk=False)
-        )
+        await _wrap_future(self.nm_client.add_connection_async(kill_switch.connection, save_to_disk=False))
         logger.debug("IPv6 leak protection added.")
 
     async def remove_killswitch_connection(self):
@@ -277,8 +245,7 @@ class KillSwitchConnectionHandler:
         logger.debug("IP6 leak protection removed.")
 
     async def _remove_connection(self, connection_id: str):
-        connection = self.nm_client.get_connection(
-            conn_id=connection_id)
+        connection = self.nm_client.get_connection(conn_id=connection_id)
 
         logger.debug(f"Attempting to remove {connection_id}: {connection}")
 

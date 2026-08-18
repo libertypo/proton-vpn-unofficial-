@@ -24,6 +24,13 @@ import random
 from typing import Optional
 
 from gi.repository import GLib
+
+from proton.vpn import logging
+from proton.vpn.app.gtk.services.reconnector.network_monitor import NetworkMonitor
+from proton.vpn.app.gtk.services.reconnector.session_monitor import SessionMonitor
+from proton.vpn.app.gtk.services.reconnector.vpn_monitor import VPNMonitor
+from proton.vpn.app.gtk.utils.executor import AsyncExecutor
+from proton.vpn.app.gtk.utils.glib import bubble_up_errors
 from proton.vpn.connection import VPNConnection, events, states
 from proton.vpn.connection.exceptions import (
     AuthenticationError,
@@ -33,13 +40,6 @@ from proton.vpn.connection.exceptions import (
 )
 from proton.vpn.core.refresher import VPNDataRefresher
 from proton.vpn.core.vpnconnector import VPNConnector
-
-from proton.vpn import logging
-from proton.vpn.app.gtk.services.reconnector.network_monitor import NetworkMonitor
-from proton.vpn.app.gtk.services.reconnector.session_monitor import SessionMonitor
-from proton.vpn.app.gtk.services.reconnector.vpn_monitor import VPNMonitor
-from proton.vpn.app.gtk.utils.executor import AsyncExecutor
-from proton.vpn.app.gtk.utils.glib import bubble_up_errors
 
 logger = logging.getLogger(__name__)
 

@@ -25,7 +25,6 @@ from __future__ import annotations
 from typing import List, Optional, Set, Tuple, cast
 
 from gi.repository import GObject
-from proton.vpn.session.servers import ServerFeatureEnum
 
 from proton.vpn import logging
 from proton.vpn.app.gtk import Gtk
@@ -42,6 +41,7 @@ from proton.vpn.app.gtk.widgets.vpn.serverlist.icons import (
     TORIcon,
     UnderMaintenanceIcon,
 )
+from proton.vpn.session.servers import ServerFeatureEnum
 
 logger = logging.getLogger(__name__)
 

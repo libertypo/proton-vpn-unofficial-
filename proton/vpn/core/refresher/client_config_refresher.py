@@ -16,18 +16,15 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with ProtonVPN.  If not, see <https://www.gnu.org/licenses/>.
 """
+
 from datetime import timedelta
 from http import HTTPStatus
 
+from proton.session.exceptions import ProtonAPIError, ProtonAPINotAvailable, ProtonAPINotReachable
+from proton.vpn import logging
 from proton.vpn.core.refresher.scheduler import RunAgain
 from proton.vpn.core.session_holder import SessionHolder
 from proton.vpn.session.client_config import ClientConfig
-
-from proton.vpn import logging
-from proton.session.exceptions import (
-    ProtonAPINotReachable, ProtonAPINotAvailable,
-    ProtonAPIError
-)
 
 logger = logging.getLogger(__name__)
 
@@ -38,6 +35,7 @@ class ClientConfigRefresher:
     """
     Service in charge of refreshing VPN client configuration data.
     """
+
     def __init__(self, session_holder: SessionHolder):
         super().__init__()
         self._session_holder = session_holder
@@ -66,10 +64,7 @@ class ClientConfigRefresher:
         except (ProtonAPINotReachable, ProtonAPINotAvailable) as error:
             logger.warning(f"Client config refresh failed: {error}")
         except Exception:
-            logger.error(
-                "Client config refresh failed unexpectedly. "
-                "Stopping client config refresh."
-            )
+            logger.error("Client config refresh failed unexpectedly. Stopping client config refresh.")
             raise
 
     async def refresh(self) -> RunAgain:
@@ -88,14 +83,10 @@ class ClientConfigRefresher:
             next_refresh_delay = ClientConfig.get_refresh_interval_in_seconds()
         except Exception:
             logger.error(  # nosec B311 # noqa: E501 # pylint: disable=line-too-long # nosemgrep: python.lang.best-practice.logging-error-without-handling.logging-error-without-handling
-                "Client config refresh failed unexpectedly. "
-                "Stopping client config refresh."
+                "Client config refresh failed unexpectedly. Stopping client config refresh."
             )
             raise
 
-        logger.info(
-            f"Next client config refresh scheduled in "
-            f"{timedelta(seconds=next_refresh_delay)}"
-        )
+        logger.info(f"Next client config refresh scheduled in {timedelta(seconds=next_refresh_delay)}")
 
         return RunAgain.after_seconds(next_refresh_delay)

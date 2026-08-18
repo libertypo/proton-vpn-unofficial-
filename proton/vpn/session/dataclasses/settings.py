@@ -16,9 +16,12 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with ProtonVPN.  If not, see <https://www.gnu.org/licenses/>.
 """
+
 from __future__ import annotations
-from typing import List
+
 from dataclasses import dataclass
+from typing import List
+
 from proton.vpn.session.utils import Serializable
 
 # pylint: disable=invalid-name
@@ -26,7 +29,8 @@ from proton.vpn.session.utils import Serializable
 
 @dataclass
 class VPNInfo(Serializable):  # pylint: disable=too-many-instance-attributes
-    """ Same object structure as the one coming from the API"""
+    """Same object structure as the one coming from the API"""
+
     ExpirationTime: int
     Name: str
     Password: str
@@ -55,13 +59,14 @@ class VPNInfo(Serializable):  # pylint: disable=too-many-instance-attributes
             MaxTier=dict_data["MaxTier"],
             MaxConnect=dict_data["MaxConnect"],
             Groups=dict_data["Groups"],
-            NeedConnectionAllocation=dict_data["NeedConnectionAllocation"]
+            NeedConnectionAllocation=dict_data["NeedConnectionAllocation"],
         )
 
 
 @dataclass
 class VPNSettings(Serializable):  # pylint: disable=too-many-instance-attributes
-    """ Same object structure as the one coming from the API"""
+    """Same object structure as the one coming from the API"""
+
     VPN: VPNInfo
     Services: int
     Subscribed: int
@@ -82,5 +87,5 @@ class VPNSettings(Serializable):  # pylint: disable=too-many-instance-attributes
             HasPaymentMethod=dict_data["HasPaymentMethod"],
             Credit=dict_data["Credit"],
             Currency=dict_data["Currency"],
-            Warnings=dict_data["Warnings"]
+            Warnings=dict_data["Warnings"],
         )

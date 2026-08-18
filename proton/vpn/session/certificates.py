@@ -16,19 +16,20 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with ProtonVPN.  If not, see <https://www.gnu.org/licenses/>.
 """
+
 import base64
 import datetime
 import enum
 import hashlib
 import typing
-import nacl.bindings
-import cryptography.x509
-from cryptography.hazmat.primitives.serialization import Encoding, PublicFormat
+
 import cryptography.hazmat.backends
+import cryptography.x509
+import nacl.bindings
+from cryptography.hazmat.primitives.serialization import Encoding, PublicFormat
 
 
 class Asn1BerDecoder:  # pylint: disable=missing-class-docstring
-
     _TYPE_INTEGER = 0x02
     _TYPE_OCTET_STR = 0x04
     _TYPE_SEQUENCE = 0x10
@@ -36,7 +37,7 @@ class Asn1BerDecoder:  # pylint: disable=missing-class-docstring
 
     @classmethod
     def __get_asn1_ber_len(cls, raw: bytes) -> typing.Tuple[int, int]:
-        """ returns : tuple (length, position start of data) """
+        """returns : tuple (length, position start of data)"""
         # byte 0 : data type
         if raw[1] & 0x80 == 0:
             # The short form is a single byte, between 0 and 127.
@@ -46,37 +47,35 @@ class Asn1BerDecoder:  # pylint: disable=missing-class-docstring
         # Bits 7-1 of the first byte indicate how many more bytes are in
         # the length field itself.
         # Then the remaining bytes specify the length itself, as a multi-byte integer.
-        length_of_length = raw[1] & 0x7f
+        length_of_length = raw[1] & 0x7F
         data_len = 0
-        for b in raw[2:2 + length_of_length]:  # pylint: disable=invalid-name
+        for b in raw[2 : 2 + length_of_length]:  # pylint: disable=invalid-name
             data_len = data_len * 256 + b
         return data_len, length_of_length + 2
 
     @classmethod
     def _transform_value_to_str_no_len_check(cls, raw: bytes) -> typing.Tuple[str, int]:
-        """ returns : tuple (decoded string, total length) """
+        """returns : tuple (decoded string, total length)"""
         if raw[0] != cls._TYPE_OCTET_STR:
             raise ValueError(f"Not a string : {raw}")
         data_len, pos_data = cls.__get_asn1_ber_len(raw)
-        return raw[pos_data:pos_data + data_len].decode("ascii"), (pos_data + data_len)
+        return raw[pos_data : pos_data + data_len].decode("ascii"), (pos_data + data_len)
 
     @classmethod
     def transform_value_to_str(cls, raw: bytes) -> str:  # noqa: E501 pylint: disable=missing-function-docstring
         data, total_len = cls._transform_value_to_str_no_len_check(raw)
         if total_len != len(raw):
-            raise ValueError(
-                F"wrong extension length : {raw} , found {total_len}, expected {len(raw)}"
-            )
+            raise ValueError(f"wrong extension length : {raw} , found {total_len}, expected {len(raw)}")
         return data
 
     @classmethod
     def _transform_value_to_int_no_len_check(cls, raw: bytes) -> typing.Tuple[int, int]:
-        """ returns : tuple (decoded int, total length) """
+        """returns : tuple (decoded int, total length)"""
         if raw[0] != cls._TYPE_INTEGER:
             raise ValueError(f"Not an integer : {raw}")
         data_len, pos_data = cls.__get_asn1_ber_len(raw)
         val = 0
-        for b in raw[pos_data:pos_data + data_len]:  # pylint: disable=invalid-name
+        for b in raw[pos_data : pos_data + data_len]:  # pylint: disable=invalid-name
             val = val * 256 + b
         return val, (pos_data + data_len)
 
@@ -84,14 +83,12 @@ class Asn1BerDecoder:  # pylint: disable=missing-class-docstring
     def transform_value_to_int(cls, raw: bytes) -> int:  # noqa: E501 pylint: disable=missing-function-docstring
         data, total_len = cls._transform_value_to_int_no_len_check(raw)
         if total_len != len(raw):
-            raise ValueError(
-                f"wrong extension length : {raw} , found {total_len}, expected {len(raw)}"
-            )
+            raise ValueError(f"wrong extension length : {raw} , found {total_len}, expected {len(raw)}")
         return data
 
     @classmethod
     def _transform_value_to_sequence_no_len_check(cls, raw: bytes) -> typing.Tuple[list, int]:
-        """ returns : tuple (decoded list, total length) """
+        """returns : tuple (decoded list, total length)"""
         if raw[0] not in (cls._TYPE_SEQUENCE, cls._TYPE_SEQUENCE_OF):
             raise ValueError(f"Not a sequence : {raw}")
         data_len, pos_data = cls.__get_asn1_ber_len(raw)
@@ -134,8 +131,7 @@ class Asn1BerDecoder:  # pylint: disable=missing-class-docstring
                 current_pos += tmp_len
             else:
                 raise NotImplementedError(
-                    f"Unknown type found : 0x{raw[current_pos]:02x} "
-                    f"at position {current_pos} in raw = {raw}"
+                    f"Unknown type found : 0x{raw[current_pos]:02x} at position {current_pos} in raw = {raw}"
                 )
         return decoded_list, current_pos
 
@@ -143,14 +139,11 @@ class Asn1BerDecoder:  # pylint: disable=missing-class-docstring
     def transform_value_to_sequence(cls, raw: bytes) -> list:  # noqa: E501 pylint: disable=missing-function-docstring
         data, total_len = cls._transform_value_to_sequence_no_len_check(raw)
         if total_len != len(raw):
-            raise ValueError(
-                f"wrong extension length : {raw} , found {total_len}, expected {len(raw)}"
-            )
+            raise ValueError(f"wrong extension length : {raw} , found {total_len}, expected {len(raw)}")
         return data
 
 
 class Extension:  # pylint: disable=missing-class-docstring
-
     def __init__(self, cert_ext: cryptography.x509.extensions.Extension):
         self._cert_ext = cert_ext
 
@@ -198,7 +191,6 @@ class Extension:  # pylint: disable=missing-class-docstring
 
 
 class ExtName(enum.Enum):  # pylint: disable=missing-class-docstring
-
     # https://confluence.protontech.ch/display/VPN/Agent+features+directory+and+format
 
     _TWO_FACTORS = "0.0.0"
@@ -215,12 +207,10 @@ class ExtName(enum.Enum):  # pylint: disable=missing-class-docstring
 
 
 class Certificate:  # pylint: disable=missing-class-docstring
-
-    PROTONVPN_OID_STR = '1.3.6.1.4.1.56809.1'
+    PROTONVPN_OID_STR = "1.3.6.1.4.1.56809.1"
     PROTONVPN_OID_ARRAY = PROTONVPN_OID_STR.split(".")
 
     def __init__(self, cert_pem: typing.Union[bytes, str] = None, cert_der: bytes = None):
-
         cert_input = [(cert_pem, "PEM"), (cert_der, "DER")]
         cert_input = [(x, x_type) for x, x_type in cert_input if x is not None]
 
@@ -235,23 +225,16 @@ class Certificate:  # pylint: disable=missing-class-docstring
         # cryptography.sys.version_info not available in 2.6
         crypto_major, crypto_minor = cryptography.__version__.split(".")[:2]
 
-        if (
-            int(crypto_major) < 3
-            or int(crypto_major) == 3 and int(crypto_minor) < 1
-        ):
+        if int(crypto_major) < 3 or int(crypto_major) == 3 and int(crypto_minor) < 1:
             # backend is required if library < 3.1
             backend_x509 = cryptography.hazmat.backends.default_backend()
 
         if cert_pem is not None:
             if isinstance(cert_pem, str):
                 cert_pem = cert_pem.encode("ascii")
-            self._cert = cryptography.x509.load_pem_x509_certificate(
-                data=cert_pem, backend=backend_x509
-            )
+            self._cert = cryptography.x509.load_pem_x509_certificate(data=cert_pem, backend=backend_x509)
         elif cert_der is not None:
-            self._cert = cryptography.x509.load_der_x509_certificate(
-                data=cert_der, backend=backend_x509
-            )
+            self._cert = cryptography.x509.load_der_x509_certificate(data=cert_der, backend=backend_x509)
         else:
             raise ValueError("Not provided any cert format")
 
@@ -275,8 +258,8 @@ class Certificate:  # pylint: disable=missing-class-docstring
 
     @property
     def validity_period(self) -> float:
-        """ remaining time the certificate is valid,
-            in seconds. < 0 : certificate is not valid anymore.
+        """remaining time the certificate is valid,
+        in seconds. < 0 : certificate is not valid anymore.
         """
         now_timestamp = datetime.datetime.now(datetime.timezone.utc).timestamp()
         return self.validity_date.timestamp() - now_timestamp
@@ -289,9 +272,7 @@ class Certificate:  # pylint: disable=missing-class-docstring
 
         # Because `not_valid_after` returns a naive utc
         # datetime object (without time zone info), we add it manually.
-        return self._cert.not_valid_after.replace(
-            tzinfo=datetime.timezone.utc
-        )
+        return self._cert.not_valid_after.replace(tzinfo=datetime.timezone.utc)
 
     @property
     def issued_date(self) -> datetime.datetime:  # pylint: disable=missing-function-docstring
@@ -305,7 +286,7 @@ class Certificate:  # pylint: disable=missing-class-docstring
 
     @property
     def duration(self) -> datetime.timedelta:
-        """ certification duration """
+        """certification duration"""
         return self.validity_date - self.issued_date
 
     @classmethod
@@ -323,9 +304,9 @@ class Certificate:  # pylint: disable=missing-class-docstring
         extensions = {}
         for ext in self._cert.extensions:
             oid_array = ext.oid.dotted_string.split(".")
-            if oid_array[:len(self.PROTONVPN_OID_ARRAY)] == self.PROTONVPN_OID_ARRAY:
+            if oid_array[: len(self.PROTONVPN_OID_ARRAY)] == self.PROTONVPN_OID_ARRAY:
                 try:
-                    ext_name = ".".join(oid_array[len(self.PROTONVPN_OID_ARRAY):])
+                    ext_name = ".".join(oid_array[len(self.PROTONVPN_OID_ARRAY) :])
                     ext_name = ExtName(ext_name)
                 except ValueError:
                     continue

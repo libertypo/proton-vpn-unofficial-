@@ -16,18 +16,20 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with ProtonVPN.  If not, see <https://www.gnu.org/licenses/>.
 """
+
 from __future__ import annotations
+
 from dataclasses import dataclass
 from datetime import datetime, timezone
 from enum import IntEnum
-from typing import List, TYPE_CHECKING
 from pathlib import Path
+from typing import TYPE_CHECKING, List
 
 from proton.utils.environment import VPNExecutionEnvironment
-from proton.vpn.session.exceptions import NotificationDecodeError
-from proton.vpn.session.utils import RefreshCalculator, rest_api_request
 from proton.vpn import logging
 from proton.vpn.core.cache_handler import CacheHandler
+from proton.vpn.session.exceptions import NotificationDecodeError
+from proton.vpn.session.utils import RefreshCalculator, rest_api_request
 
 if TYPE_CHECKING:
     from proton.vpn.session.api import VPNSession
@@ -41,6 +43,7 @@ REFRESH_INTERVAL = 24 * 60 * 60  # 1 day
 
 class NotificationType(IntEnum):
     """Types of pull notification"""
+
     INVALID = -1
     NPSSURVEY = 4
 
@@ -48,6 +51,7 @@ class NotificationType(IntEnum):
 @dataclass
 class NpsSurvey:
     """Represents an NPS survey notification"""
+
     survey_id: str
     start_time: datetime
     end_time: datetime
@@ -65,31 +69,21 @@ class NpsSurvey:
         try:
             return NpsSurvey(
                 survey_id=data["NotificationID"],
-                start_time=datetime.fromtimestamp(
-                    data["StartTime"],
-                    tz=timezone.utc
-                ),
-                end_time=datetime.fromtimestamp(
-                    data["EndTime"],
-                    tz=timezone.utc
-                ),
-                seen=data.get("seen", False)
+                start_time=datetime.fromtimestamp(data["StartTime"], tz=timezone.utc),
+                end_time=datetime.fromtimestamp(data["EndTime"], tz=timezone.utc),
+                seen=data.get("seen", False),
             )
         except (KeyError, TypeError, ValueError) as error:
-            raise NotificationDecodeError(
-                "Error parsing NpsSurvey pull notification."
-            ) from error
+            raise NotificationDecodeError("Error parsing NpsSurvey pull notification.") from error
 
 
 class Notifications:  # pylint: disable=too-few-public-methods
     """Contains a record of pulled notifications."""
+
     def __init__(self, api_data: dict):
         self._api_data = api_data
         self._expiration_time = api_data.get(
-            "ExpirationTime",
-            RefreshCalculator.get_expiration_time(
-                refresh_interval=REFRESH_INTERVAL
-            )
+            "ExpirationTime", RefreshCalculator.get_expiration_time(refresh_interval=REFRESH_INTERVAL)
         )
 
     def get_nps_survey_notifications(self) -> List[NpsSurvey]:
@@ -101,10 +95,7 @@ class Notifications:  # pylint: disable=too-few-public-methods
                 try:
                     nps_notifications.append(NpsSurvey.from_dict(notification))
                 except NotificationDecodeError:
-                    logger.warning(
-                        "NPSSurvey notification could not be deserialized.",
-                        exc_info=True
-                    )
+                    logger.warning("NPSSurvey notification could not be deserialized.", exc_info=True)
 
         return nps_notifications
 
@@ -131,13 +122,12 @@ class Notifications:  # pylint: disable=too-few-public-methods
 
 class NotificationsFetcher:
     """Fetches and caches notifications from Proton's REST API."""
+
     ROUTE = "/core/v4/notifications"
     CACHE_PATH = Path(VPNExecutionEnvironment().path_cache) / "notifications.json"
 
     def __init__(
-        self, session: "VPNSession",
-        refresh_calculator: RefreshCalculator = None,
-        cache_handler: CacheHandler = None
+        self, session: "VPNSession", refresh_calculator: RefreshCalculator = None, cache_handler: CacheHandler = None
     ):
         """
         :param session: session used to retrieve notifications.
@@ -161,8 +151,7 @@ class NotificationsFetcher:
             self._session,
             self.ROUTE,
         )
-        response["ExpirationTime"] = self._refresh_calculator\
-            .get_expiration_time(refresh_interval=REFRESH_INTERVAL)
+        response["ExpirationTime"] = self._refresh_calculator.get_expiration_time(refresh_interval=REFRESH_INTERVAL)
         self._propagate_seen_state_to_new_snapshot(response)
         self._cache_file.save(response)
         self._notifications = Notifications(response)
@@ -176,8 +165,7 @@ class NotificationsFetcher:
                   instance if no cache was found (triggering an immediate fetch).
         """
         cache = self._cache_file.load()
-        self._notifications = \
-            Notifications(cache) if cache else Notifications({"ExpirationTime": 0})
+        self._notifications = Notifications(cache) if cache else Notifications({"ExpirationTime": 0})
         return self._notifications
 
     def set_notification_seen(self, seen_notification_id: str):

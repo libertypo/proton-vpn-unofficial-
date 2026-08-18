@@ -22,6 +22,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with ProtonVPN.  If not, see <https://www.gnu.org/licenses/>.
 """
+
 from datetime import timedelta
 from typing import Callable, Optional
 
@@ -33,8 +34,8 @@ from proton.vpn.core.refresher.notifications_refresher import NotificationsRefre
 from proton.vpn.core.refresher.scheduler import Scheduler
 from proton.vpn.core.refresher.server_list_refresher import ServerListRefresher
 from proton.vpn.core.session_holder import SessionHolder
-from proton.vpn.session.client_config import ClientConfig
 from proton.vpn.session import FeatureFlags, Notifications
+from proton.vpn.session.client_config import ClientConfig
 from proton.vpn.session.servers.logicals import ServerList
 
 logger = logging.getLogger(__name__)
@@ -48,6 +49,7 @@ class VPNDataRefresher:  # pylint: disable=too-many-instance-attributes
         - keeping it up to date and
         - notifying subscribers when VPN data has been updated.
     """
+
     def __init__(  # pylint: disable=too-many-arguments
         self,
         session_holder: SessionHolder,
@@ -56,25 +58,15 @@ class VPNDataRefresher:  # pylint: disable=too-many-instance-attributes
         server_list_refresher: ServerListRefresher = None,
         certificate_refresher: CertificateRefresher = None,
         feature_flags_refresher: FeatureFlagsRefresher = None,
-        notifications_refresher: NotificationsRefresher = None
+        notifications_refresher: NotificationsRefresher = None,
     ):
         self._session_holder = session_holder
         self._scheduler = scheduler
-        self._client_config_refresher = client_config_refresher or ClientConfigRefresher(
-            session_holder
-        )
-        self._server_list_refresher = server_list_refresher or ServerListRefresher(
-            session_holder
-        )
-        self._certificate_refresher = certificate_refresher or CertificateRefresher(
-            session_holder
-        )
-        self._feature_flags_refresher = feature_flags_refresher or FeatureFlagsRefresher(
-            session_holder
-        )
-        self._notifications_refresher = notifications_refresher or NotificationsRefresher(
-            session_holder
-        )
+        self._client_config_refresher = client_config_refresher or ClientConfigRefresher(session_holder)
+        self._server_list_refresher = server_list_refresher or ServerListRefresher(session_holder)
+        self._certificate_refresher = certificate_refresher or CertificateRefresher(session_holder)
+        self._feature_flags_refresher = feature_flags_refresher or FeatureFlagsRefresher(session_holder)
+        self._notifications_refresher = notifications_refresher or NotificationsRefresher(session_holder)
         self._client_config_refresh_task_id = None
         self._server_list_refresher_task_id = None
         self._certificate_refresher_task_id = None
@@ -184,9 +176,7 @@ class VPNDataRefresher:  # pylint: disable=too-many-instance-attributes
         """Force refresh certificate on demand."""
         logger.info("Force refresh certificate.")
         self._scheduler.cancel_task(self._certificate_refresher_task_id)
-        self._certificate_refresher_task_id = self._scheduler.run_soon(
-            self._certificate_refresher.refresh
-        )
+        self._certificate_refresher_task_id = self._scheduler.run_soon(self._certificate_refresher.refresh)
 
     @property
     def is_vpn_data_ready(self) -> bool:
@@ -217,18 +207,15 @@ class VPNDataRefresher:  # pylint: disable=too-many-instance-attributes
 
         await self._scheduler.stop()
         logger.info(
-            "VPN data refresher service disabled.",
-            category="app", subcategory="vpn_data_refresher", event="disable"
+            "VPN data refresher service disabled.", category="app", subcategory="vpn_data_refresher", event="disable"
         )
 
     def _enable(self):
         logger.info(
-            "VPN data refresher service enabled.",
-            category="app", subcategory="vpn_data_refresher", event="enable"
+            "VPN data refresher service enabled.", category="app", subcategory="vpn_data_refresher", event="enable"
         )
         self._client_config_refresh_task_id = self._scheduler.run_after(
-            self._client_config_refresher.initial_refresh_delay,
-            self._client_config_refresher.refresh
+            self._client_config_refresher.initial_refresh_delay, self._client_config_refresher.refresh
         )
         logger.info(
             f"Next client config refresh scheduled in "
@@ -236,8 +223,7 @@ class VPNDataRefresher:  # pylint: disable=too-many-instance-attributes
         )
 
         self._server_list_refresher_task_id = self._scheduler.run_after(
-            self._server_list_refresher.initial_refresh_delay,
-            self._server_list_refresher.refresh
+            self._server_list_refresher.initial_refresh_delay, self._server_list_refresher.refresh
         )
         logger.info(
             f"Next server list refresh scheduled in "
@@ -245,8 +231,7 @@ class VPNDataRefresher:  # pylint: disable=too-many-instance-attributes
         )
 
         self._certificate_refresher_task_id = self._scheduler.run_after(
-            self._certificate_refresher.initial_refresh_delay,
-            self._certificate_refresher.refresh
+            self._certificate_refresher.initial_refresh_delay, self._certificate_refresher.refresh
         )
         logger.info(
             f"Next certificate refresh scheduled in "
@@ -254,8 +239,7 @@ class VPNDataRefresher:  # pylint: disable=too-many-instance-attributes
         )
 
         self._feature_flags_refresher_task_id = self._scheduler.run_after(
-            self._feature_flags_refresher.initial_refresh_delay,
-            self._feature_flags_refresher.refresh
+            self._feature_flags_refresher.initial_refresh_delay, self._feature_flags_refresher.refresh
         )
         logger.info(
             f"Next feature flags refresh scheduled in "
@@ -263,8 +247,7 @@ class VPNDataRefresher:  # pylint: disable=too-many-instance-attributes
         )
 
         self._notifications_refresher_task_id = self._scheduler.run_after(
-            self._notifications_refresher.initial_refresh_delay,
-            self._notifications_refresher.refresh
+            self._notifications_refresher.initial_refresh_delay, self._notifications_refresher.refresh
         )
         logger.info(
             f"Next pull notification refresh scheduled in "

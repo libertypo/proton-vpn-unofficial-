@@ -165,7 +165,7 @@ impl NetlinkHandle {
             .build();
         fatal_killswitch_route.header.kind = RouteType::Unreachable;
         fatal_killswitch_route.attributes.push(RouteAttribute::Priority(100));
-        
+
         // Only allow explicit routes that are in the main table, default
         // routes are ignored.
         //

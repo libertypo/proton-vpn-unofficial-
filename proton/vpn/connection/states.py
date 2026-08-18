@@ -19,23 +19,22 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with ProtonVPN.  If not, see <https://www.gnu.org/licenses/>.
 """
+
 from __future__ import annotations
 
 from abc import ABC, abstractmethod
 from dataclasses import dataclass, field
-from typing import TYPE_CHECKING, Optional, ClassVar
-
+from typing import TYPE_CHECKING, ClassVar, Optional
 
 from proton.vpn import logging
 from proton.vpn.connection import events
 from proton.vpn.connection.enum import ConnectionStateEnum, KillSwitchSetting
 from proton.vpn.connection.events import EventContext
 from proton.vpn.connection.exceptions import ConcurrentConnectionsError
+from proton.vpn.core.settings.split_tunneling import SplitTunneling as SplitTunnelingSetting
 from proton.vpn.killswitch.interface import KillSwitch
 from proton.vpn.split_tunneling.exceptions import SplitTunnelingError
 from proton.vpn.split_tunneling.interface import SplitTunneling
-from proton.vpn.core.settings.split_tunneling import SplitTunneling as SplitTunnelingSetting
-
 
 if TYPE_CHECKING:
     from proton.vpn.connection.vpnconnection import VPNConnection
@@ -60,6 +59,7 @@ class StateContext:
         split_tunneling: split tunneling implementation, if available.
         split_tunneling_setting: split tunneling configuration.
     """
+
     event: events.Event = field(default_factory=events.Initialized)
     connection: Optional["VPNConnection"] = None
     reconnection: Optional["VPNConnection"] = None
@@ -101,6 +101,7 @@ class State(ABC):
     behavior. It is worth mentioning though that the contexts will always
     be backend specific.
     """
+
     type = None
 
     # Indicates whether this state should be notified early (i.e. before running
@@ -112,7 +113,7 @@ class State(ABC):
         self.context = context or StateContext()
 
         if self.type is None:
-            raise TypeError("Undefined attribute \"state\" ")
+            raise TypeError('Undefined attribute "state" ')
 
     def _assert_no_concurrent_connections(self, event: events.Event):
         not_up_event = not isinstance(event, events.Up)
@@ -136,17 +137,15 @@ class State(ABC):
 
         if new_state is self:
             logger.warning(
-                f"{self.type.name} state received unexpected "
-                f"event: {type(event).__name__}",
-                category="CONN", event="WARNING"
+                f"{self.type.name} state received unexpected event: {type(event).__name__}",
+                category="CONN",
+                event="WARNING",
             )
 
         return new_state
 
     @abstractmethod
-    def _on_event(
-            self, event: events.Event
-    ) -> State:
+    def _on_event(self, event: events.Event) -> State:
         """Given an event, it returns the new state."""
 
     async def run_tasks(self) -> Optional[events.Event]:
@@ -163,6 +162,7 @@ class Disconnected(State):
     Disconnected is the initial state of a connection. It's also its final
     state, except if the connection could not be established due to an error.
     """
+
     type = ConnectionStateEnum.DISCONNECTED
 
     def _on_event(self, event: events.Event):
@@ -213,6 +213,7 @@ class Connecting(State):
     """
     Connecting is the state reached when a VPN connection is requested.
     """
+
     type = ConnectionStateEnum.CONNECTING
     # Connection state subscribers will be notified of the Connecting state before running
     # the tasks associated to this state.
@@ -233,11 +234,7 @@ class Connecting(State):
             # cancel the current one and pass the requested connection so that it's
             # started as soon as the current connection is down.
             return Disconnecting(
-                StateContext(
-                    event=event,
-                    connection=self.context.connection,
-                    reconnection=event.context.connection
-                )
+                StateContext(event=event, connection=self.context.connection, reconnection=event.context.connection)
             )
 
         if isinstance(event, events.Disconnected):
@@ -254,10 +251,7 @@ class Connecting(State):
         # is to avoid leaks when switching servers, even with the kill switch turned off.
         # However, when the kill switch setting is off, the kill switch has to be removed when
         # reaching the connected state.
-        await self.context.kill_switch.enable(
-            self.context.connection.server,
-            permanent=permanent_ks
-        )
+        await self.context.kill_switch.enable(self.context.connection.server, permanent=permanent_ks)
 
         await self.context.connection.start()
 
@@ -267,6 +261,7 @@ class Connected(State):
     Connected is the state reached once the VPN connection has been successfully
     established.
     """
+
     type = ConnectionStateEnum.CONNECTED
 
     def _on_event(self, event: events.Event):
@@ -278,11 +273,7 @@ class Connected(State):
             # cancel the current one and pass the requested connection so that it's
             # started as soon as the current connection is down.
             return Disconnecting(
-                StateContext(
-                    event=event,
-                    connection=self.context.connection,
-                    reconnection=event.context.connection
-                )
+                StateContext(event=event, connection=self.context.connection, reconnection=event.context.connection)
             )
 
         if isinstance(event, events.Error):
@@ -304,10 +295,7 @@ class Connected(State):
             await self.context.kill_switch.disable()
             if self.context.split_tunneling_setting.enabled:
                 try:
-                    await self.context.split_tunneling.set_config(
-                        self.context.split_tunneling_setting
-                            .get_config()
-                    )
+                    await self.context.split_tunneling.set_config(self.context.split_tunneling_setting.get_config())
                 except SplitTunnelingError:
                     # We decided to treat split tunneling error as non-fatal, to prevent they
                     # impact the core VPN functionality.
@@ -327,6 +315,7 @@ class Disconnecting(State):
     """
     Disconnecting is state reached when VPN disconnection is requested.
     """
+
     type = ConnectionStateEnum.DISCONNECTING
     # Connection state subscribers will be notified of the Disconnecting state before running
     # the tasks associated to this state.
@@ -339,17 +328,9 @@ class Disconnecting(State):
             # disconnecting state is to reach the disconnected state,
             # both disconnected and error events lead to the desired state.
             if isinstance(event, events.Error):
-                logger.warning(
-                    "Error event while disconnecting: %s (%s)",
-                    type(event).__name__,
-                    event.context.error
-                )
+                logger.warning("Error event while disconnecting: %s (%s)", type(event).__name__, event.context.error)
             return Disconnected(
-                StateContext(
-                    event=event,
-                    connection=event.context.connection,
-                    reconnection=self.context.reconnection
-                )
+                StateContext(event=event, connection=event.context.connection, reconnection=self.context.reconnection)
             )
 
         if isinstance(event, events.Up):
@@ -368,6 +349,7 @@ class Error(State):
     """
     Error is the state reached after a connection error.
     """
+
     type = ConnectionStateEnum.ERROR
 
     def _on_event(self, event: events.Event):
@@ -376,11 +358,7 @@ class Error(State):
 
         if isinstance(event, events.Up):
             return Disconnecting(
-                StateContext(
-                    event=event,
-                    connection=self.context.connection,
-                    reconnection=event.context.connection
-                )
+                StateContext(event=event, connection=self.context.connection, reconnection=event.context.connection)
             )
 
         if isinstance(event, events.Connected):
@@ -397,11 +375,10 @@ class Error(State):
         return self
 
     async def run_tasks(self):
-
         logger.warning(
             "Reached connection error state: %s (%s)",
             type(self.context.event).__name__,
-            self.context.event.context.error
+            self.context.event.context.error,
         )
 
         # we don't disconnect in the error state

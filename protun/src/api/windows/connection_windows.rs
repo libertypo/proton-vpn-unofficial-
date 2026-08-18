@@ -66,7 +66,7 @@ impl ProTun {
     ) -> Result<Self, ProTunFatalError> {
         init_logger(log_level, logger_callback);
         log::info!("Initialized ProTUN");
-        
+
         let winsock: Winsock = Winsock::create()?;
 
         Ok(ProTun { _winsock: winsock })
@@ -150,7 +150,7 @@ impl WindowsConnection {
     pub fn get_connection(&self) -> Arc<Connection> {
         self.connection.clone()
     }
-    
+
     #[cfg_attr(feature = "uniffi", uniffi::method)]
     pub fn get_adapter_details(&self) -> ProTunAdapterDetails {
         ProTunAdapterDetails {
@@ -161,7 +161,7 @@ impl WindowsConnection {
             server_ipv6_addr: option_ipv6addr_to_string(&self.tun.server_ipv6_addr)
         }
     }
-    
+
     #[cfg_attr(feature = "uniffi", uniffi::method)]
     pub fn set_ipv6(&self, is_enabled: bool) -> Result<bool, ProTunFatalError> {
         Ok(if is_enabled {

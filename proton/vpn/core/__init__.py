@@ -18,7 +18,8 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with ProtonVPN.  If not, see <https://www.gnu.org/licenses/>.
 """
-from importlib.metadata import version, PackageNotFoundError
+
+from importlib.metadata import PackageNotFoundError, version
 
 try:
     __version__ = version("proton-vpn-api-core")

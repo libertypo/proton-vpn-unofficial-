@@ -24,11 +24,10 @@ from __future__ import annotations
 
 from typing import Any, Callable, List, Type, TypeVar
 
-from proton.vpn.session.servers import ServerList
-
 from proton.vpn.app.gtk import Gtk
 from proton.vpn.app.gtk.controller import Controller
 from proton.vpn.app.gtk.utils.glib import bubble_up_errors
+from proton.vpn.session.servers import ServerList
 
 GtkWidget = TypeVar("GtkWidget", bound=Gtk.Widget)
 

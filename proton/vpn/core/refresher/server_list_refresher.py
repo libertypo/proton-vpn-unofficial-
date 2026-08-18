@@ -16,15 +16,12 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with ProtonVPN.  If not, see <https://www.gnu.org/licenses/>.
 """
+
 from datetime import timedelta
 from http import HTTPStatus
 from typing import Callable, Optional
 
-from proton.session.exceptions import (
-    ProtonAPINotReachable, ProtonAPINotAvailable,
-    ProtonAPIError
-)
-
+from proton.session.exceptions import ProtonAPIError, ProtonAPINotAvailable, ProtonAPINotReachable
 from proton.vpn import logging
 from proton.vpn.core.refresher.scheduler import RunAgain
 from proton.vpn.core.session_holder import SessionHolder
@@ -37,6 +34,7 @@ class ServerListRefresher:
     """
     Service in charge of refreshing the VPN server list/loads.
     """
+
     def __init__(self, session_holder: SessionHolder):
         self._session_holder = session_holder
         self.server_list_updated_callback: Optional[Callable] = None
@@ -75,8 +73,7 @@ class ServerListRefresher:
             next_refresh_delay = ServerList.get_loads_refresh_interval_in_seconds()
         except Exception:
             logger.error(  # noqa: E501 # pylint: disable=line-too-long # nosemgrep: python.lang.best-practice.logging-error-without-handling.logging-error-without-handling
-                "Server list refresh failed unexpectedly. "
-                "Stopping server list refresh."
+                "Server list refresh failed unexpectedly. Stopping server list refresh."
             )
             raise
 
@@ -87,10 +84,7 @@ class ServerListRefresher:
         next_refresh_delay = await self.update_if_necessary()
 
         # Let the scheduler know that this method should be run again after a delay.
-        logger.info(
-            f"Next server list refresh scheduled in "
-            f"{timedelta(seconds=next_refresh_delay)}"
-        )
+        logger.info(f"Next server list refresh scheduled in {timedelta(seconds=next_refresh_delay)}")
 
         return RunAgain.after_seconds(next_refresh_delay)
 

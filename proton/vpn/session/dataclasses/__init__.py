@@ -19,9 +19,7 @@ along with ProtonVPN.  If not, see <https://www.gnu.org/licenses/>.
 
 from proton.vpn.session.dataclasses.bug_report import BugReportForm
 from proton.vpn.session.dataclasses.certificate import VPNCertificate
-from proton.vpn.session.dataclasses.credentials import (
-    VPNUserPassCredentials, VPNCredentials
-)
+from proton.vpn.session.dataclasses.credentials import VPNCredentials, VPNUserPassCredentials
 from proton.vpn.session.dataclasses.location import VPNLocation
 from proton.vpn.session.dataclasses.login_result import LoginResult
 from proton.vpn.session.dataclasses.notifications.nps_survey_response import NPSSurveyResponse
@@ -32,9 +30,12 @@ __all__ = [
     "BugReportForm",
     "NPSSurveyResponse",
     "VPNCertificate",
-    "VPNUserPassCredentials", "VPNCredentials",
+    "VPNUserPassCredentials",
+    "VPNCredentials",
     "VPNLocation",
     "LoginResult",
-    "APIVPNSession", "VPNSessions",
-    "VPNInfo", "VPNSettings"
+    "APIVPNSession",
+    "VPNSessions",
+    "VPNInfo",
+    "VPNSettings",
 ]

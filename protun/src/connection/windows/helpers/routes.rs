@@ -130,7 +130,7 @@ fn create_ipv6_any_route(interface_index: u32) -> Ipv6Route {
         interface_index: interface_index
     };
 }
-    
+
 fn create_server_routes(server_ips: Vec<IpAddr>) -> Result<Vec<Route>, ProTunFatalError> {
     let mut result: Vec<Route> = vec![];
 

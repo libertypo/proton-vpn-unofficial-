@@ -19,37 +19,34 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with ProtonVPN.  If not, see <https://www.gnu.org/licenses/>.
 """
+
 from __future__ import annotations
 
 import asyncio
-from copy import deepcopy
 import os
 import threading
-from typing import Optional, runtime_checkable, Protocol, Iterator
+from copy import deepcopy
+from typing import Iterator, Optional, Protocol, runtime_checkable
 
+from proton.vpn import logging
+from proton.vpn.connection import ProtocolPorts, Settings, VPNConnection, VPNCredentials, VPNServer, events, states
+from proton.vpn.connection.enum import ConnectionStateEnum, KillSwitchSetting
+from proton.vpn.connection.exceptions import FeatureError, FeatureSyntaxError
 from proton.vpn.connection.persistence import ConnectionPersistence
+from proton.vpn.connection.publisher import Publisher
+from proton.vpn.connection.states import StateContext
+from proton.vpn.core.cache_handlers import PortForwardFileHandler
 from proton.vpn.core.refresher import VPNDataRefresher
+from proton.vpn.core.registry import Registry
 from proton.vpn.core.session_holder import SessionHolder
 from proton.vpn.core.settings import SettingsPersistence
 from proton.vpn.core.settings.split_tunneling import SplitTunneling as SplitTunnelingSetting
+from proton.vpn.core.usage import UsageReporting
 from proton.vpn.killswitch.interface import KillSwitch
-
-from proton.vpn import logging
-from proton.vpn.connection import (
-    events, states, VPNConnection, VPNServer, ProtocolPorts, VPNCredentials,
-    Settings
-)
-from proton.vpn.core.registry import Registry
-from proton.vpn.connection.enum import KillSwitchSetting, ConnectionStateEnum
-from proton.vpn.connection.publisher import Publisher
-from proton.vpn.connection.states import StateContext
 from proton.vpn.session.client_config import ClientConfig
 from proton.vpn.session.dataclasses import VPNLocation
 from proton.vpn.session.servers import LogicalServer, ServerFeatureEnum
-from proton.vpn.core.usage import UsageReporting
-from proton.vpn.connection.exceptions import FeatureSyntaxError, FeatureError
 from proton.vpn.split_tunneling.interface import SplitTunneling
-from proton.vpn.core.cache_handlers import PortForwardFileHandler
 
 logger = logging.getLogger(__name__)
 
@@ -95,23 +92,23 @@ class VPNConnector:  # pylint: disable=too-many-instance-attributes
             kill_switch=kill_switch,
             usage_reporting=usage_reporting,
             split_tunneling=split_tunneling,
-            registry=registry
+            registry=registry,
         )
         await connector.initialize_state()
         return connector
 
     def __init__(  # pylint: disable=too-many-arguments
-            self,
-            session_holder: SessionHolder,
-            settings_persistence: SettingsPersistence,
-            usage_reporting: UsageReporting,
-            registry: Registry,
-            connection_persistence: Optional[ConnectionPersistence] = None,
-            state: Optional[states.State] = None,
-            kill_switch: Optional[KillSwitch] = None,
-            split_tunneling: Optional[SplitTunneling] = None,
-            publisher: Optional[Publisher] = None,
-            port_forward_file_handler: PortForwardFileHandler = None,
+        self,
+        session_holder: SessionHolder,
+        settings_persistence: SettingsPersistence,
+        usage_reporting: UsageReporting,
+        registry: Registry,
+        connection_persistence: Optional[ConnectionPersistence] = None,
+        state: Optional[states.State] = None,
+        kill_switch: Optional[KillSwitch] = None,
+        split_tunneling: Optional[SplitTunneling] = None,
+        publisher: Optional[Publisher] = None,
+        port_forward_file_handler: PortForwardFileHandler = None,
     ):
         self._session_holder = session_holder
         self._settings_persistence = settings_persistence
@@ -139,10 +136,7 @@ class VPNConnector:  # pylint: disable=too-many-instance-attributes
         # Default to free user settings if the session is not loaded yet.
         user_tier = self._session_holder.user_tier or 0
         loop = asyncio.get_running_loop()
-        settings = await loop.run_in_executor(
-            None, self._settings_persistence.get,
-            user_tier
-        )
+        settings = await loop.run_in_executor(None, self._settings_persistence.get, user_tier)
 
         return settings
 
@@ -216,9 +210,7 @@ class VPNConnector:  # pylint: disable=too-many-instance-attributes
         else:
             raise RuntimeError(f"Unexpected kill switch setting: {kill_switch_setting}")
 
-    async def _apply_split_tunneling_settings(
-            self, st_settings: SplitTunnelingSetting, ks_setting: KillSwitchSetting
-    ):
+    async def _apply_split_tunneling_settings(self, st_settings: SplitTunnelingSetting, ks_setting: KillSwitchSetting):
         if ks_setting != KillSwitchSetting.OFF:
             logger.warning("Split tunneling is not compatible with the kill switch feature")
             return
@@ -226,17 +218,14 @@ class VPNConnector:  # pylint: disable=too-many-instance-attributes
         if not st_settings.enabled:
             await self._split_tunneling.clear_config()
         else:
-            await self._split_tunneling.set_config(
-                st_settings.get_config()
-            )
+            await self._split_tunneling.set_config(st_settings.get_config())
 
     async def _get_current_connection(self) -> Optional[VPNConnection]:
         """
         :return: the current VPN connection or None if there isn't one.
         """
         loop = asyncio.get_running_loop()
-        persisted_parameters = await loop.run_in_executor(None,
-                                                          self._connection_persistence.load)
+        persisted_parameters = await loop.run_in_executor(None, self._connection_persistence.load)
         if not persisted_parameters:
             return None
 
@@ -246,7 +235,7 @@ class VPNConnector:  # pylint: disable=too-many-instance-attributes
                 credentials=self.credentials,
                 settings=await self.get_settings(),
                 connection_id=persisted_parameters.connection_id,
-                user_tier=self._session_holder.user_tier
+                user_tier=self._session_holder.user_tier,
             )
             if not isinstance(vpn_connection.initial_state, states.Disconnected):
                 return vpn_connection
@@ -265,9 +254,7 @@ class VPNConnector:  # pylint: disable=too-many-instance-attributes
             if current_connection:
                 return current_connection.initial_state
 
-        return states.Disconnected(
-            StateContext(event=events.Initialized(events.EventContext(connection=None)))
-        )
+        return states.Disconnected(StateContext(event=events.Initialized(events.EventContext(connection=None))))
 
     async def initialize_state(self):
         """Initializes the state machine with the specified state."""
@@ -326,9 +313,7 @@ class VPNConnector:  # pylint: disable=too-many-instance-attributes
         return isinstance(self.current_state, states.Connected)
 
     @staticmethod
-    def get_vpn_server(
-            logical_server: LogicalServer, client_config: ClientConfig
-    ) -> VPNServer:
+    def get_vpn_server(logical_server: LogicalServer, client_config: ClientConfig) -> VPNServer:
         """
         :return: a :class:`proton.vpn.vpnconnection.interfaces.VPNServer` that
         can be used to establish a VPN connection with
@@ -343,39 +328,36 @@ class VPNConnector:  # pylint: disable=too-many-instance-attributes
             openvpn_ports=ProtocolPorts(
                 udp=client_config.openvpn_ports.udp,
                 tcp=client_config.openvpn_ports.tcp,
-                tls=client_config.openvpn_ports.tls
+                tls=client_config.openvpn_ports.tls,
             ),
             wireguard_ports=ProtocolPorts(
                 udp=client_config.wireguard_ports.udp,
                 tcp=client_config.wireguard_ports.tcp,
-                tls=client_config.wireguard_ports.tls
+                tls=client_config.wireguard_ports.tls,
             ),
             server_id=logical_server.id,
             server_name=logical_server.name,
             has_ipv6_support=has_ipv6_support,
-            label=physical_server.label
+            label=physical_server.label,
         )
 
     def iter_available_protocols(self, protocol_group) -> Iterator[type[VPNConnection]]:
         """Returns an iterator over the available VPN connection protocols."""
         return filter(
-            lambda cls: cls.get_protocol_group() == protocol_group,
-            self._registry.iter(interface=VPNConnection)
+            lambda cls: cls.get_protocol_group() == protocol_group, self._registry.iter(interface=VPNConnection)
         )
 
     # pylint: disable=too-many-arguments
-    async def connect(
-            self, server: VPNServer,
-            protocol: str = None,
-            backend: str = None
-    ):
+    async def connect(self, server: VPNServer, protocol: str = None, backend: str = None):
         """Connects to a VPN server."""
         if not self._session_holder.session.logged_in:
             raise RuntimeError("Log in required before starting VPN connections.")
 
         logger.info(
             f"{server} / Protocol: {protocol} / Backend: {backend}",
-            category="CONN", subcategory="CONNECT", event="START"
+            category="CONN",
+            subcategory="CONNECT",
+            event="START",
         )
 
         # Sets the settings to be applied when establishing the next connection.
@@ -388,20 +370,15 @@ class VPNConnector:  # pylint: disable=too-many-instance-attributes
 
         protocol_type = self._registry.get(protocol)
 
-        connection = protocol_type(
-            server, self.credentials, settings, self._session_holder.user_tier)
+        connection = protocol_type(server, self.credentials, settings, self._session_holder.user_tier)
 
         connection.register(self._on_connection_event)
 
-        await self._on_connection_event(
-            events.Up(events.EventContext(connection=connection))
-        )
+        await self._on_connection_event(events.Up(events.EventContext(connection=connection)))
 
     async def disconnect(self):
         """Disconnects the current VPN connection, if any."""
-        await self._on_connection_event(
-            events.Down(events.EventContext(connection=self.current_connection))
-        )
+        await self._on_connection_event(events.Down(events.EventContext(connection=self.current_connection)))
 
     def register(self, subscriber: VPNStateSubscriber):
         """
@@ -413,10 +390,7 @@ class VPNConnector:  # pylint: disable=too-many-instance-attributes
         :param subscriber: Subscriber to register.
         """
         if not isinstance(subscriber, VPNStateSubscriber):
-            raise ValueError(
-                "The specified subscriber does not implement the "
-                f"{VPNStateSubscriber.__name__} protocol."
-            )
+            raise ValueError(f"The specified subscriber does not implement the {VPNStateSubscriber.__name__} protocol.")
         self._publisher.register(subscriber.status_update)
 
     def unregister(self, subscriber: VPNStateSubscriber):
@@ -425,10 +399,7 @@ class VPNConnector:  # pylint: disable=too-many-instance-attributes
         :param subscriber: Subscriber to unregister.
         """
         if not isinstance(subscriber, VPNStateSubscriber):
-            raise ValueError(
-                "The specified subscriber does not implement the "
-                f"{VPNStateSubscriber.__name__} protocol."
-            )
+            raise ValueError(f"The specified subscriber does not implement the {VPNStateSubscriber.__name__} protocol.")
         self._publisher.unregister(subscriber.status_update)
 
     async def _handle_on_event(self, event: events.Event):
@@ -470,20 +441,20 @@ class VPNConnector:  # pylint: disable=too-many-instance-attributes
 
         old_state = self._current_state
 
-        if isinstance(new_state.context.event, events.TwoFARequired) and \
-           isinstance(old_state.context.event, events.TwoFARequired):
+        if isinstance(new_state.context.event, events.TwoFARequired) and isinstance(
+            old_state.context.event, events.TwoFARequired
+        ):
             return None
 
         self._current_state = new_state
 
         logger.info(
-            f"{type(self._current_state).__name__}"
-            f"{' (initial state)' if not old_state else ''}",
-            category="CONN", event="STATE_CHANGED"
+            f"{type(self._current_state).__name__}{' (initial state)' if not old_state else ''}",
+            category="CONN",
+            event="STATE_CHANGED",
         )
 
-        if isinstance(self._current_state, states.Disconnected) \
-                and self._current_state.context.connection:
+        if isinstance(self._current_state, states.Disconnected) and self._current_state.context.connection:
             # Unregister from connection event updates once the connection ended.
             self._current_state.context.connection.unregister(self._on_connection_event)
 
@@ -503,10 +474,7 @@ class VPNConnector:  # pylint: disable=too-many-instance-attributes
             new_event = await self._current_state.run_tasks()
             self._publisher.notify(new_state)
 
-        if (
-            not self._current_state.context.reconnection
-            and isinstance(self._current_state, states.Disconnected)
-        ):
+        if not self._current_state.context.reconnection and isinstance(self._current_state, states.Disconnected):
             self._set_ks_impl((await self.get_settings()).protocol)
 
         return new_event
@@ -519,13 +487,9 @@ class VPNConnector:  # pylint: disable=too-many-instance-attributes
 
         current_location = self._session_holder.session.vpn_account.location
 
-        self._session_holder.session.set_location(
-            self._create_new_vpn_location(connection_details, current_location)
-        )
+        self._session_holder.session.set_location(self._create_new_vpn_location(connection_details, current_location))
 
-    def _get_connection_details_from_state(
-            self, state: states.State
-    ) -> Optional[events.ConnectionDetails]:
+    def _get_connection_details_from_state(self, state: states.State) -> Optional[events.ConnectionDetails]:
         if not isinstance(state, states.Connected):
             return None
 
@@ -541,7 +505,7 @@ class VPNConnector:  # pylint: disable=too-many-instance-attributes
             Country=connection_details.device_country,
             ISP=current_location.ISP,
             Long=current_location.Long,
-            Lat=current_location.Lat
+            Lat=current_location.Lat,
         )
 
     def _set_ks_impl(self, protocol: str):
@@ -558,13 +522,8 @@ class VPNConnector:  # pylint: disable=too-many-instance-attributes
         StateContext.kill_switch = self._kill_switch or kill_switch_backend()
 
     def _set_split_tunneling_setting(self, st_setting: SplitTunnelingSetting):
-
         st_setting = deepcopy(st_setting)
-        st_setting.enabled = (
-            self._split_tunneling
-            and st_setting.enabled
-            and not self._is_free_tier()
-        )
+        st_setting.enabled = self._split_tunneling and st_setting.enabled and not self._is_free_tier()
 
         StateContext.split_tunneling_setting = st_setting
 
@@ -592,6 +551,7 @@ class Subscriber:
     """
     Connection subscriber implementation that allows blocking until a certain state is reached.
     """
+
     def __init__(self):
         self.state: ConnectionStateEnum = None
         self.events = {state: threading.Event() for state in ConnectionStateEnum}

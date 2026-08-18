@@ -16,14 +16,13 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with ProtonVPN.  If not, see <https://www.gnu.org/licenses/>.
 """
+
 import asyncio
 from collections.abc import Callable
-from proton.vpn.local_agent import (  # pylint: disable=no-name-in-module, import-error
-    Listener, AgentFeatures, Status
-)
-from proton.vpn.session.credentials import VPNPubkeyCredentials
 
 from proton.vpn import logging
+from proton.vpn.local_agent import AgentFeatures, Listener, Status  # pylint: disable=no-name-in-module, import-error
+from proton.vpn.session.credentials import VPNPubkeyCredentials
 
 logger = logging.getLogger(__name__)
 
@@ -48,14 +47,11 @@ class AgentListener:
         """
         private_key = credentials.get_ed25519_sk_pem()
         certificate = credentials.certificate_pem
-        self._listener = await Listener.connect(domain, private_key,
-                                                certificate)
+        self._listener = await Listener.connect(domain, private_key, certificate)
 
     async def listen(self):
         """Starts the background process of listening to incoming messages from LA."""
-        self._future = self._listener.listen(
-            self._on_status_callback, self._on_error_callback
-        )
+        self._future = self._listener.listen(self._on_status_callback, self._on_error_callback)
         await self._wait_for_it(self._future)
 
     async def request_features(self, features: AgentFeatures):

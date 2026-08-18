@@ -25,11 +25,11 @@ from __future__ import annotations
 from typing import Callable, Iterable, Optional, Set, Tuple
 
 from gi.repository import GObject
-from proton.vpn.session.servers.logicals import sort_servers_alphabetically_by_country_and_server_name
 
 from proton.vpn import logging
 from proton.vpn.app.gtk import Gtk
 from proton.vpn.app.gtk.utils.safe_signal_connect import safe_signal_connect
+from proton.vpn.session.servers.logicals import sort_servers_alphabetically_by_country_and_server_name
 
 logger = logging.getLogger(__name__)
 

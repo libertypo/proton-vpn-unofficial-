@@ -16,9 +16,12 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with ProtonVPN.  If not, see <https://www.gnu.org/licenses/>.
 """
+
 from __future__ import annotations
-from typing import List
+
 from dataclasses import dataclass
+from typing import List
+
 from proton.vpn.session.utils import Serializable
 
 # pylint: disable=invalid-name
@@ -33,15 +36,14 @@ class APIVPNSession(Serializable):  # pylint: disable=missing-class-docstring
     @staticmethod
     def _deserialize(dict_data: dict) -> APIVPNSession:
         return APIVPNSession(
-            SessionID=dict_data["SessionID"],
-            ExitIP=dict_data["ExitIP"],
-            Protocol=dict_data["Protocol"]
+            SessionID=dict_data["SessionID"], ExitIP=dict_data["ExitIP"], Protocol=dict_data["Protocol"]
         )
 
 
 @dataclass
 class VPNSessions(Serializable):
-    """ The list of active VPN session of an account on the infra """
+    """The list of active VPN session of an account on the infra"""
+
     Sessions: List[APIVPNSession]
 
     def __len__(self):
@@ -49,5 +51,5 @@ class VPNSessions(Serializable):
 
     @staticmethod
     def _deserialize(dict_data: dict) -> VPNSessions:
-        session_list = [APIVPNSession.from_dict(value) for value in dict_data['Sessions']]
+        session_list = [APIVPNSession.from_dict(value) for value in dict_data["Sessions"]]
         return VPNSessions(Sessions=session_list)

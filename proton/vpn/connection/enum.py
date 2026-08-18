@@ -19,11 +19,12 @@ You should have received a copy of the GNU General Public License
 along with ProtonVPN.  If not, see <https://www.gnu.org/licenses/>.
 """
 
-from enum import auto, Enum, IntEnum
+from enum import Enum, IntEnum, auto
 
 
 class ConnectionStateEnum(IntEnum):
     """VPN connection states."""
+
     DISCONNECTED = 0
     CONNECTING = 1
     CONNECTED = 2
@@ -33,6 +34,7 @@ class ConnectionStateEnum(IntEnum):
 
 class StateMachineEventEnum(Enum):
     """VPN connection events."""
+
     INITIALIZED = auto()
     UP = auto()
     DOWN = auto()
@@ -53,6 +55,7 @@ class StateMachineEventEnum(Enum):
 
 class KillSwitchSetting(IntEnum):
     """Kill switch setting values."""
+
     OFF = 0
     ON = 1
     PERMANENT = 2

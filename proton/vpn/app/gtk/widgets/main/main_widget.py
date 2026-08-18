@@ -23,8 +23,6 @@ along with ProtonVPN.  If not, see <https://www.gnu.org/licenses/>.
 
 from typing import TYPE_CHECKING, Optional, Union
 
-from proton.vpn.connection import states
-
 from proton.vpn.app.gtk import Gtk
 from proton.vpn.app.gtk.util import connect_once
 from proton.vpn.app.gtk.utils.safe_signal_connect import safe_signal_connect
@@ -33,6 +31,7 @@ from proton.vpn.app.gtk.widgets.main.loading_widget import DefaultLoadingWidget,
 from proton.vpn.app.gtk.widgets.main.notification_bar import NotificationBar
 from proton.vpn.app.gtk.widgets.main.notifications import Notifications
 from proton.vpn.app.gtk.widgets.vpn import VPNWidget
+from proton.vpn.connection import states
 
 if TYPE_CHECKING:
     from proton.vpn.app.gtk.app import MainWindow

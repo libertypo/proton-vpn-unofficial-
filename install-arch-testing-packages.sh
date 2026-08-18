@@ -118,6 +118,8 @@ for package in "$app_package" "$api_core_package"; do
 done
 
 key_path="$PUBLIC_KEY"
+# The inner script intentionally expands variables passed through env.
+# shellcheck disable=SC2016
 pkexec env KEY_PATH="$key_path" APP_PATH="$app_package" API_CORE_PATH="$api_core_package" bash -c '
   set -euo pipefail
   pacman-key --add "$KEY_PATH"

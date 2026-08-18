@@ -19,9 +19,9 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with ProtonVPN.  If not, see <https://www.gnu.org/licenses/>.
 """
+
 from proton.vpn.core.exceptions import VPNDaemonError
 
 
 class SplitTunnelingError(VPNDaemonError):
-    """Split tunneling exception error.
-    """
+    """Split tunneling exception error."""

@@ -19,15 +19,18 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with ProtonVPN.  If not, see <https://www.gnu.org/licenses/>.
 """
-from ipaddress import ip_network
+
 import asyncio
 import concurrent.futures
+from ipaddress import ip_network
 
 from proton.vpn import logging
-from proton.vpn.backend.linux.networkmanager.killswitch.default.nmclient import NMClient
 from proton.vpn.backend.linux.networkmanager.killswitch.default.killswitch_connection import (
-    KillSwitchConnection, KillSwitchGeneralConfig, KillSwitchIPConfig
+    KillSwitchConnection,
+    KillSwitchGeneralConfig,
+    KillSwitchIPConfig,
 )
+from proton.vpn.backend.linux.networkmanager.killswitch.default.nmclient import NMClient
 
 logger = logging.getLogger(__name__)
 
@@ -50,10 +53,7 @@ def _get_interface_name(permanent: bool, ipv6: bool = False, routed: bool = Fals
 
 async def _wrap_future(future: concurrent.futures.Future, timeout=5):
     """Wraps a concurrent.future.Future object in an asyncio.Future object."""
-    return await asyncio.wait_for(
-        asyncio.wrap_future(future, loop=asyncio.get_running_loop()),
-        timeout=timeout
-    )
+    return await asyncio.wait_for(asyncio.wrap_future(future, loop=asyncio.get_running_loop()), timeout=timeout)
 
 
 def build_routes_list(server_ip: str):
@@ -62,8 +62,7 @@ def build_routes_list(server_ip: str):
     the local agent server IP.
     """
     local_agent_network = ip_network(LOCAL_AGENT_SERVER_ADDR)
-    most_networks = ip_network('0.0.0.0/0').address_exclude(
-        ip_network(server_ip))
+    most_networks = ip_network("0.0.0.0/0").address_exclude(ip_network(server_ip))
 
     for network_a in most_networks:
         if local_agent_network.overlaps(network_a):
@@ -85,7 +84,7 @@ class KillSwitchConnectionHandler:
             dns_priority=-1400,
             gateway="fdeb:446c:912d:08da::1",
             ignore_auto_dns=True,
-            route_metric=95
+            route_metric=95,
         )
 
     @staticmethod
@@ -105,7 +104,7 @@ class KillSwitchConnectionHandler:
             gateway=gateway,
             ignore_auto_dns=True,
             route_metric=98,
-            routes=routes
+            routes=routes,
         )
 
     @property
@@ -133,28 +132,21 @@ class KillSwitchConnectionHandler:
         await self._ensure_connectivity_check_is_disabled()
 
         connection_id = _get_connection_id(self._connection_prefix, permanent)
-        connection = self.nm_client.get_active_connection(
-            conn_id=connection_id
-        )
+        connection = self.nm_client.get_active_connection(conn_id=connection_id)
 
         if connection:
             logger.debug("Kill switch was already present.")
             return
 
         interface_name = _get_interface_name(permanent)
-        general_config = KillSwitchGeneralConfig(
-            human_readable_id=connection_id,
-            interface_name=interface_name
-        )
+        general_config = KillSwitchGeneralConfig(human_readable_id=connection_id, interface_name=interface_name)
 
         kill_switch = KillSwitchConnection(
             general_config,
             ipv4_settings=self._get_ipv4_ks_settings(),
             ipv6_settings=self._ipv6_ks_settings,
         )
-        await _wrap_future(
-            self.nm_client.add_connection_async(kill_switch.connection, save_to_disk=permanent)
-        )
+        await _wrap_future(self.nm_client.add_connection_async(kill_switch.connection, save_to_disk=permanent))
 
         logger.debug(f"{'Permanent' if permanent else 'Non-permanent'} kill switch added.")
         await self._remove_connection(
@@ -174,16 +166,14 @@ class KillSwitchConnectionHandler:
 
         general_config = KillSwitchGeneralConfig(
             human_readable_id=_get_connection_id(self._connection_prefix, permanent, routed=True),
-            interface_name=_get_interface_name(permanent, routed=True)
+            interface_name=_get_interface_name(permanent, routed=True),
         )
         kill_switch = KillSwitchConnection(
             general_config,
             ipv4_settings=self._get_ipv4_ks_settings(server_ip),
             ipv6_settings=self._ipv6_ks_settings,
         )
-        await _wrap_future(
-            self.nm_client.add_connection_async(kill_switch.connection, save_to_disk=permanent)
-        )
+        await _wrap_future(self.nm_client.add_connection_async(kill_switch.connection, save_to_disk=permanent))
         logger.debug("Routed kill switch added.")
 
     async def add_ipv6_leak_protection(self):
@@ -191,21 +181,15 @@ class KillSwitchConnectionHandler:
         to prevent IPv6 leaks while using IPv4."""
         await self._ensure_connectivity_check_is_disabled()
 
-        connection_id = _get_connection_id(
-            self._connection_prefix, permanent=False, ipv6=True
-        )
-        connection = self.nm_client.get_active_connection(
-            conn_id=connection_id)
+        connection_id = _get_connection_id(self._connection_prefix, permanent=False, ipv6=True)
+        connection = self.nm_client.get_active_connection(conn_id=connection_id)
 
         if connection:
             logger.debug("IPv6 leak protection already present.")
             return
 
         interface_name = _get_interface_name(permanent=False, ipv6=True)
-        general_config = KillSwitchGeneralConfig(
-            human_readable_id=connection_id,
-            interface_name=interface_name
-        )
+        general_config = KillSwitchGeneralConfig(human_readable_id=connection_id, interface_name=interface_name)
 
         kill_switch = KillSwitchConnection(
             general_config,
@@ -213,44 +197,31 @@ class KillSwitchConnectionHandler:
             ipv6_settings=self._ipv6_ks_settings,
         )
 
-        await _wrap_future(
-            self.nm_client.add_connection_async(kill_switch.connection, save_to_disk=False)
-        )
+        await _wrap_future(self.nm_client.add_connection_async(kill_switch.connection, save_to_disk=False))
         logger.debug("IPv6 leak protection added.")
 
     async def remove_full_killswitch_connection(self):
         """Removes full kill switch connection."""
         logger.debug("Removing full kill switch...")
-        await self._remove_connection(
-            _get_connection_id(self._connection_prefix, permanent=True)
-        )
-        await self._remove_connection(
-            _get_connection_id(self._connection_prefix, permanent=False)
-        )
+        await self._remove_connection(_get_connection_id(self._connection_prefix, permanent=True))
+        await self._remove_connection(_get_connection_id(self._connection_prefix, permanent=False))
         logger.debug("Full kill switch removed.")
 
     async def remove_routed_killswitch_connection(self):
         """Removes routed kill switch connection."""
         logger.debug("Removing routed kill switch...")
-        await self._remove_connection(
-            _get_connection_id(self._connection_prefix, permanent=True, routed=True)
-        )
-        await self._remove_connection(
-            _get_connection_id(self._connection_prefix, permanent=False, routed=True)
-        )
+        await self._remove_connection(_get_connection_id(self._connection_prefix, permanent=True, routed=True))
+        await self._remove_connection(_get_connection_id(self._connection_prefix, permanent=False, routed=True))
         logger.debug("Routed kill switch removed.")
 
     async def remove_ipv6_leak_protection(self):
         """Removes IPv6 kill switch connection."""
         logger.debug("Removing IPv6 leak protection...")
-        await self._remove_connection(
-            _get_connection_id(self._connection_prefix, permanent=False, ipv6=True)
-        )
+        await self._remove_connection(_get_connection_id(self._connection_prefix, permanent=False, ipv6=True))
         logger.debug("IP6 leak protection removed.")
 
     async def _remove_connection(self, connection_id: str):
-        connection = self.nm_client.get_connection(
-            conn_id=connection_id)
+        connection = self.nm_client.get_connection(conn_id=connection_id)
 
         logger.debug(f"Attempting to remove {connection_id}: {connection}")
 

@@ -43,6 +43,6 @@ pub fn register(py: pyo3::Python<'_>) -> pyo3::PyResult<pyo3::Bound<'_, PyModule
     local_agent.add_class::<Status>()?;
     local_agent.add_class::<ConnectionDetails>()?;
     local_agent.add_class::<Listener>()?;
-    
+
     Ok(local_agent)
 }

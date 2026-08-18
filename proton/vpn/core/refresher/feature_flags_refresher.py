@@ -16,18 +16,15 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with ProtonVPN.  If not, see <https://www.gnu.org/licenses/>.
 """
+
 from datetime import timedelta
 from http import HTTPStatus
 
+from proton.session.exceptions import ProtonAPIError, ProtonAPINotAvailable, ProtonAPINotReachable
+from proton.vpn import logging
 from proton.vpn.core.refresher.scheduler import RunAgain
 from proton.vpn.core.session_holder import SessionHolder
 from proton.vpn.session import FeatureFlags
-
-from proton.vpn import logging
-from proton.session.exceptions import (
-    ProtonAPINotReachable, ProtonAPINotAvailable,
-    ProtonAPIError
-)
 
 logger = logging.getLogger(__name__)
 
@@ -38,6 +35,7 @@ class FeatureFlagsRefresher:
     """
     Service in charge of refreshing VPN client configuration data.
     """
+
     def __init__(self, session_holder: SessionHolder):
         self._session_holder = session_holder
 
@@ -65,10 +63,7 @@ class FeatureFlagsRefresher:
         except (ProtonAPINotReachable, ProtonAPINotAvailable) as error:
             logger.warning(f"Feature flag refresh failed: {error}")
         except Exception:
-            logger.error(
-                "Feature flag refresh failed unexpectedly."
-                "Stopping feature flag refresh."
-            )
+            logger.error("Feature flag refresh failed unexpectedly.Stopping feature flag refresh.")
             raise
 
     async def refresh(self) -> RunAgain:
@@ -87,14 +82,10 @@ class FeatureFlagsRefresher:
             next_refresh_delay = FeatureFlags.get_refresh_interval_in_seconds()
         except Exception:
             logger.error(  # noqa: E501 # pylint: disable=line-too-long # nosemgrep: python.lang.best-practice.logging-error-without-handling.logging-error-without-handling
-                "Feature flag refresh failed unexpectedly."
-                "Stopping feature flag refresh."
+                "Feature flag refresh failed unexpectedly.Stopping feature flag refresh."
             )
             raise
 
-        logger.info(
-            f"Next feature flag refresh scheduled in "
-            f"{timedelta(seconds=next_refresh_delay)}"
-        )
+        logger.info(f"Next feature flag refresh scheduled in {timedelta(seconds=next_refresh_delay)}")
 
         return RunAgain.after_seconds(next_refresh_delay)

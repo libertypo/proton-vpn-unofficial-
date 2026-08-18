@@ -23,7 +23,6 @@ along with ProtonVPN.  If not, see <https://www.gnu.org/licenses/>.
 from typing import TYPE_CHECKING, Optional
 
 from gi.repository import GObject
-from proton.vpn.connection.enum import KillSwitchSetting as KillSwitchSettingEnum
 
 from proton.vpn import logging
 from proton.vpn.app.gtk import Gtk
@@ -33,6 +32,7 @@ from proton.vpn.app.gtk.widgets.login.disable_killswitch import DisableKillSwitc
 from proton.vpn.app.gtk.widgets.login.login_stack import LoginStack
 from proton.vpn.app.gtk.widgets.main.loading_widget import OverlayWidget
 from proton.vpn.app.gtk.widgets.main.notifications import Notifications
+from proton.vpn.connection.enum import KillSwitchSetting as KillSwitchSettingEnum
 
 if TYPE_CHECKING:
     from proton.vpn.app.gtk.app import MainWindow

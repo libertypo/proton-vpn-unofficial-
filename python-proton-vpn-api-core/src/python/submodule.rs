@@ -31,12 +31,12 @@ impl SubModule for Bound<'_, PyModule> {
     fn add_import_submodule(&self, py: Python<'_>, submodule: &Bound<'_, PyModule>, full_name: &str) -> PyResult<()> {
         // Add as attribute for parent.submodule access
         self.add_submodule(submodule)?;
-        
+
         // Register in sys.modules for import statements
         py.import("sys")?
             .getattr("modules")?
             .set_item(full_name, submodule)?;
-        
+
         Ok(())
     }
 }

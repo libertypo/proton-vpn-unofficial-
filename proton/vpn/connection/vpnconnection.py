@@ -27,11 +27,11 @@ import sys
 from abc import ABC, abstractmethod
 from typing import Callable, List
 
+from proton.vpn.connection import events, states
 from proton.vpn.connection.events import Event, EventContext
-from proton.vpn.connection.interfaces import VPNServer, Settings, VPNCredentials
-from proton.vpn.connection.persistence import ConnectionPersistence, ConnectionParameters
+from proton.vpn.connection.interfaces import Settings, VPNCredentials, VPNServer
+from proton.vpn.connection.persistence import ConnectionParameters, ConnectionPersistence
 from proton.vpn.connection.publisher import Publisher
-from proton.vpn.connection import states, events
 from proton.vpn.session.servers.types import TierEnum
 
 
@@ -83,16 +83,11 @@ class VPNConnection(ABC):
 
         if connection_id:
             self._unique_id = connection_id
-            self.initial_state = self._initialize_persisted_connection(
-                connection_id
-            )
+            self.initial_state = self._initialize_persisted_connection(connection_id)
         else:
             self._unique_id = None
             self.initial_state = states.Disconnected(
-                states.StateContext(
-                    event=events.Initialized(EventContext(connection=self)),
-                    connection=self
-                )
+                states.StateContext(event=events.Initialized(EventContext(connection=self)), connection=self)
             )
 
     @abstractmethod
@@ -213,12 +208,12 @@ class VPNConnection(ABC):
 
     @property
     def settings(self) -> Settings:
-        """ Current settings of the connection :
-            Some settings can be changed on the fly and are RW :
-            netshield level, kill switch enabled/disabled, split tunneling,
-            VPN accelerator, custom DNS.
-            Other settings are RO and cannot be changed once the connection
-            is instantiated: VPN protocol.
+        """Current settings of the connection :
+        Some settings can be changed on the fly and are RW :
+        netshield level, kill switch enabled/disabled, split tunneling,
+        VPN accelerator, custom DNS.
+        Other settings are RO and cannot be changed once the connection
+        is instantiated: VPN protocol.
         """
         return self._settings
 
@@ -280,10 +275,7 @@ class VPNConnection(ABC):
         after an unexpected crash.
         """
         params = ConnectionParameters(
-            connection_id=self._unique_id,
-            backend=type(self).backend,
-            protocol=type(self).protocol,
-            server=self.server
+            connection_id=self._unique_id, backend=type(self).backend, protocol=type(self).protocol, server=self.server
         )
         loop = asyncio.get_running_loop()
         await loop.run_in_executor(None, self._connection_persistence.save, params)

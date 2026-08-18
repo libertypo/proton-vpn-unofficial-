@@ -16,6 +16,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with ProtonVPN.  If not, see <https://www.gnu.org/licenses/>.
 """
+
 from typing import Optional, Protocol
 
 
@@ -30,9 +31,7 @@ class UserInteraction(Protocol):
     def prompt_up(self) -> None:
         """Called when the authenticator is awaiting a user presence check."""
 
-    def request_pin(
-        self, *args, **kwargs
-    ) -> Optional[str]:
+    def request_pin(self, *args, **kwargs) -> Optional[str]:
         """Called when the client requires a PIN from the user.
 
         Should return a PIN, or None/Empty to cancel."""

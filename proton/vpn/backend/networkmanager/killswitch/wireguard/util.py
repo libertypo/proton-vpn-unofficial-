@@ -18,7 +18,6 @@ along with ProtonVPN.  If not, see <https://www.gnu.org/licenses/>.
 
 from proton.vpn import logging
 
-
 logger = logging.getLogger(__name__)
 
 

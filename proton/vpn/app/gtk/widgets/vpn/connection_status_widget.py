@@ -24,8 +24,6 @@ from pathlib import Path
 from typing import Optional, cast
 
 from gi.repository import Gio
-from proton.vpn.connection import events, states
-from proton.vpn.session.servers import ServerFeatureEnum, TierEnum
 
 from proton.vpn import logging
 from proton.vpn.app.gtk import Gtk
@@ -38,6 +36,8 @@ from proton.vpn.app.gtk.widgets.headerbar.menu.settings.split_tunneling.split_tu
 from proton.vpn.app.gtk.widgets.main.notifications import Notifications
 from proton.vpn.app.gtk.widgets.vpn.port_forward_widget import PortForwardRevealer
 from proton.vpn.app.gtk.widgets.vpn.serverlist.icons import CountryFlagIcon, DoubleFlagIcon
+from proton.vpn.connection import events, states
+from proton.vpn.session.servers import ServerFeatureEnum, TierEnum
 
 logger = logging.getLogger(__name__)
 

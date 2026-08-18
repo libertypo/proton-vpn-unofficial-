@@ -27,8 +27,6 @@ from dataclasses import dataclass
 from typing import TYPE_CHECKING, Optional
 
 from gi.repository import GLib, GObject
-from proton.vpn.connection.states import State
-from proton.vpn.session.servers import ServerList
 
 from proton.vpn import logging
 from proton.vpn.app.gtk import Gtk
@@ -40,6 +38,8 @@ from proton.vpn.app.gtk.widgets.vpn.quick_connect_widget import QuickConnectWidg
 from proton.vpn.app.gtk.widgets.vpn.search_entry import SearchEntry
 from proton.vpn.app.gtk.widgets.vpn.search_results import SearchResults
 from proton.vpn.app.gtk.widgets.vpn.serverlist.city_view.serverlist import ServerListWidget
+from proton.vpn.connection.states import State
+from proton.vpn.session.servers import ServerList
 
 if TYPE_CHECKING:
     from proton.vpn.app.gtk.app import MainWindow

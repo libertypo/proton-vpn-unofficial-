@@ -298,5 +298,5 @@ country_codes = {
     "ID": "Indonesia",
     "UA": "Ukraine",
     "QA": "Qatar",
-    "MZ": "Mozambique"
+    "MZ": "Mozambique",
 }

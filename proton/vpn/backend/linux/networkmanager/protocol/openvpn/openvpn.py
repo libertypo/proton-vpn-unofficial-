@@ -20,31 +20,30 @@ You should have received a copy of the GNU General Public License
 along with ProtonVPN.  If not, see <https://www.gnu.org/licenses/>.
 """
 
-from concurrent.futures import Future
+import logging
 import os
 import secrets
+from concurrent.futures import Future
 from getpass import getuser
 from ipaddress import IPv4Address, IPv6Address
 from typing import Union
-import logging
 
-from jinja2 import Environment, BaseLoader
-
-from gi.repository import NM
 import gi
-from proton.vpn.backend.linux.networkmanager.core import (LinuxNetworkManager,
-                                                          LocalAgentMixin)
-from proton.vpn.connection.vpnconfiguration import VPNConfiguration
-from proton.vpn.connection.constants import CA_CERT
+from gi.repository import NM
+from jinja2 import BaseLoader, Environment
+
+from proton.vpn.backend.linux.networkmanager.core import LinuxNetworkManager, LocalAgentMixin
 from proton.vpn.connection import events, states
+from proton.vpn.connection.constants import CA_CERT
 from proton.vpn.connection.events import EventContext
 from proton.vpn.connection.interfaces import Settings
+from proton.vpn.connection.vpnconfiguration import VPNConfiguration
 
 gi.require_version("NM", "1.0")
 
 logger = logging.getLogger(__name__)
 
-SECRET_PASSWORD_FIELD = "password"    # pylint: disable=line-too-long # noqa: E501 # nosec B105 # nosemgrep: generic.secrets.gitleaks.hashicorp-tf-password.hashicorp-tf-password
+SECRET_PASSWORD_FIELD = "password"  # pylint: disable=line-too-long # noqa: E501 # nosec B105 # nosemgrep: generic.secrets.gitleaks.hashicorp-tf-password.hashicorp-tf-password
 SECRET_CERT_PASS_FIELD = "cert-pass"  # pylint: disable=line-too-long # noqa: E501 # nosec B105 # nosemgrep: generic.secrets.gitleaks.hashicorp-tf-password.hashicorp-tf-password
 
 PASSPHRASE_SECRET_LENGTH = 16
@@ -146,6 +145,7 @@ aeb893d9a96d1f15519bb3c4dcb40ee3
 
 class OVPNConfig(VPNConfiguration):
     """OpenVPN-specific configuration."""
+
     PROTOCOL = None
     EXTENSION = ".ovpn"
 
@@ -174,26 +174,24 @@ class OVPNConfig(VPNConfiguration):
         }
 
         if self.use_certificate:
-            j2_values["cert"] =\
-                self._vpncredentials.pubkey_credentials.certificate_pem
+            j2_values["cert"] = self._vpncredentials.pubkey_credentials.certificate_pem
             password = self._private_key_passphrase.encode()
-            j2_values["priv_key"] = self._vpncredentials.pubkey_credentials.\
-                get_ed25519_sk_pem(password=password)
+            j2_values["priv_key"] = self._vpncredentials.pubkey_credentials.get_ed25519_sk_pem(password=password)
 
-        template =\
-            (Environment(loader=BaseLoader, autoescape=True)  # noqa: E501 # pylint: disable=line-too-long # nosemgrep: python.flask.security.xss.audit.direct-use-of-jinja2.direct-use-of-jinja2
-                .from_string(OPENVPN_V2_TEMPLATE))
+        template = Environment(loader=BaseLoader, autoescape=True).from_string(OPENVPN_V2_TEMPLATE)  # noqa: E501 # pylint: disable=line-too-long # nosemgrep: python.flask.security.xss.audit.direct-use-of-jinja2.direct-use-of-jinja2
 
         return template.render(j2_values)
 
 
 class OpenVPNTCPConfig(OVPNConfig):
     """Configuration for OpenVPN using TCP."""
+
     PROTOCOL = "tcp"
 
 
 class OpenVPNUDPConfig(OVPNConfig):
     """Configuration for OpenVPN using UDP."""
+
     PROTOCOL = "udp"
 
 
@@ -205,6 +203,7 @@ PROTOCOLS = {
 
 class OpenVPN(LinuxNetworkManager, LocalAgentMixin):
     """Base class for the backends implementing the OpenVPN protocols."""
+
     VIRTUAL_DEVICE_NAME = "proton0"
     connection = None
 
@@ -226,9 +225,7 @@ class OpenVPN(LinuxNetworkManager, LocalAgentMixin):
 
     def _generate_connection(self, private_key_passphrase):
         vpnconfig = PROTOCOLS[self.protocol](
-            private_key_passphrase,
-            self._vpnserver, self._vpncredentials, self._settings,
-            self._use_certificate
+            private_key_passphrase, self._vpnserver, self._vpncredentials, self._settings, self._use_certificate
         )
 
         self.connection = self._import_vpn_config(vpnconfig)
@@ -238,8 +235,7 @@ class OpenVPN(LinuxNetworkManager, LocalAgentMixin):
         self._connection_settings = self.connection.get_setting_connection()
 
     def _modify_connection(self, private_key_passphrase):
-        """Configure imported vpn connection.
-        """
+        """Configure imported vpn connection."""
         self._set_custom_connection_id()
         self._set_connection_user_owned()
         self._set_server_certificate_check()
@@ -263,17 +259,11 @@ class OpenVPN(LinuxNetworkManager, LocalAgentMixin):
         # returns NM.SettingConnection
         # https://lazka.github.io/pgi-docs/NM-1.0/classes/SettingConnection.html#NM.SettingConnection
 
-        self._connection_settings.add_permission(
-            NM.SETTING_USER_SETTING_NAME,
-            getuser(),
-            None
-        )
+        self._connection_settings.add_permission(NM.SETTING_USER_SETTING_NAME, getuser(), None)
 
     def _set_server_certificate_check(self):
         appened_domain = "name:" + self._vpnserver.domain
-        self._vpn_settings.add_data_item(
-            "verify-x509-name", appened_domain
-        )
+        self._vpn_settings.add_data_item("verify-x509-name", appened_domain)
 
     def _set_dns(self):
         """Apply dns configurations to ProtonVPN connection."""
@@ -300,8 +290,7 @@ class OpenVPN(LinuxNetworkManager, LocalAgentMixin):
 
         nm_setting.set_property(NM.SETTING_IP_CONFIG_DNS_PRIORITY, dns_priority)
 
-        custom_dns_ips = self._settings.custom_dns\
-            .get_enabled_dns_list_based_on_ip_version(ip_version)
+        custom_dns_ips = self._settings.custom_dns.get_enabled_dns_list_based_on_ip_version(ip_version)
         ip_addresses = [dns.exploded for dns in custom_dns_ips]
 
         # OpenVPN sets DNS automatically if nothing is passed.
@@ -320,9 +309,7 @@ class OpenVPN(LinuxNetworkManager, LocalAgentMixin):
         # https://lazka.github.io/pgi-docs/NM-1.0/classes/SettingVpn.html
         username, password = self._get_user_pass(True)
 
-        self._vpn_settings.add_data_item(
-            "username", username
-        )
+        self._vpn_settings.add_data_item("username", username)
         # Use System wide password if we are root (No Secret Agent)
         # See https://people.freedesktop.org/~lkundrak/nm-docs/nm-settings.html#secrets-flags
         # => Allow headless testing
@@ -334,27 +321,24 @@ class OpenVPN(LinuxNetworkManager, LocalAgentMixin):
         """
         Add passphrase to decrypt the private key.
         """
-        self._vpn_settings.add_secret(SECRET_CERT_PASS_FIELD,
-                                      private_key_passphrase)
+        self._vpn_settings.add_secret(SECRET_CERT_PASS_FIELD, private_key_passphrase)
 
     # pylint: disable=unused-argument
-    def _on_state_changed(
-            self, vpn_connection: NM.VpnConnection, state: int, reason: int
-    ):
+    def _on_state_changed(self, vpn_connection: NM.VpnConnection, state: int, reason: int):
         """
-            When the vpn state changes, NM emits a signal with the state and
-            reason for the change. This callback will receive these updates
-            and translate for them accordingly for the state machine,
-            as the state machine is backend agnostic.
+        When the vpn state changes, NM emits a signal with the state and
+        reason for the change. This callback will receive these updates
+        and translate for them accordingly for the state machine,
+        as the state machine is backend agnostic.
 
-            Note this method is called from the thread running the GLib main loop.
-            Interactions between code in this method and the asyncio loop must
-            be done in a thread-safe manner.
+        Note this method is called from the thread running the GLib main loop.
+        Interactions between code in this method and the asyncio loop must
+        be done in a thread-safe manner.
 
-            :param state: connection state update
-            :type state: int
-            :param reason: the reason for the state update
-            :type reason: int
+        :param state: connection state update
+        :type state: int
+        :param reason: the reason for the state update
+        :type reason: int
         """
         try:
             state = NM.VpnConnectionState(state)
@@ -368,10 +352,7 @@ class OpenVPN(LinuxNetworkManager, LocalAgentMixin):
             logger.warning("Unexpected VPN connection state reason: %s", reason)
             reason = NM.VpnConnectionStateReason.UNKNOWN
 
-        logger.debug(
-            "VPN connection state changed: state=%s, reason=%s",
-            state.value_name, reason.value_name
-        )
+        logger.debug("VPN connection state changed: state=%s, reason=%s", state.value_name, reason.value_name)
 
         def start_local_agent():
             if self._use_certificate:
@@ -383,28 +364,19 @@ class OpenVPN(LinuxNetworkManager, LocalAgentMixin):
 
         if state is NM.VpnConnectionState.ACTIVATED:
             start_local_agent()
-            self._notify_subscribers_threadsafe(
-                events.Connected(EventContext(connection=self))
-            )
+            self._notify_subscribers_threadsafe(events.Connected(EventContext(connection=self)))
         elif state is NM.VpnConnectionState.FAILED:
             if reason in [
                 NM.VpnConnectionStateReason.CONNECT_TIMEOUT,
-                NM.VpnConnectionStateReason.SERVICE_START_TIMEOUT
+                NM.VpnConnectionStateReason.SERVICE_START_TIMEOUT,
             ]:
-                self._notify_subscribers_threadsafe(
-                    events.Timeout(EventContext(connection=self, reason=reason))
-                )
-            elif reason in [
-                NM.VpnConnectionStateReason.NO_SECRETS,
-                NM.VpnConnectionStateReason.LOGIN_FAILED
-            ]:
+                self._notify_subscribers_threadsafe(events.Timeout(EventContext(connection=self, reason=reason)))
+            elif reason in [NM.VpnConnectionStateReason.NO_SECRETS, NM.VpnConnectionStateReason.LOGIN_FAILED]:
                 # NO_SECRETS is passed when the user cancels the NM popup
                 # to introduce the OpenVPN password. If we switch auth to
                 # certificates, we should treat NO_SECRETS as an
                 # UnexpectedDisconnection event.
-                self._notify_subscribers_threadsafe(
-                    events.AuthDenied(EventContext(connection=self, reason=reason))
-                )
+                self._notify_subscribers_threadsafe(events.AuthDenied(EventContext(connection=self, reason=reason)))
             else:
                 # reason in [
                 #     NM.VpnConnectionStateReason.UNKNOWN,
@@ -422,9 +394,7 @@ class OpenVPN(LinuxNetworkManager, LocalAgentMixin):
         elif state == NM.VpnConnectionState.DISCONNECTED:
             if reason in [NM.VpnConnectionStateReason.USER_DISCONNECTED]:
                 stop_local_agent()
-                self._notify_subscribers_threadsafe(
-                    events.Disconnected(EventContext(connection=self, reason=reason))
-                )
+                self._notify_subscribers_threadsafe(events.Disconnected(EventContext(connection=self, reason=reason)))
             elif reason is NM.VpnConnectionStateReason.DEVICE_DISCONNECTED:
                 stop_local_agent()
                 self._notify_subscribers_threadsafe(
@@ -449,9 +419,7 @@ class OpenVPN(LinuxNetworkManager, LocalAgentMixin):
         else:
             logger.debug("Ignoring VPN state change: %s", state.value_name)
 
-    def _initialize_persisted_connection(
-            self, connection_id: str
-    ) -> states.State:
+    def _initialize_persisted_connection(self, connection_id: str) -> states.State:
         state = super()._initialize_persisted_connection(connection_id)
 
         if isinstance(state, states.Connected):
@@ -468,6 +436,7 @@ class OpenVPN(LinuxNetworkManager, LocalAgentMixin):
 
 class OpenVPNTCP(OpenVPN):
     """Creates a OpenVPNTCP connection."""
+
     protocol = "openvpn-tcp"
     ui_protocol = "OpenVPN (TCP)"
 
@@ -483,6 +452,7 @@ class OpenVPNTCP(OpenVPN):
 
 class OpenVPNUDP(OpenVPN):
     """Creates a OpenVPNUDP connection."""
+
     protocol = "openvpn-udp"
     ui_protocol = "OpenVPN (UDP)"
 

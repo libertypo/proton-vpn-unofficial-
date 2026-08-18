@@ -19,15 +19,21 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with ProtonVPN.  If not, see <https://www.gnu.org/licenses/>.
 """
-from proton.vpn.core.settings.settings import Settings, SettingsPersistence
-from proton.vpn.core.settings.split_tunneling import SplitTunneling, \
-    SplitTunnelingConfig, SplitTunnelingMode
-from proton.vpn.core.settings.features import NetShield
+
 from proton.vpn.core.settings.custom_dns import CustomDNSEntry
+from proton.vpn.core.settings.features import NetShield
 from proton.vpn.core.settings.packet_capture import PacketCapture, PacketCaptureMode
+from proton.vpn.core.settings.settings import Settings, SettingsPersistence
+from proton.vpn.core.settings.split_tunneling import SplitTunneling, SplitTunnelingConfig, SplitTunnelingMode
 
 __all__ = [
-    "Settings", "SettingsPersistence", "NetShield",
-    "CustomDNSEntry", "SplitTunneling", "SplitTunnelingConfig", "SplitTunnelingMode",
-    "PacketCapture", "PacketCaptureMode"
+    "Settings",
+    "SettingsPersistence",
+    "NetShield",
+    "CustomDNSEntry",
+    "SplitTunneling",
+    "SplitTunnelingConfig",
+    "SplitTunnelingMode",
+    "PacketCapture",
+    "PacketCaptureMode",
 ]

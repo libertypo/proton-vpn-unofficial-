@@ -121,7 +121,7 @@ impl UdpSocketStream {
         log::info!("Disabled connection resets for the UDP socket");
         Ok(())
     }
-    
+
     fn set_buffer_sizes(udp_socket: UdpSocket, socket_config: &SocketConfig) -> UdpSocket {
         log::info!("Setting UDP socket buffer sizes. [Send: {} bytes] [Receive: {} bytes]",
             socket_config.send_buffer_size_bytes, socket_config.receive_buffer_size_bytes);
@@ -155,10 +155,10 @@ impl WindowsStream for UdpSocketStream {
             },
         }
     }
-    
+
     fn get_state(&mut self) -> WindowsStreamState {
         let events: SocketEvent = self.socket_handle.get_events();
-        
+
         self.is_readable = self.is_readable || events.is_readable;
         self.is_writable = self.is_writable || events.is_writable;
 

@@ -16,10 +16,12 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with ProtonVPN.  If not, see <https://www.gnu.org/licenses/>.
 """
+
 from __future__ import annotations
 
 import time
 from dataclasses import dataclass
+
 from proton.vpn.session.utils import Serializable
 
 # pylint: disable=invalid-name
@@ -27,7 +29,8 @@ from proton.vpn.session.utils import Serializable
 
 @dataclass
 class VPNCertificate(Serializable):  # pylint: disable=too-many-instance-attributes
-    """ Same object structure coming from the API """
+    """Same object structure coming from the API"""
+
     SerialNumber: str
     ClientKeyFingerprint: str
     ClientKey: str
@@ -59,5 +62,5 @@ class VPNCertificate(Serializable):  # pylint: disable=too-many-instance-attribu
             Mode=dict_data["Mode"],
             DeviceName=dict_data["DeviceName"],
             ServerPublicKeyMode=dict_data["ServerPublicKeyMode"],
-            ServerPublicKey=dict_data["ServerPublicKey"]
+            ServerPublicKey=dict_data["ServerPublicKey"],
         )

@@ -21,9 +21,8 @@ from __future__ import annotations
 
 from typing import Callable
 
-from proton.vpn.core.settings import Settings
-
 from proton.vpn import logging
+from proton.vpn.core.settings import Settings
 
 logger = logging.getLogger(__name__)
 

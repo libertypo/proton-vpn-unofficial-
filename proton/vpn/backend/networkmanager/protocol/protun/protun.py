@@ -171,11 +171,7 @@ class Protun(LinuxNetworkManager, LocalAgentMixin):
         self._connection_settings.set_property(NM.SETTING_CONNECTION_TYPE, NM.SETTING_VPN_SETTING_NAME)
 
     def _set_connection_user_owned(self):
-        self._connection_settings.add_permission(
-            NM.SETTING_USER_SETTING_NAME,
-            getuser(),
-            None
-        )
+        self._connection_settings.add_permission(NM.SETTING_USER_SETTING_NAME, getuser(), None)
 
     def _set_route(self):
         self.connection.add_setting(self._set_route_ipv4(NM.SettingIP4Config.new()))

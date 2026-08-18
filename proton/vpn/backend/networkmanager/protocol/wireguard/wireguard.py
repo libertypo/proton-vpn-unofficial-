@@ -19,28 +19,29 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with ProtonVPN.  If not, see <https://www.gnu.org/licenses/>.
 """
+
 from __future__ import annotations
-from typing import Optional, Union
-from ipaddress import IPv4Address, IPv6Address
+
+import logging
 import socket
 import uuid
-import logging
-from getpass import getuser
 from concurrent.futures import Future
 from dataclasses import dataclass
+from getpass import getuser
+from ipaddress import IPv4Address, IPv6Address
+from typing import Optional, Union
 
 import gi
 
-gi.require_version("NM", "1.0")  # noqa: required before importing NM module
+# Select the NetworkManager API before importing its GI namespace.
+gi.require_version("NM", "1.0")
 # pylint: disable=wrong-import-position
 from gi.repository import NM
 
-from proton.vpn.connection import events, states
+from proton.vpn.backend.networkmanager.core import LinuxNetworkManager, LocalAgentMixin
+from proton.vpn.connection import FWMARK_VALUE, events, states
 from proton.vpn.connection.events import EventContext
 from proton.vpn.connection.interfaces import Settings
-from proton.vpn.backend.networkmanager.core import (LinuxNetworkManager, LocalAgentMixin)
-from proton.vpn.connection import FWMARK_VALUE
-
 
 logger = logging.getLogger(__name__)
 
@@ -48,6 +49,7 @@ logger = logging.getLogger(__name__)
 @dataclass
 class Config:
     """Contains all specific details for networking configuration."""
+
     address: str
     address_prefix: int
     dns_ip: str
@@ -59,6 +61,7 @@ class Config:
 @dataclass
 class WireGuardConfig:
     """Contains networking configurations for both IPv4/6."""
+
     ipv4: Config
     ipv6: Config
 
@@ -87,12 +90,13 @@ wg_config = WireGuardConfig(
         address_prefix=128,
         dns_ip="2a07:b944::2:1",
         allowed_ip="::/0",
-    )
+    ),
 )
 
 
 class Wireguard(LinuxNetworkManager, LocalAgentMixin):
     """Creates a Wireguard connection."""
+
     SIGNAL_NAME: str = "state-changed"
     VIRTUAL_DEVICE_NAME: str = "proton0"
     protocol: str = "wireguard"
@@ -156,44 +160,28 @@ class Wireguard(LinuxNetworkManager, LocalAgentMixin):
         self._connection_settings.set_property(NM.SETTING_CONNECTION_UUID, self._unique_id)
 
     def _set_interface_name(self):
-        self._connection_settings.set_property(
-            NM.SETTING_CONNECTION_INTERFACE_NAME, self.VIRTUAL_DEVICE_NAME
-        )
+        self._connection_settings.set_property(NM.SETTING_CONNECTION_INTERFACE_NAME, self.VIRTUAL_DEVICE_NAME)
 
     def _set_connection_type(self):
-        self._connection_settings.set_property(
-            NM.SETTING_CONNECTION_TYPE, NM.SETTING_WIREGUARD_SETTING_NAME
-        )
+        self._connection_settings.set_property(NM.SETTING_CONNECTION_TYPE, NM.SETTING_WIREGUARD_SETTING_NAME)
 
     def _set_connection_user_owned(self):
-        self._connection_settings.add_permission(
-            NM.SETTING_USER_SETTING_NAME,
-            getuser(),
-            None
-        )
+        self._connection_settings.add_permission(NM.SETTING_USER_SETTING_NAME, getuser(), None)
 
     def _set_route(self):
         ipv4_config = NM.SettingIP4Config.new()
         ipv6_config = NM.SettingIP6Config.new()
 
         ipv4_config.set_property(NM.SETTING_IP_CONFIG_METHOD, NM.SETTING_IP4_CONFIG_METHOD_MANUAL)
-        ipv4_config.add_address(
-            NM.IPAddress.new(socket.AF_INET, wg_config.ipv4.address, wg_config.ipv4.address_prefix)
-        )
+        ipv4_config.add_address(NM.IPAddress.new(socket.AF_INET, wg_config.ipv4.address, wg_config.ipv4.address_prefix))
 
         if self.enable_ipv6_support:
-            ipv6_config.set_property(
-                NM.SETTING_IP_CONFIG_METHOD, NM.SETTING_IP6_CONFIG_METHOD_MANUAL
-            )
+            ipv6_config.set_property(NM.SETTING_IP_CONFIG_METHOD, NM.SETTING_IP6_CONFIG_METHOD_MANUAL)
             ipv6_config.add_address(
-                NM.IPAddress.new(
-                    socket.AF_INET6, wg_config.ipv6.address, wg_config.ipv6.address_prefix
-                )
+                NM.IPAddress.new(socket.AF_INET6, wg_config.ipv6.address, wg_config.ipv6.address_prefix)
             )
         else:
-            ipv6_config.set_property(
-                NM.SETTING_IP_CONFIG_METHOD, NM.SETTING_IP6_CONFIG_METHOD_DISABLED
-            )
+            ipv6_config.set_property(NM.SETTING_IP_CONFIG_METHOD, NM.SETTING_IP6_CONFIG_METHOD_DISABLED)
 
         self.connection.add_setting(ipv4_config)
         self.connection.add_setting(ipv6_config)
@@ -223,8 +211,7 @@ class Wireguard(LinuxNetworkManager, LocalAgentMixin):
         nm_setting.set_property(NM.SETTING_IP_CONFIG_IGNORE_AUTO_DNS, True)
 
         # pylint: disable=duplicate-code
-        custom_dns_ips = self._settings.custom_dns\
-            .get_enabled_dns_list_based_on_ip_version(ip_version)
+        custom_dns_ips = self._settings.custom_dns.get_enabled_dns_list_based_on_ip_version(ip_version)
         ip_addresses = [dns.exploded for dns in custom_dns_ips]
 
         # If custom DNS is disabled or there are no IP addresses then
@@ -241,10 +228,7 @@ class Wireguard(LinuxNetworkManager, LocalAgentMixin):
         wireguard_config = NM.SettingWireGuard.new()
 
         peer.append_allowed_ip(wg_config.ipv4.allowed_ip, False)
-        peer.set_endpoint(
-            f"{self._vpnserver.server_ip}:{self._vpnserver.wireguard_ports.udp[0]}",
-            False
-        )
+        peer.set_endpoint(f"{self._vpnserver.server_ip}:{self._vpnserver.wireguard_ports.udp[0]}", False)
 
         peer.set_public_key(self._vpnserver.x25519pk, False)
 
@@ -263,52 +247,40 @@ class Wireguard(LinuxNetworkManager, LocalAgentMixin):
         wireguard_config.append_peer(peer)
 
         wireguard_config.set_property(
-            NM.SETTING_WIREGUARD_PRIVATE_KEY,
-            self._vpncredentials.pubkey_credentials.wg_private_key
+            NM.SETTING_WIREGUARD_PRIVATE_KEY, self._vpncredentials.pubkey_credentials.wg_private_key
         )
 
-        wireguard_config.set_property(
-            NM.SETTING_WIREGUARD_FWMARK, self.FWMARK
-        )
+        wireguard_config.set_property(NM.SETTING_WIREGUARD_FWMARK, self.FWMARK)
 
         self.connection.add_setting(wireguard_config)
 
     # pylint: disable=arguments-renamed
-    def _on_state_changed(
-            self, _: NM.ActiveConnection, state: int, reason: int
-    ):
+    def _on_state_changed(self, _: NM.ActiveConnection, state: int, reason: int):
         """
-            When the connection state changes, NM emits a signal with the state and
-            reason for the change. This callback will receive these updates
-            and translate for them accordingly for the state machine,
-            as the state machine is backend agnostic.
+        When the connection state changes, NM emits a signal with the state and
+        reason for the change. This callback will receive these updates
+        and translate for them accordingly for the state machine,
+        as the state machine is backend agnostic.
 
-            :param state: connection state update
-            :type state: int
-            :param reason: the reason for the state update
-            :type reason: int
+        :param state: connection state update
+        :type state: int
+        :param reason: the reason for the state update
+        :type reason: int
         """
         state = NM.ActiveConnectionState(state)
         reason = NM.ActiveConnectionStateReason(reason)
 
-        logger.debug(
-            "Wireguard connection state changed: state=%s, reason=%s",
-            state.value_name, reason.value_name
-        )
+        logger.debug("Wireguard connection state changed: state=%s, reason=%s", state.value_name, reason.value_name)
 
         if state is NM.ActiveConnectionState.ACTIVATED:
             self._async_start_local_agent_listener()
         elif state == NM.ActiveConnectionState.DEACTIVATED:
             self._async_stop_local_agent_listener()
-            self._notify_subscribers_threadsafe(
-                events.Disconnected(EventContext(connection=self))
-            )
+            self._notify_subscribers_threadsafe(events.Disconnected(EventContext(connection=self)))
         else:
             logger.debug("Ignoring VPN state change: %s", state.value_name)
 
-    def _initialize_persisted_connection(
-            self, connection_id: str
-    ) -> states.State:
+    def _initialize_persisted_connection(self, connection_id: str) -> states.State:
         """Implemented in wireguard so we can start local agent listener."""
         state = super()._initialize_persisted_connection(connection_id)
 

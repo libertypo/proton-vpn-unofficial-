@@ -18,14 +18,14 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with ProtonVPN.  If not, see <https://www.gnu.org/licenses/>.
 """
+
 import os
 import pathlib
-from proton.vpn.connection import states
-from proton.utils.environment import VPNExecutionEnvironment
 
-DEFAULT_FORWARDED_PORT_FILEPATH = os.path.join(
-    VPNExecutionEnvironment().path_runtime, "forwarded_port"
-)
+from proton.utils.environment import VPNExecutionEnvironment
+from proton.vpn.connection import states
+
+DEFAULT_FORWARDED_PORT_FILEPATH = os.path.join(VPNExecutionEnvironment().path_runtime, "forwarded_port")
 
 
 class PortForwardFileHandler:  # pylint: disable=too-few-public-methods

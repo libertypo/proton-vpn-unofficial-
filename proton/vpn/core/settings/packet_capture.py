@@ -18,16 +18,17 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with ProtonVPN.  If not, see <https://www.gnu.org/licenses/>.
 """
+
 from __future__ import annotations
 
-from enum import Enum
-from dataclasses import dataclass
 import tempfile
+from dataclasses import dataclass
+from enum import Enum
 
 
 class PacketCaptureMode(Enum):
-    """Enum for packet capture mode.
-    """
+    """Enum for packet capture mode."""
+
     APPEND = "append"
     OVERWRITE = "overwrite"
 
@@ -42,6 +43,7 @@ class PacketCapture:
     """
     Class for managing packet capture settings.
     """
+
     directory_path: str = DEFAULT_DIRECTORY_PATH
 
     @staticmethod

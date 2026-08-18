@@ -21,7 +21,6 @@ from types import ModuleType
 from typing import Callable, Optional
 
 from gi.repository import Gtk
-from proton.vpn.connection.enum import KillSwitchSetting as KillSwitchSettingEnum
 
 from proton.vpn.app.gtk.controller import Controller
 from proton.vpn.app.gtk.utils.safe_signal_connect import safe_signal_connect
@@ -31,6 +30,7 @@ from proton.vpn.app.gtk.widgets.headerbar.menu.settings.common import (
     SettingDescription,
     SettingName,
 )
+from proton.vpn.connection.enum import KillSwitchSetting as KillSwitchSettingEnum
 
 
 class KillSwitchWidget(ConflictableToggleWidget, ReactiveSetting):  # noqa pylint: disable=too-many-instance-attributes,too-few-public-methods

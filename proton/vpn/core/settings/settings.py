@@ -22,25 +22,21 @@ along with ProtonVPN.  If not, see <https://www.gnu.org/licenses/>.
 
 from __future__ import annotations
 
-from dataclasses import dataclass
 import os
+from dataclasses import dataclass
 
-from proton.vpn import logging
 from proton.utils.environment import VPNExecutionEnvironment
+from proton.vpn import logging
 from proton.vpn.core.cache_handler import CacheHandler
-from proton.vpn.killswitch.interface import KillSwitchState
 from proton.vpn.core.settings.custom_dns import CustomDNS
 from proton.vpn.core.settings.features import Features
 from proton.vpn.core.settings.packet_capture import PacketCapture
-
+from proton.vpn.killswitch.interface import KillSwitchState
 
 logger = logging.getLogger(__name__)
 
 
-SETTINGS = os.path.join(
-    VPNExecutionEnvironment().path_config,
-    "settings.json"
-)
+SETTINGS = os.path.join(VPNExecutionEnvironment().path_config, "settings.json")
 
 
 DEFAULT_PROTOCOL = "wireguard"
@@ -51,6 +47,7 @@ DEFAULT_ANONYMOUS_CRASH_REPORTS = True
 @dataclass
 class Settings:
     """Contains general settings."""
+
     protocol: str
     killswitch: int
     custom_dns: CustomDNS
@@ -65,24 +62,19 @@ class Settings:
         default = Settings.default(user_tier)
 
         features = data.get("features")
-        features = Features.from_dict(
-            features, user_tier) if features else default.features
+        features = Features.from_dict(features, user_tier) if features else default.features
         custom_dns = data.get("custom_dns")
-        custom_dns = CustomDNS.from_dict(
-            custom_dns) if custom_dns else default.custom_dns
+        custom_dns = CustomDNS.from_dict(custom_dns) if custom_dns else default.custom_dns
 
         return Settings(
             protocol=data.get("protocol", default.protocol),
             killswitch=data.get("killswitch", default.killswitch),
             custom_dns=custom_dns,
             ipv6=data.get("ipv6", default.ipv6),
-            anonymous_crash_reports=data.get(
-                "anonymous_crash_reports",
-                default.anonymous_crash_reports
-            ),
+            anonymous_crash_reports=data.get("anonymous_crash_reports", default.anonymous_crash_reports),
             features=features,
             # We dont want to persist packet capture settings for now
-            packet_capture=default.packet_capture
+            packet_capture=default.packet_capture,
         )
 
     def to_dict(self) -> dict:
@@ -106,7 +98,7 @@ class Settings:
             ipv6=True,
             anonymous_crash_reports=DEFAULT_ANONYMOUS_CRASH_REPORTS,
             features=Features.default(user_tier),
-            packet_capture=PacketCapture.default()
+            packet_capture=PacketCapture.default(),
         )
 
 

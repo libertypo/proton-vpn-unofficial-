@@ -18,26 +18,21 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with ProtonVPN.  If not, see <https://www.gnu.org/licenses/>.
 """
+
 # pylint: disable=no-name-in-module
+from fido2.client import AssertionSelection, Fido2Client
+from fido2.client import PublicKeyCredentialRequestOptions as Options
+from fido2.client import UserInteraction as Fido2UserInteraction
 from fido2.hid import CtapHidDevice
-from fido2.client import (
-    Fido2Client, PublicKeyCredentialRequestOptions as Options,
-    UserInteraction as Fido2UserInteraction,
-    AssertionSelection
-)
 
-from proton.session.api import Fido2AssertionParameters, Fido2Assertion
+from proton.session.api import Fido2Assertion, Fido2AssertionParameters
 
 
-def create_client(device: CtapHidDevice,
-                  origin: str,
-                  user_interaction: Fido2UserInteraction) -> Fido2Client:
+def create_client(device: CtapHidDevice, origin: str, user_interaction: Fido2UserInteraction) -> Fido2Client:
     """Create a FIDO2 client for the given device."""
 
     return Fido2Client(  # pylint: disable=unexpected-keyword-arg
-        device,
-        origin,
-        user_interaction=user_interaction
+        device, origin, user_interaction=user_interaction
     )
 
 
@@ -48,7 +43,7 @@ def create_options(assertion_parameters: Fido2AssertionParameters) -> Options:
         challenge=assertion_parameters.challenge,
         rp_id=assertion_parameters.rp_id,
         allow_credentials=assertion_parameters.allow_credentials,
-        user_verification=assertion_parameters.user_verification
+        user_verification=assertion_parameters.user_verification,
     )
 
 
@@ -60,5 +55,5 @@ def create_from_client_assertion(assertion: AssertionSelection) -> Fido2Assertio
         client_data=bytes(response.client_data),
         authenticator_data=bytes(response.authenticator_data),
         signature=bytes(response.signature),
-        credential_id=bytes(response.credential_id)
+        credential_id=bytes(response.credential_id),
     )

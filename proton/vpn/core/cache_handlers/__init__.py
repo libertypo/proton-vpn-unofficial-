@@ -18,6 +18,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with ProtonVPN.  If not, see <https://www.gnu.org/licenses/>.
 """
+
 from proton.vpn.core.cache_handlers.port_forward_file_handler import PortForwardFileHandler
 
 __all__ = [

@@ -16,20 +16,17 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with ProtonVPN.  If not, see <https://www.gnu.org/licenses/>.
 """
+
+import getpass
 import logging
 import os
-import hashlib
-import getpass
 import re
 
-from proton.vpn.core.session_holder import (
-    ClientTypeMetadata, DISTRIBUTION_VERSION, DISTRIBUTION_ID)
+from proton.vpn.core.session_holder import DISTRIBUTION_ID, DISTRIBUTION_VERSION, ClientTypeMetadata
 from proton.vpn.session.utils import get_desktop_environment
 
 DSN = "https://9a5ea555a4dc48dbbb4cfa72bdbd0899@vpn-api.proton.me/core/v4/reports/sentry/25"
 SSL_CERT_FILE = "SSL_CERT_FILE"
-MACHINE_ID = "/etc/machine-id"
-PROTON_VPN = "protonvpn"
 
 # This is how we anonymise the data sent to us in sentry messages.
 #
@@ -40,11 +37,11 @@ PROTON_VPN = "protonvpn"
 # current user. It makes for a more accurant regex match.
 PRIVACY_REPLACEMENTS = [
     # Username in home directory
-    (r'\/home\/{user}\/', r"/home/<HIDDEN>/"),
+    (r"\/home\/{user}\/", r"/home/<HIDDEN>/"),
     # Email addresses
-    (r'[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{{2,}}', r"<HIDDEN>"),
+    (r"[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{{2,}}", r"<HIDDEN>"),
     # GPG ID addresses
-    (r'gpg: encrypted with.*', r"<HIDDEN>"),
+    (r"gpg: encrypted with.*", r"<HIDDEN>"),
 ]
 
 SENSITIVE_VALUE_PATTERN = re.compile(
@@ -93,7 +90,6 @@ class UsageReporting:
         self._enabled = False
         self._capture_exception = None
         self._client_type_metadata = client_type_metadata
-        self._user_id = None
         self._desktop_environment = get_desktop_environment()
 
     @property
@@ -133,38 +129,6 @@ class UsageReporting:
             log.exception("Failed to report error '%s'", str(error))
 
     @staticmethod
-    def _get_user_id(machine_id_filepath=MACHINE_ID, user_name=None):
-        """
-        Returns a unique identifier for the user.
-
-        :param machine_id_filepath: The path to the machine id file,
-            defaults to /etc/machine-id. This can be overrided for testing.
-
-        :param user_name: The username to include in the hash, if None is
-            provided, the current user is obtained from the environment.
-        """
-
-        if not os.path.exists(machine_id_filepath):
-            return None
-
-        # We include the username in the hash to avoid collisions on machines
-        # with multiple users.
-        if not user_name:
-            user_name = getpass.getuser()
-
-        # We use the machine id to uniquely identify the machine, we combine it
-        # with the application name and the username. All three are hashed to
-        # avoid leaking any personal information.
-        with open(machine_id_filepath, "r", encoding="utf-8") as machine_id_file:
-            machine_id = machine_id_file.read().strip()
-
-        combined = hashlib.sha256(machine_id.encode('utf-8'))
-        combined.update(hashlib.sha256(PROTON_VPN.encode('utf-8')).digest())
-        combined.update(hashlib.sha256(user_name.encode('utf-8')).digest())
-
-        return str(combined.hexdigest())
-
-    @staticmethod
     def _sanitize_event(event, _hint, user_name=getpass.getuser()):
         """
         Sanitize the event before sending it to sentry.
@@ -175,12 +139,7 @@ class UsageReporting:
             current user, but can be set for testing purposes.
         """
 
-        return scrub_private_data(
-            event,
-            {
-                "user": user_name
-            }
-        )
+        return scrub_private_data(event, {"user": user_name})
 
     def _add_scope_metadata(self):
         """
@@ -197,8 +156,6 @@ class UsageReporting:
             scope.set_tag("distro_name", DISTRIBUTION_ID)
             scope.set_tag("distro_version", DISTRIBUTION_VERSION)
             scope.set_tag("desktop_environment", self._desktop_environment)
-            if self._user_id and hasattr(scope, "set_user"):
-                scope.set_user({"id": self._user_id})
 
     def _start_sentry(self):
         """Starts the sentry SDK with the appropriate configuration."""
@@ -207,14 +164,11 @@ class UsageReporting:
             return True
 
         if not self._client_type_metadata:
-            raise ValueError("Client type metadata is not set, "
-                             "UsageReporting.init() must be called first.")
+            raise ValueError("Client type metadata is not set, UsageReporting.init() must be called first.")
 
         import sentry_sdk  # pylint: disable=import-outside-toplevel
-
         from sentry_sdk.integrations.dedupe import DedupeIntegration  # pylint: disable=import-outside-toplevel
         from sentry_sdk.integrations.stdlib import StdlibIntegration  # pylint: disable=import-outside-toplevel
-        from sentry_sdk.integrations.modules import ModulesIntegration  # pylint: disable=import-outside-toplevel
 
         # Read from SSL_CERT_FILE from environment variable, this allows us to
         # use an http proxy if we want to.
@@ -224,18 +178,14 @@ class UsageReporting:
             dsn=DSN,
             before_send=UsageReporting._sanitize_event,
             release=f"{client_type_metadata.type}-{client_type_metadata.version}",
-            server_name=False,           # Don't send the computer name
+            server_name=False,  # Don't send the computer name
             default_integrations=False,  # We want to be explicit about the integrations we use
             integrations=[
-                DedupeIntegration(),     # Yes we want to avoid event duplication
-                StdlibIntegration(),     # Yes we want info from the standard lib objects
-                ModulesIntegration()     # Yes we want to know what python modules are installed
+                DedupeIntegration(),  # Yes we want to avoid event duplication
+                StdlibIntegration(),  # Yes we want info from the standard lib objects
             ],
-            ca_certs=ca_certs
+            ca_certs=ca_certs,
         )
-
-        # Store the user id so we don't have to calculate it again.
-        self._user_id = self._get_user_id()
 
         # Store _capture_exception as a member, so it's easier to test.
         self._capture_exception = sentry_sdk.capture_exception

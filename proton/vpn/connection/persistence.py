@@ -21,7 +21,9 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with ProtonVPN.  If not, see <https://www.gnu.org/licenses/>.
 """
+
 from __future__ import annotations
+
 import json
 import os
 from dataclasses import dataclass
@@ -38,6 +40,7 @@ logger = logging.getLogger(__name__)
 @dataclass
 class ConnectionParameters:
     """Connection parameters to be persisted to disk."""
+
     connection_id: str
     backend: str
     protocol: str
@@ -50,7 +53,7 @@ class ConnectionParameters:
             connection_id=data["connection_id"],
             backend=data["backend"],
             protocol=data["protocol"],
-            server=VPNServer.from_dict(data["server"])
+            server=VPNServer.from_dict(data["server"]),
         )
 
     def to_dict(self) -> ConnectionParameters:
@@ -59,12 +62,13 @@ class ConnectionParameters:
             "connection_id": self.connection_id,
             "backend": self.backend,
             "protocol": self.protocol,
-            "server": self.server.to_dict()
+            "server": self.server.to_dict(),
         }
 
 
 class ConnectionPersistence:
     """Saves/loads connection parameters to/from disk."""
+
     FILENAME = "connection_persistence.json"
 
     def __init__(self, persistence_directory: str = None):
@@ -73,9 +77,7 @@ class ConnectionPersistence:
     @property
     def _connection_file_path(self):
         if not self._directory:
-            self._directory = os.path.join(
-                VPNExecutionEnvironment().path_cache, "connection"
-            )
+            self._directory = os.path.join(VPNExecutionEnvironment().path_cache, "connection")
             os.makedirs(self._directory, mode=0o700, exist_ok=True)
 
         return os.path.join(self._directory, self.FILENAME)
@@ -92,10 +94,11 @@ class ConnectionPersistence:
                 return ConnectionParameters.from_dict(file_content)
             except (JSONDecodeError, KeyError, UnicodeDecodeError):
                 logger.warning(
-                    "Unexpected error parsing connection persistence file: "
-                    f"{self._connection_file_path}",
-                    category="CONN", subcategory="PERSISTENCE", event="LOAD",
-                    exc_info=True
+                    f"Unexpected error parsing connection persistence file: {self._connection_file_path}",
+                    category="CONN",
+                    subcategory="PERSISTENCE",
+                    event="LOAD",
+                    exc_info=True,
                 )
                 return None
 
@@ -110,7 +113,8 @@ class ConnectionPersistence:
             os.remove(self._connection_file_path)
         else:
             logger.warning(
-                f"Connection persistence not found when trying "
-                f"to remove it: {self._connection_file_path}",
-                category="CONN", subcategory="PERSISTENCE", event="REMOVE"
+                f"Connection persistence not found when trying to remove it: {self._connection_file_path}",
+                category="CONN",
+                subcategory="PERSISTENCE",
+                event="REMOVE",
             )

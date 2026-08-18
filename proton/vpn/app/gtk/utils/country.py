@@ -21,9 +21,9 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with ProtonVPN.  If not, see <https://www.gnu.org/licenses/>.
 """
-from proton.vpn.session.servers.country_codes import get_country_name_by_code
 
 from proton.vpn.app.gtk.translator import C_
+from proton.vpn.session.servers.country_codes import get_country_name_by_code
 
 
 def get_localized_country_name(country_code: str) -> str:

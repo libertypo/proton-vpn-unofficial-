@@ -24,10 +24,8 @@ from concurrent.futures import Future
 from typing import TYPE_CHECKING
 
 from gi.repository import Gio, GLib, GObject
-from proton.session.exceptions import ProtonAPINotReachable
-from proton.vpn.connection.enum import KillSwitchSetting as KillSwitchSettingEnum
-from proton.vpn.connection.states import Disconnected, State
 
+from proton.session.exceptions import ProtonAPINotReachable
 from proton.vpn import logging
 from proton.vpn.app.gtk import Gtk
 from proton.vpn.app.gtk.controller import Controller
@@ -39,6 +37,8 @@ from proton.vpn.app.gtk.widgets.headerbar.menu.release_notes_dialog import Relea
 from proton.vpn.app.gtk.widgets.headerbar.menu.settings import SettingsWindow
 from proton.vpn.app.gtk.widgets.main.confirmation_dialog import ConfirmationDialog
 from proton.vpn.app.gtk.widgets.main.loading_widget import DefaultLoadingWidget, OverlayWidget
+from proton.vpn.connection.enum import KillSwitchSetting as KillSwitchSettingEnum
+from proton.vpn.connection.states import Disconnected, State
 
 logger = logging.getLogger(__name__)
 

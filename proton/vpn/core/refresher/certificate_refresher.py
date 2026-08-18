@@ -16,20 +16,18 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with ProtonVPN.  If not, see <https://www.gnu.org/licenses/>.
 """
+
 import inspect
-from typing import Optional, Callable
+import random
 from datetime import timedelta
 from http import HTTPStatus
-import random
+from typing import Callable, Optional
 
+from proton.session.exceptions import ProtonAPIError, ProtonAPINotAvailable, ProtonAPINotReachable
 from proton.vpn import logging
 from proton.vpn.core.refresher.scheduler import RunAgain
 from proton.vpn.core.session_holder import SessionHolder
 from proton.vpn.session.credentials import VPNPubkeyCredentials
-from proton.session.exceptions import (
-    ProtonAPINotReachable, ProtonAPINotAvailable,
-    ProtonAPIError
-)
 
 logger = logging.getLogger(__name__)
 
@@ -54,10 +52,7 @@ class CertificateRefresher:
     @property
     def initial_refresh_delay(self):
         """Returns the initial delay before the first refresh."""
-        return self._session.vpn_account \
-            .vpn_credentials \
-            .pubkey_credentials \
-            .remaining_time_to_next_refresh
+        return self._session.vpn_account.vpn_credentials.pubkey_credentials.remaining_time_to_next_refresh
 
     async def refresh(self) -> RunAgain:
         """Fetches the new certificate from the REST API."""
@@ -79,8 +74,7 @@ class CertificateRefresher:
             self._number_of_failed_refresh_attempts += 1
         except Exception:
             logger.error(  # noqa: E501 # pylint: disable=line-too-long # nosemgrep: python.lang.best-practice.logging-error-without-handling.logging-error-without-handling
-                "Certificate refresh failed unexpectedly."
-                "Stopping certificate refresh."
+                "Certificate refresh failed unexpectedly.Stopping certificate refresh."
             )
             raise
 
@@ -88,16 +82,13 @@ class CertificateRefresher:
         if self._number_of_failed_refresh_attempts:
             logger_prefix = f"Attempt {self._number_of_failed_refresh_attempts} for"
 
-        logger.info(
-            f"{logger_prefix} certificate refresh scheduled in "
-            f"{timedelta(seconds=next_refresh_delay)}"
-        )
+        logger.info(f"{logger_prefix} certificate refresh scheduled in {timedelta(seconds=next_refresh_delay)}")
 
         return RunAgain.after_seconds(next_refresh_delay)
 
     async def update_if_necessary(self):
         """Fetches a new certificate from the REST API
-           if the current certificate has expired or will soon expire"""
+        if the current certificate has expired or will soon expire"""
         pubkey_credentials = self._session.vpn_account.vpn_credentials.pubkey_credentials
         if pubkey_credentials.remaining_time_to_next_refresh > 0:
             return  # too early to update the certificate
@@ -113,16 +104,13 @@ class CertificateRefresher:
         except (ProtonAPINotReachable, ProtonAPINotAvailable) as error:
             logger.warning(f"Certificate refresh failed: {error}")
         except Exception:
-            logger.error(
-                "Certificate refresh failed unexpectedly."
-                "Stopping certificate refresh."
-            )
+            logger.error("Certificate refresh failed unexpectedly.Stopping certificate refresh.")
             raise
 
     def _get_next_refresh_delay(self):
         return min(
             generate_backoff_value(self._number_of_failed_refresh_attempts),
-            VPNPubkeyCredentials.get_refresh_interval_in_seconds()
+            VPNPubkeyCredentials.get_refresh_interval_in_seconds(),
         )
 
     async def _notify(self):
@@ -132,23 +120,18 @@ class CertificateRefresher:
         if inspect.iscoroutinefunction(self.certificate_updated_callback):
             await self.certificate_updated_callback()  # pylint: disable=not-callable
         else:
-            raise ValueError(
-                "Expected coroutine function but found "
-                f"{type(self.certificate_updated_callback)}"
-            )
+            raise ValueError(f"Expected coroutine function but found {type(self.certificate_updated_callback)}")
 
 
 def generate_backoff_value(
-        number_of_failed_refresh_attempts: int, backoff_in_seconds: int = 1,
-        random_component: float = None
+    number_of_failed_refresh_attempts: int, backoff_in_seconds: int = 1, random_component: float = None
 ) -> int:
     """Generate and return a backoff value for when API calls fail,
     so it can retry again without DDoS'ing the API."""
     random_component = random_component or _generate_random_component()
-    return backoff_in_seconds * 2 ** number_of_failed_refresh_attempts * random_component
+    return backoff_in_seconds * 2**number_of_failed_refresh_attempts * random_component
 
 
 def _generate_random_component() -> int:
     """Generates random component between 1 - randones_percentage and 1 + randomness_percentage."""
-    return 1 + VPNPubkeyCredentials.REFRESH_RANDOMNESS *\
-        (2 * random.random() - 1)  # nosec B311 # noqa: E501 # pylint: disable=line-too-long # nosemgrep: gitlab.bandit.B311
+    return 1 + VPNPubkeyCredentials.REFRESH_RANDOMNESS * (2 * random.random() - 1)  # nosec B311 # noqa: E501 # pylint: disable=line-too-long # nosemgrep: gitlab.bandit.B311

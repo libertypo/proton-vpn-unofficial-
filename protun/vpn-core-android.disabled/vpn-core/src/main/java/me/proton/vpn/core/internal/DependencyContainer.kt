@@ -137,4 +137,3 @@ internal object DependencyContainer {
     val cache: PersistentCache get() =
         _cache ?: error("DependencyContainer not initialized. Call ProtonVpnCore.create() first.")
 }
-

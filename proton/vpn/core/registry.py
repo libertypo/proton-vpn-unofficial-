@@ -24,8 +24,8 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with ProtonVPN.  If not, see <https://www.gnu.org/licenses/>.
 """
-import importlib
 
+import importlib
 from abc import abstractmethod
 from typing import Iterator, Optional, Protocol
 
@@ -34,6 +34,7 @@ class Entry(Protocol):  # pylint: disable=R0903
     """
     Registry entries must implement this protocol.
     """
+
     @classmethod
     @abstractmethod
     def get_key(cls) -> str:
@@ -120,6 +121,7 @@ class Registry:
         Returns an iterator over the available entries ordered by
         priority and filtered by validity.
         """
+
         def validate_and_priority(cls):
             return (
                 issubclass(cls, interface)
@@ -136,6 +138,6 @@ class Registry:
                     validate_and_priority,
                     self._registry.values(),
                 ),
-                key=priority
+                key=priority,
             )
         )

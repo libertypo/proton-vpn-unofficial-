@@ -16,9 +16,12 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with ProtonVPN.  If not, see <https://www.gnu.org/licenses/>.
 """
+
 from __future__ import annotations
+
 from dataclasses import dataclass
 from typing import TYPE_CHECKING
+
 if TYPE_CHECKING:
     from proton.vpn.session.credentials import VPNPubkeyCredentials
 
@@ -27,16 +30,17 @@ if TYPE_CHECKING:
 
 @dataclass
 class VPNUserPassCredentials:
-    """ Class responsible to hold vpn user/password credentials for authentication
-    """
+    """Class responsible to hold vpn user/password credentials for authentication"""
+
     username: str
     password: str
 
 
 @dataclass
 class VPNCredentials:
-    """ Interface to :class:`proton.vpn.connection.interfaces.VPNCredentials`
-        See :attr:`proton.vpn.session.VPNSession.vpn_account.vpn_credentials` to get one.
+    """Interface to :class:`proton.vpn.connection.interfaces.VPNCredentials`
+    See :attr:`proton.vpn.session.VPNSession.vpn_account.vpn_credentials` to get one.
     """
+
     userpass_credentials: VPNUserPassCredentials
     pubkey_credentials: VPNPubkeyCredentials

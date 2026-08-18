@@ -22,13 +22,13 @@ along with ProtonVPN.  If not, see <https://www.gnu.org/licenses/>.
 """
 # pylint: disable=duplicate-code
 
-from dataclasses import dataclass, field
 import uuid
+from dataclasses import dataclass, field
 
 import gi
+
 gi.require_version("NM", "1.0")
 from gi.repository import NM, GLib  # pylint: disable=C0413 # noqa: E402
-
 
 DEFAULT_METRIC = -1
 
@@ -55,11 +55,12 @@ class KillSwitchConnection:  # pylint: disable=too-few-public-methods
     connection. Are easily configured with the help of `KillSwitchGeneralConfig`
     and `KillSwitchIPConfig`.
     """
+
     def __init__(
         self,
         general_settings: KillSwitchGeneralConfig,
         ipv6_settings: KillSwitchIPConfig,
-        ipv4_settings: KillSwitchIPConfig
+        ipv4_settings: KillSwitchIPConfig,
     ):
         self._connection_profile = None
         self._general_settings = general_settings
@@ -79,10 +80,7 @@ class KillSwitchConnection:  # pylint: disable=too-few-public-methods
 
         s_con = NM.SettingConnection.new()
         s_con.set_property(NM.SETTING_CONNECTION_ID, self._general_settings.human_readable_id)
-        s_con.set_property(
-            NM.SETTING_CONNECTION_INTERFACE_NAME,
-            self._general_settings.interface_name
-        )
+        s_con.set_property(NM.SETTING_CONNECTION_INTERFACE_NAME, self._general_settings.interface_name)
         s_con.set_property(NM.SETTING_CONNECTION_UUID, str(uuid.uuid4()))
         s_con.set_property(NM.SETTING_CONNECTION_TYPE, NM.SETTING_DUMMY_SETTING_NAME)
 
@@ -120,9 +118,7 @@ class KillSwitchConnection:  # pylint: disable=too-few-public-methods
         # Add addresses
         for address in self._ipv4_settings.addresses:
             ipv4, prefix = str(address).split("/")
-            s_ip4.add_address(
-                NM.IPAddress.new(GLib.SYSDEF_AF_INET, ipv4, int(prefix))
-            )
+            s_ip4.add_address(NM.IPAddress.new(GLib.SYSDEF_AF_INET, ipv4, int(prefix)))
 
         # Add DNS
         for dns in self._ipv4_settings.dns:
@@ -133,8 +129,7 @@ class KillSwitchConnection:  # pylint: disable=too-few-public-methods
             ipv4, prefix = str(route).split("/")
             s_ip4.add_route(
                 NM.IPRoute.new(
-                    family=GLib.SYSDEF_AF_INET, dest=ipv4, prefix=int(prefix),
-                    next_hop=None, metric=DEFAULT_METRIC
+                    family=GLib.SYSDEF_AF_INET, dest=ipv4, prefix=int(prefix), next_hop=None, metric=DEFAULT_METRIC
                 )
             )
 
@@ -167,9 +162,7 @@ class KillSwitchConnection:  # pylint: disable=too-few-public-methods
         # Add addresses
         for address in self._ipv6_settings.addresses:
             ip, prefix = str(address).split("/")  # pylint: disable=invalid-name
-            s_ip6.add_address(
-                NM.IPAddress.new(GLib.SYSDEF_AF_INET6, ip, int(prefix))
-            )
+            s_ip6.add_address(NM.IPAddress.new(GLib.SYSDEF_AF_INET6, ip, int(prefix)))
 
         # Add DNS
         for dns in self._ipv6_settings.dns:

@@ -65,7 +65,7 @@ impl SocketHandle {
                 self.event,
                 &mut network_events as *mut WSANETWORKEVENTS,
             );
-            
+
             SocketEvent {
                 is_readable: network_events.lNetworkEvents & FD_READ as i32 != 0,
                 is_writable: network_events.lNetworkEvents & FD_WRITE as i32 != 0,

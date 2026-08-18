@@ -20,14 +20,13 @@ You should have received a copy of the GNU General Public License
 along with ProtonVPN.  If not, see <https://www.gnu.org/licenses/>.
 """
 
-from proton.vpn.connection import states
-
 from proton.vpn import logging
 from proton.vpn.app.gtk import Gtk
 from proton.vpn.app.gtk.controller import Controller
 from proton.vpn.app.gtk.i18n import tr as _
 from proton.vpn.app.gtk.utils.glib import bubble_up_errors
 from proton.vpn.app.gtk.utils.safe_signal_connect import safe_signal_connect
+from proton.vpn.connection import states
 
 logger = logging.getLogger(__name__)
 

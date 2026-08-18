@@ -19,11 +19,12 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with ProtonVPN.  If not, see <https://www.gnu.org/licenses/>.
 """
-from __future__ import annotations
-from dataclasses import dataclass
 
-from pathlib import Path
+from __future__ import annotations
+
 import platform
+from dataclasses import dataclass
+from pathlib import Path
 from typing import Optional
 
 import distro
@@ -32,7 +33,7 @@ from proton.sso import ProtonSSO
 from proton.vpn import logging
 from proton.vpn.connection import VPNCredentials
 from proton.vpn.session import VPNSession
-from proton.vpn.session.utils import to_semver_build_metadata_format, get_core_api_semver_version
+from proton.vpn.session.utils import get_core_api_semver_version, to_semver_build_metadata_format
 
 logger = logging.getLogger(__name__)
 
@@ -63,14 +64,10 @@ class ClientTypeMetadata:  # pylint: disable=missing-class-docstring
 class SessionHolder:
     """Holds the current session object, initializing it lazily when requested."""
 
-    def __init__(
-        self, client_type_metadata: ClientTypeMetadata,
-        session: VPNSession = None
-    ):
+    def __init__(self, client_type_metadata: ClientTypeMetadata, session: VPNSession = None):
         self._proton_sso = ProtonSSO(
             appversion=self._get_app_version_header_value(client_type_metadata),
-            user_agent=f"ProtonVPN/{client_type_metadata.version} "
-                       f"(Linux; {DISTRIBUTION_ID}/{DISTRIBUTION_VERSION})"
+            user_agent=f"ProtonVPN/{client_type_metadata.version} (Linux; {DISTRIBUTION_ID}/{DISTRIBUTION_VERSION})",
         )
         self._session = session
 
@@ -80,19 +77,14 @@ class SessionHolder:
         :param username: Proton account username.
         :return:
         """
-        self._session = self._proton_sso.get_session(
-            account_name=username,
-            override_class=VPNSession
-        )
+        self._session = self._proton_sso.get_session(account_name=username, override_class=VPNSession)
         return self._session
 
     @property
     def session(self) -> VPNSession:
         """Returns the current session object."""
         if not self._session:
-            self._session = self._proton_sso.get_default_session(
-                override_class=VPNSession
-            )
+            self._session = self._proton_sso.get_default_session(override_class=VPNSession)
 
         return self._session
 

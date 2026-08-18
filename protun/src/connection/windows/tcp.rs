@@ -87,7 +87,7 @@ impl TcpSocketStream {
             log::error!("Failed to connect with TCP to remote socket {remote_socket_address}: {}", err);
             return Err(err)
         };
-        
+
         let tcp_stream: TcpStream = tcp_socket.into();
         log::info!("Created TCP stream ({}->{})", socket_addr, remote_socket_address);
         Ok(tcp_stream)
@@ -122,10 +122,10 @@ impl WindowsStream for TcpSocketStream {
             _ => false,
         }
     }
-    
+
     fn get_state(&mut self) -> WindowsStreamState {
         let events: SocketEvent = self.socket_handle.get_events();
-        
+
         self.is_readable = self.is_readable || events.is_readable;
         self.is_writable = self.is_writable || events.is_writable;
 

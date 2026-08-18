@@ -25,8 +25,6 @@ from __future__ import annotations
 from itertools import chain
 from typing import List, Optional
 
-from proton.vpn.session.servers import Country, Location, TierEnum
-
 from proton.vpn.app.gtk import Gtk
 from proton.vpn.app.gtk.controller import Controller
 from proton.vpn.app.gtk.utils.assertions import runtime_assert
@@ -36,6 +34,7 @@ from proton.vpn.app.gtk.widgets.vpn.serverlist.city_view.row_view_model import R
 from proton.vpn.app.gtk.widgets.vpn.serverlist.city_view.secure_core_row import SecureCoreRow
 from proton.vpn.app.gtk.widgets.vpn.serverlist.city_view.utils import make_connect_callback, sync_rows_with_model_items
 from proton.vpn.app.gtk.widgets.vpn.serverlist.icons import CountryFlagIcon
+from proton.vpn.session.servers import Country, Location, TierEnum
 
 
 # pylint: disable=too-many-instance-attributes

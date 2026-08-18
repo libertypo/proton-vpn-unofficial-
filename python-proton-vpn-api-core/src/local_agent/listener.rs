@@ -59,7 +59,7 @@ impl Listener {
         &self,
         callback: C
     ) -> Result<()>
-    where 
+    where
         C: Fn(Result<StatusMessage>) -> Result<()>
     {
         let mut old_status: Option<StatusMessage> = None;
@@ -69,7 +69,7 @@ impl Listener {
                 std::time::Duration::from_secs(PORT_FORWARDING_REFRESH_INTERVAL),
                 self.connection.read()
             ).await;
-            
+
             match new_status_future {
                 Ok(new_status) => {
                     match new_status {
@@ -109,7 +109,7 @@ impl Listener {
         if let Some(AgentFeatures {
             port_forwarding: Some(true),
             forwarded_port,
-            .. 
+            ..
         }) = &mut status.features {
             let port = request_tcp_port_forwarding(DEFAULT_TIMEOUT_IN_SECONDS, MAX_PORT_FORWARDING_RETRIES).await?;
             let some_port = Some(port);
@@ -132,7 +132,7 @@ impl Listener {
     /// # Arguments
     ///
     /// * `features`: The requested features.
-    /// * `timeout`: Amount of seconds before the request times out. 
+    /// * `timeout`: Amount of seconds before the request times out.
     pub async fn request_features(
         &self,
         features: AgentFeatures,

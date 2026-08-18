@@ -19,6 +19,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with ProtonVPN.  If not, see <https://www.gnu.org/licenses/>.
 """
+
 from __future__ import annotations
 
 from abc import ABC, abstractmethod
@@ -26,7 +27,6 @@ from enum import IntEnum
 from typing import TYPE_CHECKING, Optional
 
 from proton.loader import Loader
-
 from proton.vpn.killswitch.interface.exceptions import MissingKillSwitchBackendDetails
 
 if TYPE_CHECKING:
@@ -44,6 +44,7 @@ class KillSwitch(ABC):
     The `KillSwitch` is the base class from which all other kill switch
     backends need to derive from.
     """
+
     @staticmethod
     def get(class_name: str = None, protocol: str = None) -> KillSwitch:
         """
@@ -56,11 +57,7 @@ class KillSwitch(ABC):
             This is mainly used for backend validation.
         """
         try:
-            return Loader.get(
-                type_name="killswitch",
-                class_name=class_name,
-                validate_params={"protocol": protocol}
-            )
+            return Loader.get(type_name="killswitch", class_name=class_name, validate_params={"protocol": protocol})
         except RuntimeError as excp:
             raise MissingKillSwitchBackendDetails(excp) from excp
 

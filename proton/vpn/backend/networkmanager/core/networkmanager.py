@@ -19,20 +19,19 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with ProtonVPN.  If not, see <https://www.gnu.org/licenses/>.
 """
+
 import asyncio
 import logging
 from concurrent.futures import Future
 from typing import Optional
 
-from proton.vpn.connection import VPNConnection, events, states
-from proton.vpn.connection.exceptions import VPNConnectionError
-from proton.vpn.connection.events import EventContext, Event
-from proton.vpn.connection.vpnconfiguration import VPNConfiguration
-from proton.vpn.connection.states import StateContext
-
-
-from proton.vpn.backend.networkmanager.core.nmclient import (NM, NMClient, GLib)
 from proton.vpn.backend.networkmanager.core import tcpcheck
+from proton.vpn.backend.networkmanager.core.nmclient import NM, GLib, NMClient
+from proton.vpn.connection import VPNConnection, events, states
+from proton.vpn.connection.events import Event, EventContext
+from proton.vpn.connection.exceptions import VPNConnectionError
+from proton.vpn.connection.states import StateContext
+from proton.vpn.connection.vpnconfiguration import VPNConfiguration
 
 logger = logging.getLogger(__name__)
 
@@ -46,6 +45,7 @@ class LinuxNetworkManager(VPNConnection):
     To do this, this class needs to be extended so that the subclass
     initializes the NetworkManager connection appropriately.
     """
+
     SIGNAL_NAME = "vpn-state-changed"
     backend = "linuxnetworkmanager"
 
@@ -74,8 +74,7 @@ class LinuxNetworkManager(VPNConnection):
         self._cancelled = False
 
         server_reachable = await tcpcheck.is_any_port_reachable(
-            self._vpnserver.server_ip,
-            self._vpnserver.openvpn_ports.tcp
+            self._vpnserver.server_ip, self._vpnserver.openvpn_ports.tcp
         )
 
         if not server_reachable:
@@ -97,12 +96,7 @@ class LinuxNetworkManager(VPNConnection):
         except GLib.GError as error:
             logger.exception("Error adding NetworkManager connection.")
             self._notify_subscribers(
-                events.TunnelSetupFailed(
-                    context=EventContext(
-                        connection=self,
-                        error=VPNConnectionError(str(error))
-                    )
-                )
+                events.TunnelSetupFailed(context=EventContext(connection=self, error=VPNConnectionError(str(error))))
             )
             return
 
@@ -114,23 +108,13 @@ class LinuxNetworkManager(VPNConnection):
 
         try:
             future_vpn_connection = self.start_connection_async(connection)
-            vpn_connection = await loop.run_in_executor(
-                None, future_vpn_connection.result
-            )
+            vpn_connection = await loop.run_in_executor(None, future_vpn_connection.result)
             # Start listening for vpn state changes.
-            vpn_connection.connect(
-                self.SIGNAL_NAME,
-                self._on_state_changed
-            )
+            vpn_connection.connect(self.SIGNAL_NAME, self._on_state_changed)
         except GLib.GError as error:
             logger.exception("Error starting NetworkManager connection.")
             self._notify_subscribers(
-                events.TunnelSetupFailed(
-                    context=EventContext(
-                        connection=self,
-                        error=VPNConnectionError(str(error))
-                    )
-                )
+                events.TunnelSetupFailed(context=EventContext(connection=self, error=VPNConnectionError(str(error))))
             )
             await self.remove_connection(connection)
 
@@ -143,9 +127,7 @@ class LinuxNetworkManager(VPNConnection):
         """Stops the VPN connection."""
         # We directly remove the connection to avoid leaking NM connections.
         if not self._is_nm_connection_active():
-            self._notify_subscribers(
-                events.Disconnected(EventContext(connection=self))
-            )
+            self._notify_subscribers(events.Disconnected(EventContext(connection=self)))
 
         connection = connection or self._get_nm_connection()
         if not connection:
@@ -178,26 +160,14 @@ class LinuxNetworkManager(VPNConnection):
         When notifying subscribers from different thread than then one running the
         asyncio loop, this method must be used for thread-safety reasons.
         """
-        self._asyncio_loop.call_soon_threadsafe(
-            self._notify_subscribers, event
-        )
+        self._asyncio_loop.call_soon_threadsafe(self._notify_subscribers, event)
 
-    def _initialize_persisted_connection(
-            self, connection_id: str
-    ) -> states.State:
+    def _initialize_persisted_connection(self, connection_id: str) -> states.State:
         """Abstract method implementation."""
-        context = StateContext(
-            event=events.Initialized(EventContext(connection=self)),
-            connection=self
-        )
-        active_connection = self.nm_client.get_active_connection(
-            connection_id
-        )
+        context = StateContext(event=events.Initialized(EventContext(connection=self)), connection=self)
+        active_connection = self.nm_client.get_active_connection(connection_id)
         if active_connection:
-            active_connection.connect(
-                self.SIGNAL_NAME,
-                self._on_state_changed
-            )
+            active_connection.connect(self.SIGNAL_NAME, self._on_state_changed)
             return states.Connected(context)
 
         inactive_connection = self.nm_client.get_connection(connection_id)
@@ -208,9 +178,7 @@ class LinuxNetworkManager(VPNConnection):
 
         return states.Disconnected(context)
 
-    def _on_state_changed(
-            self, vpn_connection: NM.VpnConnection, state: int, reason: int
-    ):
+    def _on_state_changed(self, vpn_connection: NM.VpnConnection, state: int, reason: int):
         """
         Use to respond to state changes in the VPN connection, must be
         implemented by the derived class.
@@ -251,16 +219,16 @@ class LinuxNetworkManager(VPNConnection):
         return False
 
     def _import_vpn_config(
-            self,
-            plugin_name: str,
-            vpnconfig: VPNConfiguration,
+        self,
+        plugin_name: str,
+        vpnconfig: VPNConfiguration,
     ) -> NM.SimpleConnection:
         """
-            Imports the vpn connection configurations into NM
-            and stores the connection on non-volatile memory.
+        Imports the vpn connection configurations into NM
+        and stores the connection on non-volatile memory.
 
-            :return: imported vpn connection
-            :rtype: NM.SimpleConnection
+        :return: imported vpn connection
+        :rtype: NM.SimpleConnection
         """
         vpn_plugin_list = NM.VpnPluginInfo.list_load()
 
@@ -278,9 +246,7 @@ class LinuxNetworkManager(VPNConnection):
                         continue
 
         if connection is None:
-            raise NotImplementedError(
-                "Support for given configuration is not implemented"
-            )
+            raise NotImplementedError("Support for given configuration is not implemented")
 
         # https://lazka.github.io/pgi-docs/NM-1.0/classes/Connection.html#NM.Connection.normalize
         connection.normalize()

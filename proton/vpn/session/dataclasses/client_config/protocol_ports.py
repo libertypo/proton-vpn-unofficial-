@@ -16,9 +16,11 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with ProtonVPN.  If not, see <https://www.gnu.org/licenses/>.
 """
+
 from __future__ import annotations
-from typing import List
+
 from dataclasses import dataclass
+from typing import List
 
 
 @dataclass
@@ -26,6 +28,7 @@ class ProtocolPorts:
     """Dataclass for ports.
     These ports are mainly used for establishing VPN connections.
     """
+
     udp: List
     tcp: List
     tls: List
@@ -34,8 +37,4 @@ class ProtocolPorts:
     def from_dict(ports: dict) -> ProtocolPorts:
         """Creates ProtocolPorts object from data."""
         # The lists are copied to avoid side effects if the dict is modified.
-        return ProtocolPorts(
-            udp=ports["UDP"].copy(),
-            tcp=ports["TCP"].copy(),
-            tls=ports.get("TLS", []).copy()
-        )
+        return ProtocolPorts(udp=ports["UDP"].copy(), tcp=ports["TCP"].copy(), tls=ports.get("TLS", []).copy())

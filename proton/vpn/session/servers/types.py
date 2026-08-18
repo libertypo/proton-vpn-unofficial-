@@ -16,11 +16,13 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with ProtonVPN.  If not, see <https://www.gnu.org/licenses/>.
 """
+
 from __future__ import annotations
+
 import copy
 import random
 from enum import IntFlag
-from typing import List, Dict
+from typing import Dict, List
 
 from proton.vpn.session.exceptions import ServerNotFoundError
 from proton.vpn.session.servers.country_codes import get_country_name_by_code
@@ -28,8 +30,9 @@ from proton.vpn.session.servers.country_codes import get_country_name_by_code
 
 class TierEnum(IntFlag):
     """Contains the tiers used throughout the clients.
-        The tier either block or unblock certain features and/or servers/countries.
+    The tier either block or unblock certain features and/or servers/countries.
     """
+
     FREE = 0
     PLUS = 2
     PM = 3  # "implicit-flag-alias" has been added in 2.17.5, anything lower will throw an error.
@@ -39,6 +42,7 @@ class ServerFeatureEnum(IntFlag):
     """
     A Class representing the Server features as encoded in the feature flags field of the API:
     """
+
     SECURE_CORE = 1 << 0  # 1
     TOR = 1 << 1  # 2
     P2P = 1 << 2  # 4
@@ -68,15 +72,15 @@ class PhysicalServer:
     @property
     def exit_ip(self) -> str:
         """Returns the IP of the exited server.
-            If you want to display to which IP a user is connected
-            then use this one.
+        If you want to display to which IP a user is connected
+        then use this one.
         """
         return self._data.get("ExitIP")
 
     @property
     def domain(self) -> str:
         """Returns the Domain of the connected server.
-            This is usually used for TLS Authentication.
+        This is usually used for TLS Authentication.
         """
         return self._data.get("Domain")
 
@@ -93,8 +97,8 @@ class PhysicalServer:
     @property
     def label(self) -> str:
         """Returns the label value.
-            If label is passed then it ensures that the
-            `ExitIP` matches exactly to the server that we're connected.
+        If label is passed then it ensures that the
+        `ExitIP` matches exactly to the server that we're connected.
         """
         return self._data.get("Label")
 
@@ -105,15 +109,14 @@ class PhysicalServer:
 
     @property
     def x25519_pk(self) -> str:
-        """ X25519 public key of the physical available as a base64 encoded string.
-        """
+        """X25519 public key of the physical available as a base64 encoded string."""
         return self._data.get("X25519PublicKey")
 
     def __repr__(self):
-        if self.label != '':
-            return f'PhysicalServer<{self.domain}+b:{self.label}>'
+        if self.label != "":
+            return f"PhysicalServer<{self.domain}+b:{self.label}>"
 
-        return f'PhysicalServer<{self.domain}>'
+        return f"PhysicalServer<{self.domain}>"
 
 
 class LogicalServer:  # pylint: disable=too-many-public-methods
@@ -129,15 +132,12 @@ class LogicalServer:  # pylint: disable=too-many-public-methods
 
     def update(self, server_load: ServerLoad):
         """Internally updates the logical server:
-            * Load
-            * Score
-            * Status
+        * Load
+        * Score
+        * Status
         """
         if self.id != server_load.id:
-            raise ValueError(
-                "The id of the logical server does not match the one of "
-                "the server load object"
-            )
+            raise ValueError("The id of the logical server does not match the one of the server load object")
 
         self._data["Load"] = server_load.load
         self._data["Score"] = server_load.score
@@ -152,29 +152,27 @@ class LogicalServer:  # pylint: disable=too-many-public-methods
     @property
     def load(self) -> int:
         """Returns the load of the servers.
-            This is generally only used for UI purposes.
+        This is generally only used for UI purposes.
         """
         return self._data.get("Load")
 
     @property
     def score(self) -> float:
         """Returns the score of the server.
-            The score is automatically calculated by the API and
-            is used for the logic of the "Quick Connect".
-            The lower the number is the better is for establishing a connection.
+        The score is automatically calculated by the API and
+        is used for the logic of the "Quick Connect".
+        The lower the number is the better is for establishing a connection.
         """
         return self._data.get("Score")
 
     @property
     def enabled(self) -> bool:
         """Returns if the server is enabled or not.
-            Usually the API should return 0 if all physical servers
-            are not enabled, but just to be sure we also evaluate all
-            physical servers.
+        Usually the API should return 0 if all physical servers
+        are not enabled, but just to be sure we also evaluate all
+        physical servers.
         """
-        return self._data.get("Status") == 1 and any(
-            x.enabled for x in self.physical_servers
-        )
+        return self._data.get("Status") == 1 and any(x.enabled for x in self.physical_servers)
 
     @property
     def under_maintenance(self) -> bool:
@@ -210,8 +208,8 @@ class LogicalServer:  # pylint: disable=too-many-public-methods
     @property
     def host_country(self) -> str:
         """2 letter country code host: CH.
-            If there is a host country then it means that this server location
-            is emulated, see Smart Routing definition for further clarification.
+        If there is a host country then it means that this server location
+        is emulated, see Smart Routing definition for further clarification.
         """
         return self._data.get("HostCountry")
 
@@ -222,16 +220,11 @@ class LogicalServer:  # pylint: disable=too-many-public-methods
 
     @property
     def features(self) -> List[ServerFeatureEnum]:
-        """ List of features supported by this Logical."""
+        """List of features supported by this Logical."""
         return self.__unpack_bitmap_features(self._data.get("Features", 0))
 
     def __unpack_bitmap_features(self, server_value):
-        server_features = [
-            feature_enum
-            for feature_enum
-            in ServerFeatureEnum
-            if (server_value & feature_enum) != 0
-        ]
+        server_features = [feature_enum for feature_enum in ServerFeatureEnum if (server_value & feature_enum) != 0]
         return server_features
 
     @property
@@ -253,7 +246,7 @@ class LogicalServer:  # pylint: disable=too-many-public-methods
     @property
     def tier(self) -> int:
         """Returns the minimum required tier to be able to establish a connection.
-            Server-side check is always done, so this is mainly for UI purposes.
+        Server-side check is always done, so this is mainly for UI purposes.
         """
         return TierEnum(int(self._data.get("Tier")))
 
@@ -279,13 +272,11 @@ class LogicalServer:  # pylint: disable=too-many-public-methods
 
     @property
     def physical_servers(self) -> List[PhysicalServer]:
-        """ Get all the physicals of supporting a logical
-        """
+        """Get all the physicals of supporting a logical"""
         return [PhysicalServer(x) for x in self._data.get("Servers", [])]
 
     def get_random_physical_server(self) -> PhysicalServer:
-        """ Get a random `enabled` physical linked to this logical
-        """
+        """Get a random `enabled` physical linked to this logical"""
         enabled_servers = [x for x in self.physical_servers if x.enabled]
         if len(enabled_servers) == 0:
             raise ServerNotFoundError("No physical servers could be found")
@@ -297,12 +288,11 @@ class LogicalServer:  # pylint: disable=too-many-public-methods
         return self._data
 
     def __repr__(self):
-        return f'LogicalServer<{self._data.get("Name", "??")}>'
+        return f"LogicalServer<{self._data.get('Name', '??')}>"
 
 
 class ServerLoad:
-    """Contains data about logical servers to be updated frequently.
-    """
+    """Contains data about logical servers to be updated frequently."""
 
     def __init__(self, data: Dict):
         self._data = data
@@ -315,23 +305,22 @@ class ServerLoad:
     @property
     def load(self) -> int:
         """Returns the load of the servers.
-            This is generally only used for UI purposes.
+        This is generally only used for UI purposes.
         """
         return self._data.get("Load")
 
     @property
     def score(self) -> float:
         """Returns the score of the server.
-            The score is automatically calculated by the API and
-            is used for the logic of the "Quick Connect".
-            The lower the number is the better is for establishing a connection.
+        The score is automatically calculated by the API and
+        is used for the logic of the "Quick Connect".
+        The lower the number is the better is for establishing a connection.
         """
         return self._data.get("Score")
 
     @property
     def enabled(self) -> bool:
-        """Returns if the server is enabled or not.
-        """
+        """Returns if the server is enabled or not."""
         return self._data.get("Status") == 1
 
     def __str__(self):

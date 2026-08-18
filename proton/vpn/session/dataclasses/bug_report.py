@@ -16,8 +16,10 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with ProtonVPN.  If not, see <https://www.gnu.org/licenses/>.
 """
-from typing import List, IO
+
 from dataclasses import dataclass, field
+from typing import IO, List
+
 from proton.vpn.session.utils import generate_os_string, get_distro_version
 
 VPN_CLIENT_TYPE = "2"  # 1: email;  2: VPN
@@ -28,6 +30,7 @@ VPN_CLIENT_TYPE = "2"  # 1: email;  2: VPN
 @dataclass
 class BugReportForm:  # pylint: disable=too-many-instance-attributes
     """Bug report form data to be submitted to customer support."""
+
     username: str
     email: str
     title: str

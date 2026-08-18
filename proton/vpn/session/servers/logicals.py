@@ -16,6 +16,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with ProtonVPN.  If not, see <https://www.gnu.org/licenses/>.
 """
+
 from __future__ import annotations
 
 import functools
@@ -27,9 +28,8 @@ from typing import Callable, Generator, Iterable, List, Optional, Tuple
 
 from proton.vpn import logging
 from proton.vpn.session.dataclasses.servers import Country
-from proton.vpn.session.exceptions import ServerNotFoundError, ServerListDecodeError
-from proton.vpn.session.servers.types import LogicalServer, \
-    TierEnum, ServerFeatureEnum, ServerLoad
+from proton.vpn.session.exceptions import ServerListDecodeError, ServerNotFoundError
+from proton.vpn.session.servers.types import LogicalServer, ServerFeatureEnum, ServerLoad, TierEnum
 
 logger = logging.getLogger(__name__)
 
@@ -38,6 +38,7 @@ UNIX_EPOCH = "Thu, 01 Jan 1970 00:00:00 GMT"
 
 class PersistenceKeys(Enum):
     """JSON Keys used to persist the ServerList to disk."""
+
     LOGICALS = "LogicalServers"  # pylint: disable=R0902
     EXPIRATION_TIME = "ExpirationTime"
     LOADS_EXPIRATION_TIME = "LoadsExpirationTime"
@@ -58,22 +59,23 @@ class ServerList:  # pylint: disable=R0902, R0904
     """
     Wrapper around a list of logical servers.
     """
+
     def __init__(
-            self,
-            user_tier: TierEnum,
-            logicals: Optional[List[LogicalServer]] = None,
-            expiration_time: Optional[int] = None,
-            loads_expiration_time: Optional[int] = None,
-            index_servers: bool = True,
-            last_modified_time: Optional[str] = None,
-            status_token: Optional[str] = None
+        self,
+        user_tier: TierEnum,
+        logicals: Optional[List[LogicalServer]] = None,
+        expiration_time: Optional[int] = None,
+        loads_expiration_time: Optional[int] = None,
+        index_servers: bool = True,
+        last_modified_time: Optional[str] = None,
+        status_token: Optional[str] = None,
     ):  # pylint: disable=too-many-arguments
         self._user_tier = user_tier
         self._logicals = logicals or []
-        self._expiration_time = expiration_time if expiration_time is not None\
-            else ServerList.get_expiration_time()
-        self._loads_expiration_time = loads_expiration_time if loads_expiration_time is not None\
-            else ServerList.get_loads_expiration_time()
+        self._expiration_time = expiration_time if expiration_time is not None else ServerList.get_expiration_time()
+        self._loads_expiration_time = (
+            loads_expiration_time if loads_expiration_time is not None else ServerList.get_loads_expiration_time()
+        )
         self._last_modified_time = last_modified_time or ServerList.get_epoch_time()
 
         if index_servers:
@@ -181,9 +183,7 @@ class ServerList:  # pylint: disable=R0902, R0904
         try:
             return self._logicals_by_id[server_id]
         except KeyError as error:
-            raise ServerNotFoundError(
-                f"The server with {server_id=} was not found"
-            ) from error
+            raise ServerNotFoundError(f"The server with {server_id=} was not found") from error
 
     def get_by_name(self, name: str) -> LogicalServer:
         """
@@ -196,9 +196,7 @@ class ServerList:  # pylint: disable=R0902, R0904
         try:
             return self._logicals_by_name[upper_case_name]
         except KeyError as error:
-            raise ServerNotFoundError(
-                f"The server with {name=} was not found"
-            ) from error
+            raise ServerNotFoundError(f"The server with {name=} was not found") from error
 
     @staticmethod
     def get_fastest_server(servers: Iterable[LogicalServer]) -> Optional[LogicalServer]:
@@ -208,21 +206,12 @@ class ServerList:  # pylint: disable=R0902, R0904
         return min(servers, key=lambda s: s.score, default=None)
 
     @staticmethod
-    def get_available_servers(
-            servers: Iterable[LogicalServer],
-            user_tier: TierEnum
-    ) -> Generator[LogicalServer]:
+    def get_available_servers(servers: Iterable[LogicalServer], user_tier: TierEnum) -> Generator[LogicalServer]:
         """
         :returns: Generator producing available servers
         from the passed LogicalServer iterable
         """
-        return (
-            server for server in servers
-            if (
-                server.enabled
-                and server.tier <= user_tier
-            )
-        )
+        return (server for server in servers if (server.enabled and server.tier <= user_tier))
 
     @staticmethod
     def _compact_features(features: List[ServerFeatureEnum]) -> ServerFeatureEnum:
@@ -230,47 +219,36 @@ class ServerList:  # pylint: disable=R0902, R0904
 
     @staticmethod
     def get_servers_with_features(
-            servers: Iterable[LogicalServer],
-            request_features: ServerFeatureEnum = 0,
-            exclude_features: ServerFeatureEnum = 0,
+        servers: Iterable[LogicalServer],
+        request_features: ServerFeatureEnum = 0,
+        exclude_features: ServerFeatureEnum = 0,
     ) -> Generator[LogicalServer]:
         """
         :returns: Generator producing servers matching/excluding specified features
         from the passed LogicalServer iterable
         """
         return (
-            s for s in servers
+            s
+            for s in servers
             if (ServerList._compact_features(s.features) & exclude_features) == 0
             and (ServerList._compact_features(s.features) & request_features) == request_features
         )
 
     @staticmethod
-    def get_servers_in_country_code(
-            servers: Iterable[LogicalServer],
-            country_code: str
-    ) -> Generator[LogicalServer]:
+    def get_servers_in_country_code(servers: Iterable[LogicalServer], country_code: str) -> Generator[LogicalServer]:
         """
         :returns: Generator producing servers in the requested country
         from the passed LogicalServer iterable
         """
-        return (
-            server for server in servers
-            if server.exit_country.lower() == country_code.lower()
-        )
+        return (server for server in servers if server.exit_country.lower() == country_code.lower())
 
     @staticmethod
-    def get_servers_in_city(
-            servers: Iterable[LogicalServer],
-            city_name: str
-    ) -> Generator[LogicalServer]:
+    def get_servers_in_city(servers: Iterable[LogicalServer], city_name: str) -> Generator[LogicalServer]:
         """
         :returns: Generator producing servers in the requested city
         from the passed LogicalServer iterable
         """
-        return (
-            server for server in servers
-            if server.city.lower() == city_name.lower()
-        )
+        return (server for server in servers if server.city.lower() == city_name.lower())
 
     def get_fastest_in_country(self, country_code: str) -> LogicalServer:
         """
@@ -278,13 +256,10 @@ class ServerList:  # pylint: disable=R0902, R0904
         the user has access to.
         """
         country_servers = ServerList.get_servers_in_country_code(self.logicals, country_code)
-        available_country_servers =\
-            ServerList.get_available_servers(country_servers, self.user_tier)
-        available_country_servers =\
-            ServerList.get_servers_with_features(
-                available_country_servers,
-                exclude_features=ServerFeatureEnum.SECURE_CORE | ServerFeatureEnum.TOR
-            )
+        available_country_servers = ServerList.get_available_servers(country_servers, self.user_tier)
+        available_country_servers = ServerList.get_servers_with_features(
+            available_country_servers, exclude_features=ServerFeatureEnum.SECURE_CORE | ServerFeatureEnum.TOR
+        )
         fastest_available_server = ServerList.get_fastest_server(available_country_servers)
 
         if not fastest_available_server:
@@ -299,11 +274,9 @@ class ServerList:  # pylint: disable=R0902, R0904
         """
         city_servers = ServerList.get_servers_in_city(self.logicals, city_name)
         available_city_servers = ServerList.get_available_servers(city_servers, self.user_tier)
-        available_city_servers =\
-            ServerList.get_servers_with_features(
-                available_city_servers,
-                exclude_features=ServerFeatureEnum.SECURE_CORE | ServerFeatureEnum.TOR
-            )
+        available_city_servers = ServerList.get_servers_with_features(
+            available_city_servers, exclude_features=ServerFeatureEnum.SECURE_CORE | ServerFeatureEnum.TOR
+        )
         fastest_available_server = ServerList.get_fastest_server(available_city_servers)
 
         if not fastest_available_server:
@@ -314,11 +287,9 @@ class ServerList:  # pylint: disable=R0902, R0904
     def get_fastest(self) -> LogicalServer:
         """:returns: the fastest server in the tiers the user has access to."""
         available_servers = ServerList.get_available_servers(self.logicals, self.user_tier)
-        available_servers =\
-            ServerList.get_servers_with_features(
-                available_servers,
-                exclude_features=ServerFeatureEnum.SECURE_CORE | ServerFeatureEnum.TOR
-            )
+        available_servers = ServerList.get_servers_with_features(
+            available_servers, exclude_features=ServerFeatureEnum.SECURE_CORE | ServerFeatureEnum.TOR
+        )
         fastest_available_server = ServerList.get_fastest_server(available_servers)
 
         if not fastest_available_server:
@@ -327,10 +298,7 @@ class ServerList:  # pylint: disable=R0902, R0904
         return fastest_available_server
 
     def group_by_country(
-        self,
-        group_by_location: bool = False,
-        group_by_city: bool = False,
-        include_free_servers: bool = True
+        self, group_by_location: bool = False, group_by_city: bool = False, include_free_servers: bool = True
     ) -> List[Country]:
         """
         Returns the servers grouped by country.
@@ -350,13 +318,7 @@ class ServerList:  # pylint: disable=R0902, R0904
             self.sort()
 
         return [
-            Country(
-                country_code,
-                list(country_servers),
-                group_by_location,
-                group_by_city,
-                include_free_servers
-            )
+            Country(country_code, list(country_servers), group_by_location, group_by_city, include_free_servers)
             for country_code, country_servers in itertools.groupby(
                 self.logicals, lambda server: server.exit_country.lower()
             )
@@ -403,9 +365,7 @@ class ServerList:  # pylint: disable=R0902, R0904
         return cls.LOADS_REFRESH_INTERVAL * cls._generate_random_component()
 
     @classmethod
-    def from_dict(
-            cls, data: dict
-    ):
+    def from_dict(cls, data: dict):
         """
         :returns: the server list built from the given dictionary.
         """
@@ -415,17 +375,10 @@ class ServerList:  # pylint: disable=R0902, R0904
         except KeyError as error:
             raise ServerListDecodeError("Error building server list from dict") from error
 
-        expiration_time = data.get(
-            PersistenceKeys.EXPIRATION_TIME.value,
-            cls.get_expiration_time()
-        )
-        loads_expiration_time = data.get(
-            PersistenceKeys.LOADS_EXPIRATION_TIME.value,
-            cls.get_loads_expiration_time()
-        )
+        expiration_time = data.get(PersistenceKeys.EXPIRATION_TIME.value, cls.get_expiration_time())
+        loads_expiration_time = data.get(PersistenceKeys.LOADS_EXPIRATION_TIME.value, cls.get_loads_expiration_time())
 
-        last_modified_time = data.get(PersistenceKeys.LAST_MODIFIED_TIME.value,
-                                      ServerList.get_epoch_time())
+        last_modified_time = data.get(PersistenceKeys.LAST_MODIFIED_TIME.value, ServerList.get_epoch_time())
 
         status_token = data.get(PersistenceKeys.STATUS_TOKEN.value, None)
 
@@ -435,7 +388,7 @@ class ServerList:  # pylint: disable=R0902, R0904
             expiration_time=expiration_time,
             loads_expiration_time=loads_expiration_time,
             last_modified_time=last_modified_time,
-            status_token=status_token
+            status_token=status_token,
         )
 
     def to_dict(self) -> dict:
@@ -446,7 +399,7 @@ class ServerList:  # pylint: disable=R0902, R0904
             PersistenceKeys.LOADS_EXPIRATION_TIME.value: self.loads_expiration_time,
             PersistenceKeys.LAST_MODIFIED_TIME.value: self.last_modified_time,
             PersistenceKeys.USER_TIER.value: self._user_tier,
-            PersistenceKeys.STATUS_TOKEN.value: self._status_token
+            PersistenceKeys.STATUS_TOKEN.value: self._status_token,
         }
 
     def __len__(self):
@@ -478,8 +431,7 @@ def sort_servers_alphabetically_by_country_and_server_name(server: LogicalServer
     server_name = server_name.lower()
     if "#" in server_name:
         # Pad server number with zeros to achieve natural sorting
-        server_name = f"{server_name.split('#')[0]}#" \
-                      f"{server_name.split('#')[1].zfill(10)}"
+        server_name = f"{server_name.split('#')[0]}#{server_name.split('#')[1].zfill(10)}"
 
     return f"{country_name}__{server_name}"
 

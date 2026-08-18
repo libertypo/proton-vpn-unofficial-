@@ -33,7 +33,7 @@ impl WindowsPollWaker {
             CreateEventW(Some(ptr::null()), true, false, None)
                 .map_err(|e| ProTunFatalError::HandleCreationFailed(format!("Cannot create waker: CreateEventW failed. Win32 error code: {}", e.code())))?
         };
-        
+
         Ok(WindowsPollWaker { handle })
     }
 

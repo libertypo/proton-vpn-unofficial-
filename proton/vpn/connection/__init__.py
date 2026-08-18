@@ -21,7 +21,7 @@ You should have received a copy of the GNU General Public License
 along with ProtonVPN.  If not, see <https://www.gnu.org/licenses/>.
 """
 
-from importlib.metadata import version, PackageNotFoundError
+from importlib.metadata import PackageNotFoundError, version
 
 try:
     __version__ = version("proton-vpn-connection")
@@ -30,16 +30,18 @@ except PackageNotFoundError:
 
 
 # pylint: disable=wrong-import-position
+from .interfaces import ProtocolPorts, Settings, VPNCredentials, VPNPubkeyCredentials, VPNServer, VPNUserPassCredentials
 from .vpnconnection import VPNConnection
-from .interfaces import (
-    VPNServer, ProtocolPorts, VPNCredentials, VPNPubkeyCredentials,
-    VPNUserPassCredentials, Settings
-)
 
 FWMARK_VALUE = 245447468
 
 __all__ = [
-    "VPNConnection", "VPNServer", "ProtocolPorts", "VPNCredentials",
-    "VPNPubkeyCredentials", "VPNUserPassCredentials", "Settings",
-    "FWMARK_VALUE"
+    "VPNConnection",
+    "VPNServer",
+    "ProtocolPorts",
+    "VPNCredentials",
+    "VPNPubkeyCredentials",
+    "VPNUserPassCredentials",
+    "Settings",
+    "FWMARK_VALUE",
 ]

@@ -19,11 +19,12 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with ProtonVPN.  If not, see <https://www.gnu.org/licenses/>.
 """
+
 from __future__ import annotations
 
 from dataclasses import dataclass, field
+from ipaddress import IPv4Address, IPv6Address, ip_address
 from typing import Union
-from ipaddress import ip_address, IPv4Address, IPv6Address
 
 from proton.vpn import logging
 
@@ -33,6 +34,7 @@ logger = logging.getLogger(__name__)
 @dataclass
 class CustomDNSEntry:
     """Custom DNS IP object."""
+
     ip: Union[IPv4Address, IPv6Address]  # pylint: disable=invalid-name
     enabled: bool = True
 
@@ -49,10 +51,7 @@ class CustomDNSEntry:
         except ValueError as excp:
             raise ValueError("Invalid custom DNS IP") from excp
 
-        return CustomDNSEntry(
-            ip=converted_ip,
-            enabled=bool(data.get("enabled", True))
-        )
+        return CustomDNSEntry(ip=converted_ip, enabled=bool(data.get("enabled", True)))
 
     def convert_ip_to_short_format(self) -> str:
         """Converts long format IP to short format IP.
@@ -78,15 +77,13 @@ class CustomDNSEntry:
 
     def to_dict(self) -> dict[str, Union[str, bool]]:
         """Converts the class to dict."""
-        return {
-            "ip": self.ip.compressed,
-            "enabled": self.enabled
-        }
+        return {"ip": self.ip.compressed, "enabled": self.enabled}
 
 
 @dataclass
 class CustomDNS:
     """Contains all settings related to custom DNS."""
+
     enabled: bool = False
     ip_list: list[CustomDNSEntry] = field(default_factory=list)  # type: ignore
 
@@ -101,15 +98,11 @@ class CustomDNS:
             try:
                 dns_ip = CustomDNSEntry.from_dict(dns_entry_dict)
             except ValueError as excp:
-                logger.warning(
-                    msg=f"Invalid custom DNS entry: {dns_entry_dict} : {excp}")
+                logger.warning(msg=f"Invalid custom DNS entry: {dns_entry_dict} : {excp}")
             else:
                 ip_list.append(dns_ip)
 
-        return CustomDNS(
-            enabled=data.get("enabled", default.enabled),
-            ip_list=ip_list
-        )
+        return CustomDNS(enabled=data.get("enabled", default.enabled), ip_list=ip_list)
 
     @staticmethod
     def default() -> CustomDNS:  # pylint: disable=unused-argument
@@ -125,7 +118,7 @@ class CustomDNS:
         return self.get_enabled_dns_list_based_on_ip_version(IPv6Address)
 
     def get_enabled_dns_list_based_on_ip_version(
-            self, version: Union[IPv4Address, IPv6Address]
+        self, version: Union[IPv4Address, IPv6Address]
     ) -> list[Union[str, None]]:
         """Returns a list of IPs based on provided IP version."""
         dns_list = []
@@ -137,7 +130,4 @@ class CustomDNS:
 
     def to_dict(self) -> dict[str, Union[bool, list[dict[str, Union[str, bool]]]]]:
         """Converts the class to dict."""
-        return {
-            "enabled": self.enabled,
-            "ip_list": [ip.to_dict() for ip in self.ip_list]
-        }
+        return {"enabled": self.enabled, "ip_list": [ip.to_dict() for ip in self.ip_list]}
