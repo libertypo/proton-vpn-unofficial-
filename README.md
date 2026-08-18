@@ -83,5 +83,6 @@ options and environment variables with:
 This is a community build. Do not treat it as an official Proton or Manjaro
 package. Test on a personally controlled, recoverable machine, not one where a
 VPN or NetworkManager failure has meaningful consequences. Test installation,
-login, connect/disconnect, Smart and Stealth behavior, kill-switch behavior, and
-recovery or removal of test NetworkManager/ProTun state.
+login, connect/disconnect, Smart and Stealth behavior, split-tunneling behavior,
+kill-switch behavior, and recovery or removal of test NetworkManager/ProTun
+state.
