@@ -1,0 +1,18 @@
+[Unit]
+Description=Proton VPN Daemon
+After=network.target
+ConditionPathIsReadWrite=/sys/fs/cgroup
+ConditionPathIsReadWrite=/sys/fs/cgroup/user.slice
+
+[Service]
+Type=dbus
+BusName=me.proton.vpn.split_tunneling
+CapabilityBoundingSet=CAP_BPF CAP_PERFMON CAP_SYS_ADMIN
+AmbientCapabilities=CAP_BPF CAP_PERFMON CAP_SYS_ADMIN
+ExecStartPre=/usr/bin/test -d /sys/fs/cgroup/user.slice
+ExecStart=/usr/bin/python3 -m proton.vpn.daemon
+Restart=always
+TimeoutStartSec=30
+
+[Install]
+WantedBy=multi-user.target

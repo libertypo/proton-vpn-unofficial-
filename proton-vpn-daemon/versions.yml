@@ -1,0 +1,269 @@
+version: 0.13.8
+time: 2026/06/15 09:11
+author: Luke Titley
+email: luke.titley@proton.ch
+description:
+- "chore: Move to hardcoded fwmark"
+---
+version: 0.13.7
+time: 2026/04/14 13:24
+author: Luke Titley
+email: luke.titley@proton.ch
+urgency: low
+stability: unstable
+description:
+- "fix: Remove unused include in bpf.c (thanks to Peter Jung https://github.com/ptr1337)"
+---
+version: 0.13.6
+time: 2026/02/17 14:59
+author: Elena Svilpe
+email: elena.svilpe@proton.ch
+urgency: low
+stability: unstable
+description:
+- "chore: Updated development environment setup readme"
+---
+version: 0.13.5
+time: 2026/02/06 09:21
+author: Pep Llaneras
+email: josep.llaneras@proton.ch
+urgency: low
+stability: unstable
+description:
+- "fix: Remove linux-header-generic dependency"
+---
+version: 0.13.4
+time: 2025/09/26 10:43
+author: Luke Titley
+email: luke.titley@proton.ch
+urgency: low
+stability: unstable
+description:
+- "fix: Use TRACEPOINT_PROBE for fork and exit tracepoints"
+---
+version: 0.13.3
+time: 2025/09/22 10:00
+author: Alexandru Cheltuitor
+email: alexandru.cheltuitor@proton.ch
+urgency: low
+stability: unstable
+description:
+- "fix: update spec file."
+---
+version: 0.13.2
+time: 2025/09/02 14:52
+author: Pep Llaneras
+email: josep.llaneras@proton.ch
+urgency: low
+stability: unstable
+description:
+- "fix: broken process monitor after adding include mode"
+---
+version: 0.13.1
+time: 2025/09/01 19:14
+author: Luke Titley
+email: luke.titley@proton.ch
+urgency: low
+stability: unstable
+description:
+- "fix: Validate existing service with dbus"
+---
+version: 0.13.0
+time: 2025/08/21 10:20
+author: Pep Llaneras
+email: josep.llaneras@proton.ch
+urgency: low
+stability: unstable
+description:
+- "feat: add include mode for app-based split tunneling"
+---
+version: 0.12.1
+time: 2025/08/13 14:10
+author: Pep Llaneras
+email: josep.llaneras@proton.ch
+urgency: low
+stability: unstable
+description:
+- "fix: avoid restarting ST monitors"
+---
+version: 0.12.0
+time: 2025/08/01 11:05
+author: Alexandru Cheltuitor
+email: alexandru.cheltuitor@proton.ch
+urgency: low
+stability: unstable
+description:
+- "fix: ensure logging is configured"
+---
+version: 0.11.2
+time: 2025/07/31 15:34
+author: Alexandru Cheltuitor
+email: alexandru.cheltuitor@proton.ch
+urgency: low
+stability: unstable
+description:
+- "fix: remove cli command."
+---
+version: 0.11.1
+time: 2025/07/31 11:01
+author: Alexandru Cheltuitor
+email: alexandru.cheltuitor@proton.ch
+urgency: low
+stability: unstable
+description:
+- "fix: disable ST due to incompatibility"
+---
+version: 0.11.0
+time: 2025/07/29 12:13
+author: Alexandru Cheltuitor
+email: alexandru.cheltuitor@proton.ch
+urgency: low
+stability: unstable
+description:
+- "fix: make asyncio timeout backwards compatible"
+---
+version: 0.10.1
+time: 2025/07/24 12:36
+author: Alexandru Cheltuitor
+email: alexandru.cheltuitor@proton.ch
+urgency: low
+stability: unstable
+description:
+- "fix: only configure loggin if being module is created from own process"
+---
+version: 0.10.0
+time: 2025/07/17 16:22
+author: Pep Llaneras
+email: josep.llaneras@proton.ch
+urgency: low
+stability: unstable
+description:
+- "feat: Add ebpf-based process monitor"
+---
+version: 0.9.5
+time: 2025/07/17 11:00
+author: Alexandru Cheltuitor
+email: alexandru.cheltuitor@proton.ch
+urgency: low
+stability: unstable
+description:
+- "feat: log to proton logger."
+---
+version: 0.9.4
+time: 2025/07/11 15:15
+author: Alexandru Cheltuitor
+email: alexandru.cheltuitor@proton.ch
+urgency: low
+stability: unstable
+description:
+- "feat: ensure exceptions are globally handled."
+---
+version: 0.9.3
+time: 2025/07/11 10:41
+author: Pep Llaneras
+email: josep.llaneras@proton.ch
+urgency: low
+stability: unstable
+description:
+- "fix: Add code review leftovers"
+---
+version: 0.9.2
+time: 2025/07/09 16:05
+author: Alexandru Cheltuitor
+email: alexandru.cheltuitor@proton.ch
+urgency: low
+stability: unstable
+description:
+- "fix: ensure bpf program is backwards compatible"
+---
+version: 0.9.1
+time: 2025/07/09 13:38
+author: Pep Llaneras
+email: josep.llaneras@proton.ch
+urgency: low
+stability: unstable
+description:
+- "fix: Fix race condition when running ST set_config concurrently"
+---
+version: 0.9.0
+time: 2025/07/07 15:00
+author: Alexandru Cheltuitor
+email: alexandru.cheltuitor@proton.ch
+urgency: low
+stability: unstable
+description:
+- Add missing packages for kernel headers.
+---
+version: 0.8.0
+time: 2025/07/01 16:00
+author: Josep Llaneras
+email: josep.llaneras@proton.ch
+urgency: low
+stability: unstable
+description:
+- Add socket monitor for app-based split tunneling.
+---
+version: 0.7.0
+time: 2025/06/19 16:00
+author: Josep Llaneras
+email: josep.llaneras@proton.ch
+urgency: low
+stability: unstable
+description:
+- Add process monitor for app-based split tunneling.
+---
+version: 0.6.0
+time: 2025/06/12 16:00
+author: Alexandru Cheltuitor
+email: alexandru.cheltuitor@proton.ch
+urgency: low
+stability: unstable
+description:
+- Implement public API.
+---
+version: 0.5.0
+time: 2025/06/05 13:00
+author: Alexandru Cheltuitor
+email: alexandru.cheltuitor@proton.ch
+urgency: low
+stability: unstable
+description:
+- Fix service not starting automatically on fedora after reboot/shutdown.
+- By default log at DEBUG level.
+- Remove python3 prefix from package name.
+---
+version: 0.4.0
+time: 2025/06/04 10:00
+author: Alexandru Cheltuitor
+email: alexandru.cheltuitor@proton.ch
+urgency: low
+stability: unstable
+description:
+- Fix filepath for debian file install.
+---
+version: 0.3.0
+time: 2025/06/03 15:00
+author: Alexandru Cheltuitor
+email: alexandru.cheltuitor@proton.ch
+urgency: low
+stability: unstable
+description:
+- Implement split tunneling API.
+---
+version: 0.2.0
+time: 2025/05/27 13:00
+author: Alexandru Cheltuitor
+email: alexandru.cheltuitor@proton.ch
+urgency: low
+stability: unstable
+description:
+- Fix bug where it was being imported from dbus-next.
+---
+version: 0.1.0
+time: 2025/05/22 13:00
+author: Alexandru Cheltuitor
+email: alexandru.cheltuitor@proton.ch
+urgency: low
+stability: unstable
+description:
+- First package.

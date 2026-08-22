@@ -1,0 +1,15 @@
+*pycache*
+*.egg-info
+venv
+*.pybuild*
+*.deb
+*.debhelper
+dist
+debian/changelog
+build
+CHANGELOG.md
+rpmbuild/SPECS/package.spec
+.coverage
+*.changes
+*.buildinfo
+.idea

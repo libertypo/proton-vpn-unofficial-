@@ -1,0 +1,3 @@
+systemctl stop me.proton.vpn.split_tunneling.service
+systemctl disable me.proton.vpn.split_tunneling.service
+systemctl daemon-reload
